@@ -62,7 +62,7 @@ namespace UsingIdentity
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Trip}/{action=Index}");
                 endpoints.MapRazorPages();
             });
         }

@@ -73,12 +73,35 @@ namespace FastTripApp2.Controllers
             return View(obj);
         }
 
-
+        
         public ActionResult ToHistory(int id)
         {
-            
+            var trip = getById(id);
+            HistoryTrip objHistory = new HistoryTrip {
+                TripId = trip.Id,
+                Name = trip.Name,
+                TimePlain = trip.TimePlain,
+                EstimatedTime = trip.EstimatedTime,
+                Image = trip.Image,
+                Descriprion = trip.Descriprion,
+                StartTrip = trip.StartTrip,
+                EndTrip = trip.EndTrip,
+                TimeTrack = trip.TimeTrack,
+                AddressStart = trip.AddressStart,
+                AddressEnd = trip.AddressEnd,
+                AddressEndLatitude = trip.AddressEndLatitude,
+                AddressEndLongitude = trip.AddressEndLongitude,
+                AddressStartLatitude = trip.AddressStartLatitude,
+                AddressStartLongitude = trip.AddressStartLongitude,
+                UserId = trip.UserId
+            };
 
-            return Redirect("HistoryTrip\\Index");
+            _db.HistoryTrips.Add(objHistory);
+            _db.SaveChanges();
+
+            DeleteTripById(id);
+
+            return RedirectToAction("Index");
         }
 
 
@@ -101,7 +124,7 @@ namespace FastTripApp2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Trip obj)
         {
-            new TimeSpan(13213);
+            
             if (ModelState.IsValid)
             {
                 obj.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -150,7 +173,7 @@ namespace FastTripApp2.Controllers
             {
                 return NotFound();
             }
-            var obj = _db.Trips.Find(id);
+            var obj = getById(id);
             if (obj == null)
             {
                 return NotFound();
@@ -163,15 +186,27 @@ namespace FastTripApp2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int? id)
         {
+            DeleteTripById(id);
+            return RedirectToAction("Index");
+        }
+
+        private Trip getById(int? id)
+        {
+            return _db.Trips.Find(id);
+        }
+
+        private void DeleteTripById(int? id)
+        {
             var obj = _db.Trips.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
+
+            //fixxxxxxxxxxxxxxx
+            //if (obj == null)
+            //{
+            //    return NotFound();
+            //}
 
             _db.Trips.Remove(obj);
             _db.SaveChanges();
-            return RedirectToAction("Index");
         }
     }
 }

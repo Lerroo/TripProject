@@ -14,6 +14,8 @@
   <ItemGroup>
     <Compile Include="Migrations\20210426193035_create.cs" />
     <Compile Include="Migrations\20210426193035_create.Designer.cs" />
+    <Compile Include="Migrations\20210515202331_add historyTrip table.cs" />
+    <Compile Include="Migrations\20210515202331_add historyTrip table.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 

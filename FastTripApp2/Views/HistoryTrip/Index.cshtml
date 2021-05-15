@@ -1,0 +1,56 @@
+﻿@model IEnumerable<FastTripApp2.Models.HistoryTrip>
+
+@{
+    ViewData["Title"] = "My history trips";
+}
+<script type="text/javascript" src="/js/site.js"></script>
+
+<div class="container p-3 ">
+    
+
+    @if (Model.Count() > 0)
+    {
+        <br /> <br />
+        <h1>all trips history</h1>
+
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Start date
+                    </th>
+                    <th>
+                        End date
+                    </th>
+                    <th>
+                        Travel time
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trip in Model)
+                {
+                <tr>
+                    <td>@trip.Name</td>
+                    <td>@trip.Descriprion</td>
+                    <td>@trip.StartTrip</td>
+                    <td>@trip.EndTrip</td>
+                    <td>@trip.TimeTrack</td>
+                    <td>all info fixxx</td>
+                </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+</div>
+
+        

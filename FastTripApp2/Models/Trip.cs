@@ -20,9 +20,7 @@ namespace FastTripApp2.Models
         public DateTime TimePlain { get; set; }
                 
         [DisplayName("Estimated time")]
-        public TimeSpan? EstimatedTime { get; set;
-          
-        }
+        public TimeSpan? EstimatedTime { get; set; }
 
         public string Image { get; set; }
 

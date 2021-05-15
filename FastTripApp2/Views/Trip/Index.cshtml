@@ -13,9 +13,7 @@
         </div>
         <div class="col-6 text-right p-3">
 
-            <a asp-controller="Trip" asp-action="Create" class="btn btn-danger text-light">
-                go trip to history
-            </a>
+
             <a asp-controller="Trip" asp-action="Create" class="btn btn-primary text-light">
                 Create new trip
             </a>
@@ -28,9 +26,11 @@
                     <a class="btn btn-primary text-light" asp-controller="Trip" asp-action="Start" asp-route-id="@currentTrip.Id" onclick="StartStop();">
                         Start trip
                     </a>
+                    <a asp-controller="Trip" asp-action="ToHistory" asp-route-id="@currentTrip.Id" class="btn btn-danger text-light">
+                        go trip to history
+                    </a>
                 }
             }
-
 
         </div>
 
