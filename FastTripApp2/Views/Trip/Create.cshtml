@@ -46,17 +46,17 @@
                     </div>
                     <div class="col-8">
                         <input id="InputStart" type="text" class="form-control" placeholder="Start trip" asp-for="AddressStart">
-                        <span asp-validation-for="AddressEnd" class="text-danger"></span>
+                        <span asp-validation-for="AddressStart" class="text-danger"></span>
                         <input id="InputStartLatitude" type="text" class="form-control d-none" asp-for="AddressStartLatitude">
                         <input id="InputStartLongitude" type="text" class="form-control d-none" placeholder="Start trip" asp-for="AddressStartLongitude">
                     </div>
                 </div>
 
-                <input id="InputEstimatedTime" type="text" class="form-control d-none" asp-for="EstimatedTime">
+                @*<input id="EstimatedTime" class="form-control d-none" asp-for="lala">*@
 
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="AddressEnd"></label>
+                        <label asp-for="AddressEnd" ></label>
                     </div>
                     <div class="col-8">
                         <input id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="AddressEnd">
@@ -90,12 +90,10 @@
     document.getElementById("InputStart").onclick = function () {
         const start = GenAutocomplete("InputStart")
         const end = GenAutocomplete("InputEnd")
-        Promise.all([start, end]).then((lala) => calcRoute(lala[0], lala[1], directionsDisplay, directionsService))
+        Promise.all([start, end]).then((lala) => calcRoute(lala[0], lala[1]))
 
     }
     document.getElementById("InputEnd").onclick = function () {
-        const start = GenAutocomplete("InputStart")
-        const end = GenAutocomplete("InputEnd")
-        Promise.all([start, end]).then((lala) => calcRoute(lala[0], lala[1], directionsDisplay, directionsService))
-    }
+        GenAutocomplete("InputStart").then(coords => calcRoute(coords));
+    }  
 </script>

@@ -4,10 +4,18 @@
 // Write your JavaScript code.
 
 
+
+class CoordsLatLng {
+    constructor(lat, lng) {
+        this.lat = lat
+        this.lng = lng
+    }
+}
+
+
 function reloadPage() {
     window.location.reload()
 }
-
 
 let directionsDisplay;
 let directionsService = new google.maps.DirectionsService();
@@ -38,13 +46,23 @@ function calcRoute(objCoord, objCoord2) {
         let request = {
             origin: start,
             destination: end,
-            travelMode: 'DRIVING'
+            travelMode: 'DRIVING',
+            drivingOptions: {
+                departureTime: new Date(document.getElementById("TimePlain").value),
+                trafficModel: 'pessimistic'
+            },
+            unitSystem: google.maps.UnitSystem.METRIC 
         };
 
         directionsService.route(request, function (response, status) {
             if (status === 'OK') {
-                directionsDisplay.setDirections(response);
+                //let seconds = response.routes[0].legs[0].duration.value * 10000000
+                //document.getElementById("EstimatedTime").value = seconds
+                //console.log(secondsToHms(seconds))
+                //console.log(response.routes[0].legs[0].duration)
+                //console.log(document.getElementById("EstimatedTime").value)
 
+                directionsDisplay.setDirections(response);
             } else {
                 alert("directions request failed, status=" + status)
             }
@@ -90,8 +108,19 @@ function GenAutocomplete(elementid) {
             resolve(coords)
         });
     })
-}
+}   
 
+function secondsToHms(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? ":" : "") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? ":" : "") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? ":" : "") : "";
+    return "00:00:20";
+}
 
 function isEmptyObject(obj) {
     for (let i in obj) {

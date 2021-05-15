@@ -42,7 +42,7 @@ namespace FastTripApp2.Controllers
             if (objList.GetEnumerator().MoveNext())
             {
                 var trip = objList.First();
-                TripInHistory(trip.Id, trip.EstimatedTime);
+                //TripInHistory(trip.Id, trip.EstimatedTime);
             }            
 
             return View(objList);
@@ -63,7 +63,6 @@ namespace FastTripApp2.Controllers
             if (ModelState.IsValid)
             {
                 obj.StartTrip = DateTime.UtcNow;
-
                 //fix
                 obj.EstimatedTime = new TimeSpan(0, 0, 30);
 
@@ -73,6 +72,15 @@ namespace FastTripApp2.Controllers
             }
             return View(obj);
         }
+
+
+        public ActionResult ToHistory(int id)
+        {
+            
+
+            return Redirect("HistoryTrip\\Index");
+        }
+
 
         [HttpPost]
         public ActionResult End(int id)
@@ -93,13 +101,9 @@ namespace FastTripApp2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Trip obj)
         {
+            new TimeSpan(13213);
             if (ModelState.IsValid)
             {
-                obj.StartTrip = null;
-                obj.EndTrip = null;
-                obj.TimeTrack = null;
-                //fix
-                obj.EstimatedTime = new TimeSpan(0, 0, 30);
                 obj.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 _db.Trips.Add(obj);
