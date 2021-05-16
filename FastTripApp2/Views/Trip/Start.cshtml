@@ -1,4 +1,4 @@
-﻿@page
+﻿@model FastTripApp2.Models.TimeInfo
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,7 +13,8 @@
         <div class="col">
             <h2 class="text-primary">We are glad that you have chosen us. Don't forget to leave a comment at the end of your trip. here's a cat for you while you are on your way</h2>
             <img src="~/cat.gif" alt="я джифка">
-            <form name=MyForm asp-controller="Trip" asp-action="End" asp-route-id="@ViewContext.RouteData.Values["id"]">
+            <form name=MyForm asp-controller="Trip" asp-action="End" asp-route-id="@ViewData["Id"]">
+                <input class="n-none" asp-for="Start"/>
                 <input type="submit" class="btn btn-info w-100" value="End trip" />
             </form>
         </div>

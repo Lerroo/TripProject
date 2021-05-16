@@ -2,8 +2,8 @@
 
 @{
     ViewData["Title"] = "My trips";
+    Trip currentTrip = Model.FirstOrDefault();
 }
-<script type="text/javascript" src="/js/site.js"></script>
 
 <div class="container p-3 ">
     <div class="row pt-4 ">
@@ -20,9 +20,6 @@
             @{
                 if (Model.Count() > 0)
                 {
-                    var ie = Model.GetEnumerator();
-                    ie.MoveNext();
-                    Trip currentTrip = ie.Current;
                     <a class="btn btn-primary text-light" asp-controller="Trip" asp-action="Start" asp-route-id="@currentTrip.Id" onclick="StartStop();">
                         Start trip
                     </a>
@@ -41,9 +38,6 @@
             @{
                 if (Model.Count() > 0)
                 {
-                    var ie = Model.GetEnumerator();
-                    ie.MoveNext();
-                    Trip currentTrip = ie.Current;
                     <div class="form-group row">
                         <div class="col-4">
                             <label asp-for="@currentTrip.Name"></label>
@@ -93,9 +87,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group row" >
+                    <div class="form-group row">
                         <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Edit" class="btn btn-primary mx-3">Edit</a>
                         <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3">Cancel</a>
+                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Info" class="btn btn-danger mx-3">//Info</a>
                     </div>
 
 
@@ -108,19 +103,7 @@
         </div>
         <div class="col-6 text-right" id="map" style="height: 430px; "></div>
 
-        <script>
-                       
-            let start = {}
-            start.lat = document.getElementById('InputStartLatitude').value
-            start.lng = document.getElementById('InputStartLongitude').value
-
-            let end = {}
-            end.lat = document.getElementById('InputEndLatitude').value
-            end.lng = document.getElementById('InputEndLongitude').value
-
-            //displaying the path on the map
-            calcRoute(start, end)
-        </script>
+        
     </div>
 
     @if (Model.Count() > 0)
@@ -140,21 +123,53 @@
                     <th>
                         Descriprion
                     </th>
+                    <th>
+                        AddressStart
+                    </th>
+                    <th>
+                        AddressEnd
+                    </th>
+                    <th>
+                        EstimatedTime
+                    </th>
+                    <th>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var trip in Model)
                 {
-                    <tr>
-                        <td>@trip.Name</td>
-                        <td>@trip.TimePlain</td>
-                        <td>@trip.Descriprion</td>
-                    </tr>
+                <tr>
+                    <td>@trip.Name</td>
+                    <td>@trip.TimePlain</td>
+                    <td>@trip.Descriprion</td>
+                    <td>@trip.AddressStart</td>
+                    <td>@trip.AddressEnd</td>
+                    <td>@trip.EstimatedTime</td>
+                    <td><a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Info" class="btn btn-danger mx-3">//Info</a></td>
+                </tr>
                 }
             </tbody>
 
         </table>
     }
 </div>
+
+
+<script>
+
+    let start = {};
+    start.lat = document.getElementById('InputStartLatitude').value;
+    start.lng = document.getElementById('InputStartLongitude').value;
+
+    let end = {};
+    end.lat = document.getElementById('InputEndLatitude').value;
+    end.lng = document.getElementById('InputEndLongitude').value;
+
+
+    sleep(200);
+    //displaying the path on the map
+    calcRoute(start, end);
+</script>
 
         

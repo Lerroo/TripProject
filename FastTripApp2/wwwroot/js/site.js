@@ -12,7 +12,6 @@ class CoordsLatLng {
     }
 }
 
-
 function reloadPage() {
     window.location.reload()
 }
@@ -37,10 +36,11 @@ function initMap() {
     GenAutocomplete("InputStart");
 }
 
-function calcRoute(objCoord, objCoord2) {
+function calcRoute(objCoord, objCoord2) {    
     console.log('calcRoute');
-    console.log(objCoord2)
-    if (!isEmptyObject(objCoord) && !isEmptyObject(objCoord2)) {
+    
+
+        console.log(objCoord2)
         let start = new google.maps.LatLng(objCoord.lat, objCoord.lng);
         let end = new google.maps.LatLng(objCoord2.lat, objCoord2.lng);
         let request = {
@@ -56,21 +56,16 @@ function calcRoute(objCoord, objCoord2) {
 
         directionsService.route(request, function (response, status) {
             if (status === 'OK') {
-                //let seconds = response.routes[0].legs[0].duration.value * 10000000
-                //document.getElementById("EstimatedTime").value = seconds
-                //console.log(secondsToHms(seconds))
-                //console.log(response.routes[0].legs[0].duration)
-                //console.log(document.getElementById("EstimatedTime").value)
+                let seconds = response.routes[0].legs[0].duration.value
+                document.getElementById("SecondsEstimatedTime").value = seconds
+                console.log(seconds)
 
                 directionsDisplay.setDirections(response);
             } else {
                 alert("directions request failed, status=" + status)
             }
-
-            //document.getElementById("InputEstimatedTime").value = response.routes[0].legs[0].duration.text
-            //document.getElementById("InputEstimatedTime").value = response.routes[0].legs[0].duration.text
         });
-    }
+    
 }
 
 function GenAutocomplete(elementid) {
@@ -83,7 +78,6 @@ function GenAutocomplete(elementid) {
             east: center.lng + 0.1,
             west: center.lng - 0.1,
         };
-
 
         const input = document.getElementById(elementid);
         const options = {
@@ -110,18 +104,6 @@ function GenAutocomplete(elementid) {
     })
 }   
 
-function secondsToHms(d) {
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
-
-    var hDisplay = h > 0 ? h + (h == 1 ? ":" : "") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? ":" : "") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? ":" : "") : "";
-    return "00:00:20";
-}
-
 function isEmptyObject(obj) {
     for (let i in obj) {
         if (obj.hasOwnProperty(i)) {
@@ -130,3 +112,12 @@ function isEmptyObject(obj) {
     }
     return true;
 } 
+
+
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}

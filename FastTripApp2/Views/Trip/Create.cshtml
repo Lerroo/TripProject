@@ -52,11 +52,11 @@
                     </div>
                 </div>
 
-                @*<input id="EstimatedTime" class="form-control d-none" asp-for="lala">*@
+                <input  class="form-control d-none" asp-for="SecondsEstimatedTime">
 
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="AddressEnd" ></label>
+                        <label asp-for="AddressEnd"></label>
                     </div>
                     <div class="col-8">
                         <input id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="AddressEnd">
@@ -66,6 +66,7 @@
                     </div>
                 </div>
 
+                <input type="button" id="setRoad" value="Построить маршут" />
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
@@ -87,13 +88,11 @@
 
 <div class="col-6 text-right" id="map"></div>
 <script>
-    document.getElementById("InputStart").onclick = function () {
-        const start = GenAutocomplete("InputStart")
-        const end = GenAutocomplete("InputEnd")
-        Promise.all([start, end]).then((lala) => calcRoute(lala[0], lala[1]))
 
+    document.getElementById("setRoad").onclick = function () {
+        let start = GenAutocomplete("InputStart")
+        let end = GenAutocomplete("InputEnd")
+        Promise.all([start, end]).then(lala => calcRoute(lala[0], lala[1]))
     }
-    document.getElementById("InputEnd").onclick = function () {
-        GenAutocomplete("InputStart").then(coords => calcRoute(coords));
-    }  
+
 </script>

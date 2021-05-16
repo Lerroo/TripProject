@@ -12,14 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210426193035_create.cs" />
-    <Compile Include="Migrations\20210426193035_create.Designer.cs" />
-    <Compile Include="Migrations\20210515202331_add historyTrip table.cs" />
-    <Compile Include="Migrations\20210515202331_add historyTrip table.Designer.cs" />
+    <Compile Include="Migrations\20210516092548_create.cs" />
+    <Compile Include="Migrations\20210516092548_create.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="HangFire" Version="1.7.22" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />

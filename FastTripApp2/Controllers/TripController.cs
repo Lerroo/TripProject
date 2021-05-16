@@ -50,33 +50,20 @@ namespace FastTripApp2.Controllers
 
         // GET: TripController/Start/5
         [Authorize]
-        public ActionResult Start()
+        public ActionResult Start(int id)
         {
-            return View();
-        }
-
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Start(Trip obj)
-        {
-            if (ModelState.IsValid)
+            var obj = new TimeInfo
             {
-                obj.StartTrip = DateTime.UtcNow;
-                //fix
-                obj.EstimatedTime = new TimeSpan(0, 0, 30);
+                Start = TimeNow()
+            };
 
-                _db.Trips.Add(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            ViewBag.Id = id;
             return View(obj);
         }
-
         
         public ActionResult ToHistory(int id)
         {
-            var trip = getById(id);
+            var trip = GetById(id);
             HistoryTrip objHistory = new HistoryTrip {
                 TripId = trip.Id,
                 Name = trip.Name,
@@ -84,9 +71,9 @@ namespace FastTripApp2.Controllers
                 EstimatedTime = trip.EstimatedTime,
                 Image = trip.Image,
                 Descriprion = trip.Descriprion,
-                StartTrip = trip.StartTrip,
-                EndTrip = trip.EndTrip,
-                TimeTrack = trip.TimeTrack,
+                StartTrip = trip.TimeInfo.Start,
+                EndTrip = trip.TimeInfo.End,
+                TimeTrack = trip.TimeInfo.TimeTrack,
                 AddressStart = trip.AddressStart,
                 AddressEnd = trip.AddressEnd,
                 AddressEndLatitude = trip.AddressEndLatitude,
@@ -106,10 +93,17 @@ namespace FastTripApp2.Controllers
 
 
         [HttpPost]
-        public ActionResult End(int id)
+        public ActionResult End(TimeInfo timeInfo, int id)
         {
-            //fix derirect to create comment
-            
+            timeInfo.End = TimeNow();
+            timeInfo.TimeTrack = timeInfo.End - timeInfo.Start;
+
+            var trip = GetById(id);
+            trip.TimeInfo = timeInfo;
+
+            UpdateTrip(trip);
+            ToHistory(id);
+
             return RedirectToAction("Index");
         }
 
@@ -159,8 +153,7 @@ namespace FastTripApp2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Trips.Update(obj);
-                _db.SaveChanges();
+                UpdateTrip(obj);
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -173,7 +166,7 @@ namespace FastTripApp2.Controllers
             {
                 return NotFound();
             }
-            var obj = getById(id);
+            var obj = GetById(id);
             if (obj == null)
             {
                 return NotFound();
@@ -190,9 +183,21 @@ namespace FastTripApp2.Controllers
             return RedirectToAction("Index");
         }
 
-        private Trip getById(int? id)
+        private Trip GetById(int? id)
         {
             return _db.Trips.Find(id);
+        }
+
+        private void AddTrip(Trip trip)
+        {
+            _db.Trips.Add(trip);
+            _db.SaveChanges();
+        }
+
+        private void UpdateTrip(Trip trip)
+        {
+            _db.Trips.Update(trip);
+            _db.SaveChanges();
         }
 
         private void DeleteTripById(int? id)
@@ -207,6 +212,10 @@ namespace FastTripApp2.Controllers
 
             _db.Trips.Remove(obj);
             _db.SaveChanges();
+        }
+        private DateTime TimeNow()
+        {
+            return DateTime.UtcNow;
         }
     }
 }

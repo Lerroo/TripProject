@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace banan.Migrations
+namespace FastTripApp2.Migrations
 {
     public partial class create : Migration
     {
@@ -49,30 +49,46 @@ namespace banan.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Trips",
+                name: "HistoryTrips",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
+                    TripId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     TimePlain = table.Column<DateTime>(nullable: false),
                     EstimatedTime = table.Column<TimeSpan>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    Descriprion = table.Column<string>(nullable: false),
+                    Descriprion = table.Column<string>(nullable: true),
                     StartTrip = table.Column<DateTime>(nullable: true),
                     EndTrip = table.Column<DateTime>(nullable: true),
                     TimeTrack = table.Column<TimeSpan>(nullable: true),
-                    AddressStart = table.Column<string>(nullable: false),
+                    AddressStart = table.Column<string>(nullable: true),
+                    AddressEnd = table.Column<string>(nullable: true),
                     AddressStartLatitude = table.Column<string>(nullable: true),
                     AddressStartLongitude = table.Column<string>(nullable: true),
-                    AddressEnd = table.Column<string>(nullable: false),
                     AddressEndLatitude = table.Column<string>(nullable: true),
                     AddressEndLongitude = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.PrimaryKey("PK_HistoryTrips", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeInfo",
+                columns: table => new
+                {
+                    key = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Start = table.Column<DateTime>(nullable: true),
+                    End = table.Column<DateTime>(nullable: true),
+                    TimeTrack = table.Column<TimeSpan>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeInfo", x => x.key);
                 });
 
             migrationBuilder.CreateTable(
@@ -181,6 +197,38 @@ namespace banan.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Trips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Namess = table.Column<string>(nullable: true),
+                    TimePlain = table.Column<DateTime>(nullable: false),
+                    EstimatedTime = table.Column<TimeSpan>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Descriprion = table.Column<string>(nullable: false),
+                    TimeInfokey = table.Column<int>(nullable: true),
+                    AddressStart = table.Column<string>(nullable: false),
+                    AddressStartLatitude = table.Column<string>(nullable: true),
+                    AddressStartLongitude = table.Column<string>(nullable: true),
+                    AddressEnd = table.Column<string>(nullable: false),
+                    AddressEndLatitude = table.Column<string>(nullable: true),
+                    AddressEndLongitude = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trips_TimeInfo_TimeInfokey",
+                        column: x => x.TimeInfokey,
+                        principalTable: "TimeInfo",
+                        principalColumn: "key",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -219,6 +267,11 @@ namespace banan.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_TimeInfokey",
+                table: "Trips",
+                column: "TimeInfokey");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -239,6 +292,9 @@ namespace banan.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "HistoryTrips");
+
+            migrationBuilder.DropTable(
                 name: "Trips");
 
             migrationBuilder.DropTable(
@@ -246,6 +302,9 @@ namespace banan.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "TimeInfo");
         }
     }
 }

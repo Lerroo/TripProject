@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UsingIdentity.Data;
 
-namespace banan.Migrations
+namespace FastTripApp2.Migrations
 {
     [DbContext(typeof(UsingIdentityContext))]
-    [Migration("20210515202331_add historyTrip table")]
-    partial class addhistoryTriptable
+    [Migration("20210516092548_create")]
+    partial class create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,6 @@ namespace banan.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AddressEnd")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressEndLatitude")
@@ -39,7 +38,6 @@ namespace banan.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressStart")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressStartLatitude")
@@ -49,7 +47,6 @@ namespace banan.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Descriprion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndTrip")
@@ -62,7 +59,6 @@ namespace banan.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartTrip")
@@ -83,6 +79,27 @@ namespace banan.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HistoryTrips");
+                });
+
+            modelBuilder.Entity("FastTripApp2.Models.TimeInfo", b =>
+                {
+                    b.Property<int>("key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan?>("TimeTrack")
+                        .HasColumnType("time");
+
+                    b.HasKey("key");
+
+                    b.ToTable("TimeInfo");
                 });
 
             modelBuilder.Entity("FastTripApp2.Models.Trip", b =>
@@ -116,9 +133,6 @@ namespace banan.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndTrip")
-                        .HasColumnType("datetime2");
-
                     b.Property<TimeSpan?>("EstimatedTime")
                         .HasColumnType("time");
 
@@ -129,19 +143,21 @@ namespace banan.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("StartTrip")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Namess")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TimeInfokey")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("TimePlain")
                         .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan?>("TimeTrack")
-                        .HasColumnType("time");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TimeInfokey");
 
                     b.ToTable("Trips");
                 });
@@ -350,6 +366,13 @@ namespace banan.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("FastTripApp2.Models.Trip", b =>
+                {
+                    b.HasOne("FastTripApp2.Models.TimeInfo", "TimeInfo")
+                        .WithMany()
+                        .HasForeignKey("TimeInfokey");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
