@@ -10,7 +10,7 @@ namespace FastTripApp2.Models
     public class TimeInfo
     {
         [Key]
-        public int key { get; set; }
+        public int Id { get; set; }
         [DisplayName("Actual start time")]
         public DateTime? Start { get; set; }
 

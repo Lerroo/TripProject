@@ -19,6 +19,7 @@ namespace UsingIdentity.Data
 
         public DbSet<Trip> Trips { get; set; }
         public DbSet<HistoryTrip> HistoryTrips { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

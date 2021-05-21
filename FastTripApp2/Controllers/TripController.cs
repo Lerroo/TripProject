@@ -104,7 +104,7 @@ namespace FastTripApp2.Controllers
             UpdateTrip(trip);
             ToHistory(id);
 
-            return RedirectToAction("Index");
+            return Redirect("Comment/Create");
         }
 
         // GET: TripController/Create

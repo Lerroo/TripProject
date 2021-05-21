@@ -14,7 +14,6 @@ namespace FastTripApp2.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Namess { get; set; }
 
         [Required]
         [CheckDateRangeAttribute]
@@ -42,7 +41,8 @@ namespace FastTripApp2.Models
         [Required]
         public string Descriprion { get; set; }
 
-        public TimeInfo TimeInfo { get; set; }
+        //public int TimeInfoId { get; set; }
+        public  TimeInfo TimeInfo { get; set; }
                 
 
         [Required]

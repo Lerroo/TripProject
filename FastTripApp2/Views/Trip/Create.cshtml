@@ -66,7 +66,6 @@
                     </div>
                 </div>
 
-                <input type="button" id="setRoad" value="Построить маршут" />
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
 
@@ -89,10 +88,13 @@
 <div class="col-6 text-right" id="map"></div>
 <script>
 
-    document.getElementById("setRoad").onclick = function () {
+    document.getElementById("InputStart").onclick = function () {
         let start = GenAutocomplete("InputStart")
         let end = GenAutocomplete("InputEnd")
         Promise.all([start, end]).then(lala => calcRoute(lala[0], lala[1]))
+    }
+    document.getElementById("InputEnd").onclick = function () {
+        GenAutocomplete("InputStart").then(coords => calcRoute(coords));
     }
 
 </script>

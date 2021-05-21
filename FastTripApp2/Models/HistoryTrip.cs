@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FastTripApp2.Models
 {
-    public class HistoryTrip : Trip
+    public class HistoryTrip
     {
         
         [Key]
