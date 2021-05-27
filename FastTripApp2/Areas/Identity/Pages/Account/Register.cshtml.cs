@@ -5,36 +5,38 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using FastTripApp.DAO.Models.Identity;
+using FastTripApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using UsingIdentity.Areas.Identity.Data;
 
 namespace UsingIdentity.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly SignInManager<UsingIdentityUser> _signInManager;
         private readonly UserManager<UsingIdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<UsingIdentityUser> userManager,
             SignInManager<UsingIdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _unitOfWork = unitOfWork;
         }
 
         [BindProperty]
@@ -46,6 +48,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            public string ImagePath { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
@@ -72,7 +75,6 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
-
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -85,28 +87,22 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync( IFormFile file, string returnUrl = null)
         {
+            
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new UsingIdentityUser { UserName = Input.Email, Email = Input.Email,Firstname =Input.FirstName,LastName=Input.LastName,PhoneNumber=Input.PhoneNumber};
+                _unitOfWork.UploadImage(file);
+                var user = new UsingIdentityUser { UserName = Input.Email, Email = Input.Email,Firstname =Input.FirstName,LastName=Input.LastName,PhoneNumber=Input.PhoneNumber, ImagePath = file.FileName};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));                    
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

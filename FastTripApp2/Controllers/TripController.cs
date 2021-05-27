@@ -1,29 +1,27 @@
-﻿
-using FastTripApp2.Models;
+﻿using FastTripApp.DAO.Models;
+using FastTripApp.DAO.Repository;
+using FastTripApp.DAO.Repository.Interfaces;
+using FastTripApp;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using UsingIdentity.Data;
 
-
-namespace FastTripApp2.Controllers
+namespace FastTripApp.Controllers
 {
     public class TripController : Controller
     {
-        private readonly UsingIdentityContext _db;
+        private readonly RepositoryTrip _repositoryTrip;
+        private readonly RepositoryHistoryTrip _repositoryHistoryTrip;
 
-        public TripController(UsingIdentityContext db)
+
+        public TripController(RepositoryTrip tripRepository, RepositoryHistoryTrip historyRepository)
         {
-            _db = db;
+            _repositoryTrip = tripRepository;
+            _repositoryHistoryTrip = historyRepository;
         }
 
         public void TripInHistory(int id, TimeSpan? time)
@@ -35,15 +33,15 @@ namespace FastTripApp2.Controllers
         // GET: TripController
         [Authorize]
         public ActionResult Index()
-        {           
+        {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IEnumerable<Trip> objList = _db.Trips.FromSqlRaw("Select * from Trips where TimePlain>GETDATE() AND UserId='"+id+"'");
+            IEnumerable<Trip> objList = _repositoryTrip.TripsByUserId(id);
 
             if (objList.GetEnumerator().MoveNext())
             {
                 var trip = objList.First();
                 //TripInHistory(trip.Id, trip.EstimatedTime);
-            }            
+            }
 
             return View(objList);
         }
@@ -54,39 +52,18 @@ namespace FastTripApp2.Controllers
         {
             var obj = new TimeInfo
             {
-                Start = TimeNow()
+                Start = Util.TimeNow()
             };
 
             ViewBag.Id = id;
             return View(obj);
         }
-        
+
         public ActionResult ToHistory(int id)
         {
-            var trip = GetById(id);
-            HistoryTrip objHistory = new HistoryTrip {
-                TripId = trip.Id,
-                Name = trip.Name,
-                TimePlain = trip.TimePlain,
-                EstimatedTime = trip.EstimatedTime,
-                Image = trip.Image,
-                Descriprion = trip.Descriprion,
-                StartTrip = trip.TimeInfo.Start,
-                EndTrip = trip.TimeInfo.End,
-                TimeTrack = trip.TimeInfo.TimeTrack,
-                AddressStart = trip.AddressStart,
-                AddressEnd = trip.AddressEnd,
-                AddressEndLatitude = trip.AddressEndLatitude,
-                AddressEndLongitude = trip.AddressEndLongitude,
-                AddressStartLatitude = trip.AddressStartLatitude,
-                AddressStartLongitude = trip.AddressStartLongitude,
-                UserId = trip.UserId
-            };
-
-            _db.HistoryTrips.Add(objHistory);
-            _db.SaveChanges();
-
-            DeleteTripById(id);
+            var trip = _repositoryTrip.GetById(id);
+            _repositoryHistoryTrip.TripToHistory(trip);
+            _repositoryTrip.Delete(id);
 
             return RedirectToAction("Index");
         }
@@ -95,16 +72,16 @@ namespace FastTripApp2.Controllers
         [HttpPost]
         public ActionResult End(TimeInfo timeInfo, int id)
         {
-            timeInfo.End = TimeNow();
+            timeInfo.End = Util.TimeNow();
             timeInfo.TimeTrack = timeInfo.End - timeInfo.Start;
 
-            var trip = GetById(id);
+            var trip = _repositoryTrip.GetById(id);
             trip.TimeInfo = timeInfo;
 
-            UpdateTrip(trip);
+            _repositoryTrip.Update(trip);
             ToHistory(id);
 
-            return RedirectToAction("Index");
+            return RedirectToRoute(new { controller = "Review", action = "Create" });
         }
 
         // GET: TripController/Create
@@ -116,28 +93,26 @@ namespace FastTripApp2.Controllers
         // POST: TripController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Trip obj)
+        public ActionResult Create(Trip trip)
         {
-            
             if (ModelState.IsValid)
             {
-                obj.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                _db.Trips.Add(obj);
-                _db.SaveChanges();
+                trip.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _repositoryTrip.Add(trip);
+                
                 return RedirectToAction("Index");
             }
-            return View(obj);                       
+            return View(trip);
         }
 
         // GET: TripController/Edit
         public ActionResult Edit(int? id)
         {
-            if (id==null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            var obj = _db.Trips.Find(id);
+            var obj = _repositoryTrip.GetById(id);
             if (obj == null)
             {
                 return NotFound();
@@ -153,7 +128,7 @@ namespace FastTripApp2.Controllers
         {
             if (ModelState.IsValid)
             {
-                UpdateTrip(obj);
+                _repositoryTrip.Update(obj);
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -166,12 +141,12 @@ namespace FastTripApp2.Controllers
             {
                 return NotFound();
             }
-            var obj = GetById(id);
-            if (obj == null)
+            var trip = _repositoryTrip.GetById(id);
+            if (trip == null)
             {
                 return NotFound();
             }
-            return View(obj);
+            return View(trip);
         }
 
         // POST: TripController/Delete/5
@@ -179,43 +154,8 @@ namespace FastTripApp2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int? id)
         {
-            DeleteTripById(id);
+            _repositoryTrip.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        private Trip GetById(int? id)
-        {
-            return _db.Trips.Find(id);
-        }
-
-        private void AddTrip(Trip trip)
-        {
-            _db.Trips.Add(trip);
-            _db.SaveChanges();
-        }
-
-        private void UpdateTrip(Trip trip)
-        {
-            _db.Trips.Update(trip);
-            _db.SaveChanges();
-        }
-
-        private void DeleteTripById(int? id)
-        {
-            var obj = _db.Trips.Find(id);
-
-            //fixxxxxxxxxxxxxxx
-            //if (obj == null)
-            //{
-            //    return NotFound();
-            //}
-
-            _db.Trips.Remove(obj);
-            _db.SaveChanges();
-        }
-        private DateTime TimeNow()
-        {
-            return DateTime.UtcNow;
-        }
+        }   
     }
 }

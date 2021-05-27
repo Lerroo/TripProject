@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FastTripApp2.Models
+namespace FastTripApp.DAO.Models
 {
     public class TimeInfo
     {

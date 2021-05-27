@@ -36,36 +36,36 @@ function initMap() {
     GenAutocomplete("InputStart");
 }
 
-function calcRoute(objCoord, objCoord2) {    
+function calcRoute(objCoord, objCoord2) {
     console.log('calcRoute');
-    
 
-        console.log(objCoord2)
-        let start = new google.maps.LatLng(objCoord.lat, objCoord.lng);
-        let end = new google.maps.LatLng(objCoord2.lat, objCoord2.lng);
-        let request = {
-            origin: start,
-            destination: end,
-            travelMode: 'DRIVING',
-            drivingOptions: {
-                departureTime: new Date(document.getElementById("TimePlain").value),
-                trafficModel: 'pessimistic'
-            },
-            unitSystem: google.maps.UnitSystem.METRIC 
-        };
 
-        directionsService.route(request, function (response, status) {
-            if (status === 'OK') {
-                let seconds = response.routes[0].legs[0].duration.value
-                document.getElementById("SecondsEstimatedTime").value = seconds
-                console.log(seconds)
+    console.log(objCoord2)
+    let start = new google.maps.LatLng(objCoord.lat, objCoord.lng);
+    let end = new google.maps.LatLng(objCoord2.lat, objCoord2.lng);
+    let request = {
+        origin: start,
+        destination: end,
+        travelMode: 'DRIVING',
+        drivingOptions: {
+            departureTime: new Date(document.getElementById("TimePlain").value),
+            trafficModel: 'pessimistic'
+        },
+        unitSystem: google.maps.UnitSystem.METRIC
+    };
 
-                directionsDisplay.setDirections(response);
-            } else {
-                alert("directions request failed, status=" + status)
-            }
-        });
-    
+    directionsService.route(request, function (response, status) {
+        if (status === 'OK') {
+            let seconds = response.routes[0].legs[0].duration.value
+            document.getElementById("EstimatedTime").value = seconds
+            console.log(seconds)
+
+            directionsDisplay.setDirections(response);
+        } else {
+            alert("directions request failed, status=" + status)
+        }
+    });
+
 }
 
 function GenAutocomplete(elementid) {
@@ -102,7 +102,7 @@ function GenAutocomplete(elementid) {
             resolve(coords)
         });
     })
-}   
+}
 
 function isEmptyObject(obj) {
     for (let i in obj) {
@@ -111,7 +111,7 @@ function isEmptyObject(obj) {
         }
     }
     return true;
-} 
+}
 
 
 function sleep(milliseconds) {

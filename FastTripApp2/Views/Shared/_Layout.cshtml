@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - UsingIdentity</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
 
 </head>
 <body>
@@ -16,10 +16,13 @@
 
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Trip" asp-action="Index">My trips</a>
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="HistoryTrip" asp-action="Index">My history runs</a>
+                        <a class="nav-link text-dark" asp-controller="Trip" asp-action="Index">My trips</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="HistoryTrip" asp-action="Index">My history runs</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />
@@ -38,14 +41,17 @@
         </div>
     </footer>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI&v=3.exp&libraries=places"></script>
+
+
+    <script type="text/javascript" src="/js/site.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Scripts", required: false)
 
 </body>
-<script type="text/javascript" src="~/js/jquery-ui.js"></script>
-<script type="text/javascript" src="~/js/jquery-1.9.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI&v=3.exp&libraries=places"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/js/site.js"></script>
-@RenderSection("Scripts", required: false);
+
 </html>

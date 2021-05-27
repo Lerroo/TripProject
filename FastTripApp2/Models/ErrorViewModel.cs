@@ -1,6 +1,6 @@
 using System;
 
-namespace FastTripApp2.Models
+namespace FastTripApp.Models
 {
     public class ErrorViewModel
     {

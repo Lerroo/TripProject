@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using FastTripApp2.Models;
+﻿using System.Diagnostics;
+using FastTripApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 
-namespace UsingIdentity.Controllers
+namespace FastTripApp.Controllers
 {
     public class HomeController : Controller
     {

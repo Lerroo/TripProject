@@ -1,16 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using FastTripApp.DAO;
+using FastTripApp.DAO.Models.Identity;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace UsingIdentity
 {
@@ -26,11 +31,26 @@ namespace UsingIdentity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFrameworkSqlServer().AddDbContext<UsingIdentityContext>(s => {
+                s.UseSqlServer(Configuration.GetConnectionString("UsingIdentityContextConnection"), p => p.MigrationsAssembly(typeof(Startup)
+                    .GetTypeInfo().Assembly.GetName().Name))
+                    .EnableSensitiveDataLogging();
+            });
+
+            services.AddIdentityCore<UsingIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<UsingIdentityContext>();
+
+            services.AddScoped<SignInManager<UsingIdentityUser>, SignInManager<UsingIdentityUser>>();
+
+            //services.AddScoped<TripRepository>();
+            //services.AddScoped<HistoryRepository>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();
 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("UsingIdentityContextConnection")));
-            services.AddHangfireServer();            
+            services.AddHangfireServer();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -62,7 +82,7 @@ namespace UsingIdentity
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Trip}/{action=Index}");
+                    pattern: "{controller=Home}/{action=Index}");
                 endpoints.MapRazorPages();
             });
         }

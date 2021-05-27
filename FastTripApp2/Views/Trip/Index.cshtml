@@ -1,8 +1,9 @@
-﻿@model IEnumerable<FastTripApp2.Models.Trip>
+﻿@model IEnumerable<FastTripApp.DAO.Models.Trip>
 
 @{
     ViewData["Title"] = "My trips";
-    Trip currentTrip = Model.FirstOrDefault();
+    //fix
+    FastTripApp.DAO.Models.Trip currentTrip = Model.FirstOrDefault();
 }
 
 <div class="container p-3 ">
@@ -13,28 +14,20 @@
         </div>
         <div class="col-6 text-right p-3">
 
-
-            <a asp-controller="Trip" asp-action="Create" class="btn btn-primary text-light">
-                Create new trip
-            </a>
+            <a asp-controller="Trip" asp-action="Create" class="btn btn-primary text-light">Create new trip</a>
             @{
                 if (Model.Count() > 0)
-                {
-                    <a class="btn btn-primary text-light" asp-controller="Trip" asp-action="Start" asp-route-id="@currentTrip.Id" onclick="StartStop();">
-                        Start trip
-                    </a>
-                    <a asp-controller="Trip" asp-action="ToHistory" asp-route-id="@currentTrip.Id" class="btn btn-danger text-light">
-                        go trip to history
+                {                     
+                    <a asp-controller="Trip" asp-action="End"  asp-route-id="@currentTrip.Id" class="btn btn-danger text-light">
+                        //go trip to history
                     </a>
                 }
             }
-
         </div>
 
     </div>
-    <div class="row pt-4 table-bordered p-3 rounded" style="        background-color: #c1caca">
-
-        <div class="col-6  text-primary">
+    <div class="row pt-4 table-bordered p-3 rounded" style="background-color: #c1caca">
+        <div class="col-6 text-primary bg-white p-3">
             @{
                 if (Model.Count() > 0)
                 {
@@ -50,9 +43,20 @@
                     <div class="form-group row">
                         <div class="col-4">
                             <label asp-for="@currentTrip.TimePlain"></label>
+
                         </div>
                         <div class="col-8">
-                            <input id ="TimePlain" asp-for="@currentTrip.TimePlain" disabled class="form-control" />
+                            <input asp-for="@currentTrip.TimePlain" disabled class="form-control" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.EstimatedTimeView"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="@currentTrip.EstimatedTimeView" disabled class="form-control" />
                         </div>
                     </div>
 
@@ -70,30 +74,29 @@
                             <label asp-for="@currentTrip.AddressStart"></label>
                         </div>
                         <div class="col-8">
-                            <input id="InputStart" type="text" disabled class="form-control" placeholder="Start trip" asp-for="@currentTrip.AddressStart">
+                            <textarea cols="2" id="InputStart" type="text" class="form-control" placeholder="Start trip" asp-for="@currentTrip.AddressStart"></textarea>
                             <input id="InputStartLatitude" type="text" class="form-control d-none" asp-for="@currentTrip.AddressStartLatitude">
                             <input id="InputStartLongitude" type="text" class="form-control d-none" placeholder="Start trip" asp-for="@currentTrip.AddressStartLongitude">
                         </div>
                     </div>
+
 
                     <div class="form-group row">
                         <div class="col-4">
                             <label asp-for="@currentTrip.AddressEnd"></label>
                         </div>
                         <div class="col-8">
-                            <input id="InputEnd" type="text" disabled class="form-control" placeholder="End trip" asp-for="@currentTrip.AddressEnd">
+                            <textarea cols="2" id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="@currentTrip.AddressEnd"></textarea>
                             <input id="InputEndLatitude" type="text" class="form-control d-none" asp-for="@currentTrip.AddressEndLatitude">
                             <input id="InputEndLongitude" type="text" class="form-control d-none " placeholder="Start trip" asp-for="@currentTrip.AddressEndLongitude">
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Edit" class="btn btn-primary mx-3">Edit</a>
-                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3">Cancel</a>
-                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Info" class="btn btn-danger mx-3">//Info</a>
+                    <div class="form-group row w-100 ml-2">
+                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Edit" class="btn btn-primary mx-3 w-25">Edit</a>
+                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3 w-25">Cancel</a>
+                        <a asp-controller="Trip" asp-action="Start" asp-route-id="@currentTrip.Id" class="btn btn-primary text-light mx-3 w-25">Start trip</a>
                     </div>
-
-
                 }
                 else
                 {
@@ -101,36 +104,36 @@
                 }
             }
         </div>
-        <div class="col-6 text-right" id="map" style="height: 430px; "></div>
 
+        <div class="col-6 text-right" id="map" style="width: 500px; height: 500px;"></div>    
         
     </div>
 
     @if (Model.Count() > 0)
     {
         <br /> <br />
-        <h1>all trips bookings</h1>
+               <h1>My booked trips</h1>
 
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th>
-                        Name trip
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                    </th>
+                    <th style="WIDTH: 180px;">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimePlain)
                     </th>
                     <th>
-                        planned start time
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Descriprion)
                     </th>
                     <th>
-                        Descriprion
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressStart)
                     </th>
                     <th>
-                        AddressStart
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressEnd)
                     </th>
                     <th>
-                        AddressEnd
-                    </th>
-                    <th>
-                        EstimatedTime
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().EstimatedTime)
                     </th>
                     <th>
                     </th>
@@ -145,8 +148,8 @@
                     <td>@trip.Descriprion</td>
                     <td>@trip.AddressStart</td>
                     <td>@trip.AddressEnd</td>
-                    <td>@trip.EstimatedTime</td>
-                    <td><a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Info" class="btn btn-danger mx-3">//Info</a></td>
+                    <td>@Html.DisplayFor(modelItem => trip.EstimatedTimeView)</td>
+                    <td><a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3">Cancel</a></td>
                 </tr>
                 }
             </tbody>
@@ -156,7 +159,7 @@
 </div>
 
 
-<script>
+@*<script>
 
     let start = {};
     start.lat = document.getElementById('InputStartLatitude').value;
@@ -166,10 +169,8 @@
     end.lat = document.getElementById('InputEndLatitude').value;
     end.lng = document.getElementById('InputEndLongitude').value;
 
-
-    sleep(200);
     //displaying the path on the map
     calcRoute(start, end);
-</script>
+</script>*@
 
         

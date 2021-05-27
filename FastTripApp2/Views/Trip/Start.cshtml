@@ -1,47 +1,43 @@
-﻿@model FastTripApp2.Models.TimeInfo
+﻿@model FastTripApp.DAO.Models.TimeInfo
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
 
-
-<div class="container p-3 ">
+<div class="container p-3 col-10">
     <div class="d-flex justify-content-center align-items-center row">
-        <div class="col-4"> </div>
-        <div class="col">
-            <h2 class="text-primary">We are glad that you have chosen us. Don't forget to leave a comment at the end of your trip. here's a cat for you while you are on your way</h2>
-            <img src="~/cat.gif" alt="я джифка">
+
+        <div class="col-8">
+            <h2 class="text-primary">We are glad that you have chosen us. Write a Review at the end of your trip. Here's a cat for you while you are on your way.</h2>
+            <img src="~/cat.gif" alt="я джифка" class="img-thumbnail rounded m-3 mx-auto d-block">
             <form name=MyForm asp-controller="Trip" asp-action="End" asp-route-id="@ViewData["Id"]">
-                <input class="n-none" asp-for="Start"/>
                 <input type="submit" class="btn btn-info w-100" value="End trip" />
+
+                @*<a class="btn btn-primary text-light" asp-controller="Review" asp-action="Index">
+                    Start trip
+                </a>*@
+
             </form>
         </div>
-        <div class="col-4"> </div>
-        
 
 
-        <script>
-            var base = 60;
-            var clocktimer, dateObj, dh, dm, ds, ms;
-            var readout = '';
-            var h = 1,
-                m = 1,
-                tm = 1,
-                s = 0,
-                ts = 0,
-                ms = 0,
-                init = 0;
-
-            window.onload = () => {
-                StartStop();
-            }
-            document.MyForm.stopwatch.onclick = function () {
-                StartStop()
-            }
-
-        </script>
     </div>
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}
 

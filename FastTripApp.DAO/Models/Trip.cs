@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FastTripApp.DAO.Models.Identity;
+using FastTripApp.Validation;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FastTripApp2.Models
+namespace FastTripApp.DAO.Models
 {
     public class Trip
     {
@@ -14,26 +13,25 @@ namespace FastTripApp2.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Namess { get; set; }
 
         [Required]
         [CheckDateRangeAttribute]
         [DisplayName("Planned start time")]
         public DateTime TimePlain { get; set; }
 
-        [NotMapped]
-        public int SecondsEstimatedTime { get; set; }
+        
+        public long EstimatedTime { get; set; }
         [DisplayName("Estimated time")]
-        [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m {0:%s}s", ApplyFormatInEditMode = true)]
-        public TimeSpan? EstimatedTime
+        [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m", ApplyFormatInEditMode = true)]
+        [NotMapped]
+        public TimeSpan EstimatedTimeView
         {
             get  {
-                var la = TimeSpan.FromSeconds(SecondsEstimatedTime);
-                return la;
+                return TimeSpan.FromSeconds(EstimatedTime);
             }
             set
             {
-                SecondsEstimatedTime = value.Value.Seconds;
+                EstimatedTime = value.Seconds;
             }
         }
 
@@ -57,6 +55,10 @@ namespace FastTripApp2.Models
         public string AddressEndLongitude { get; set; }
 
         public string UserId { get; set; }
+        public UsingIdentityUser User { get; set; }
+
+        public int? ReviewId { get; set; }
+        public Review? Review { get; set; }
 
     }
 }

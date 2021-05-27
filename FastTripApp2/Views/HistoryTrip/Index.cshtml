@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FastTripApp2.Models.HistoryTrip>
+﻿@model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
 
 @{
     ViewData["Title"] = "My history trips";
@@ -43,13 +43,16 @@
                     <td>@trip.StartTrip</td>
                     <td>@trip.EndTrip</td>
                     <td>@trip.TimeTrack</td>
-                    <td>all info fixxx</td>
+                    <td>info</td>
                 </tr>
                 }
             </tbody>
 
-        </table>
-    }
+        </table>      }
+            else
+            {
+<h2>History is clear. Try book some trip</h2>
+            }
     @*с помощью js фиксануть*@
 </div>
 

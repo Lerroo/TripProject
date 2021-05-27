@@ -1,4 +1,4 @@
-﻿@model FastTripApp2.Models.Trip
+﻿@model FastTripApp.DAO.Models.Trip
 
 
 <form asp-action="Create" method="post">
@@ -45,31 +45,29 @@
                         <label asp-for="AddressStart"></label>
                     </div>
                     <div class="col-8">
-                        <input id="InputStart" type="text" class="form-control" placeholder="Start trip" asp-for="AddressStart">
+                        <textarea cols="2" id="InputStart" type="text" class="form-control" placeholder="Start trip" asp-for="AddressStart"></textarea>
                         <span asp-validation-for="AddressStart" class="text-danger"></span>
                         <input id="InputStartLatitude" type="text" class="form-control d-none" asp-for="AddressStartLatitude">
                         <input id="InputStartLongitude" type="text" class="form-control d-none" placeholder="Start trip" asp-for="AddressStartLongitude">
                     </div>
                 </div>
 
-                <input  class="form-control d-none" asp-for="SecondsEstimatedTime">
+                <input class="form-control d-none" asp-for="EstimatedTime">
 
                 <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="AddressEnd"></label>
                     </div>
                     <div class="col-8">
-                        <input id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="AddressEnd">
+                        <textarea cols="2" id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="AddressEnd"></textarea>
                         <span asp-validation-for="AddressEnd" class="text-danger"></span>
                         <input id="InputEndLatitude" type="text" class="form-control d-none" asp-for="AddressEndLatitude">
                         <input id="InputEndLongitude" type="text" class="form-control d-none " placeholder="Start trip" asp-for="AddressEndLongitude">
                     </div>
                 </div>
 
-                <input type="button" id="setRoad" value="Построить маршут" />
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
-
                         <div class="col">
                             <input type="submit" class="btn btn-info w-100" value="Create" />
                         </div>
@@ -79,17 +77,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 text-right" id="map">
-                @* Keep this empty *@
-            </div>
+            <div class="col-4 text-right mx-auto" id="map" > </div>
         </div>
     </div>
 </form>
 
-<div class="col-6 text-right" id="map"></div>
 <script>
 
-    document.getElementById("setRoad").onclick = function () {
+    document.getElementById("InputStart").onclick = function () {
         let start = GenAutocomplete("InputStart")
         let end = GenAutocomplete("InputEnd")
         Promise.all([start, end]).then(lala => calcRoute(lala[0], lala[1]))

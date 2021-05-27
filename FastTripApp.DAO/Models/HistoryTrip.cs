@@ -5,11 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FastTripApp2.Models
+namespace FastTripApp.DAO.Models
 {
-    public class HistoryTrip : Trip
-    {
-        
+    public class HistoryTrip
+    {        
         [Key]
         public int Id { get; set; }
 
@@ -20,7 +19,7 @@ namespace FastTripApp2.Models
         public DateTime TimePlain { get; set; }
 
         [DisplayName("Estimated time")]
-        public TimeSpan? EstimatedTime { get; set; }
+        public long EstimatedTime { get; set; }
 
         public string Image { get; set; }
 
@@ -47,5 +46,10 @@ namespace FastTripApp2.Models
         public string AddressEndLongitude { get; set; }
 
         public string UserId { get; set; }
+
+        internal void Add(Trip trip)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
