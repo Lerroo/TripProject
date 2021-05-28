@@ -30,18 +30,20 @@ namespace FastTripApp.DAO.Repository
         public void Add(T item)
         {
             _dbSet.AddAsync(item);
+            _сontext.SaveChanges();
         }
 
         public void Delete(int? id)
         {
-            var entity = _dbSet.Find(id);
+            var item = _dbSet.Find(id);
 
-            if (_сontext.Entry(entity).State == EntityState.Detached)
+            if (_сontext.Entry(item).State == EntityState.Detached)
             {
-                _dbSet.Attach(entity);
+                _dbSet.Attach(item);
             }
 
-            _dbSet.Remove(entity);
+            _dbSet.Remove(item);
+            _сontext.SaveChanges();
         }
 
         public void Update(T item)
@@ -52,6 +54,7 @@ namespace FastTripApp.DAO.Repository
             }
 
             _сontext.Entry(item).State = EntityState.Modified;
+            _сontext.SaveChanges();
         }
     }
 }

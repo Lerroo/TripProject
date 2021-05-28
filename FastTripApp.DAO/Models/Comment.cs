@@ -13,7 +13,8 @@ namespace FastTripApp.DAO.Models
         public DateTime? TimePost { get; set; }
 
         public string UserId { get; set; }
-        public UsingIdentityUser User { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
 
         public int ReviewId { get; set; }
         [ForeignKey("ReviewId")]

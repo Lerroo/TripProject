@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FastTripApp.DAO.Models.Identity;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace FastTripApp.DAO
 {
-    public class UsingIdentityContext : IdentityDbContext<UsingIdentityUser>
+    public class UsingIdentityContext : IdentityDbContext<User>
     {
         public UsingIdentityContext(DbContextOptions<UsingIdentityContext> options)
             : base(options)
@@ -21,7 +23,14 @@ namespace FastTripApp.DAO
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
+            builder.Entity<User>()
+            .ToTable("Users")
+            .Property(p => p.Id).HasColumnName("UserId");
+
+            builder.Entity<IdentityRole>()
+                .ToTable("Roles");
+
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);

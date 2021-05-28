@@ -18,7 +18,6 @@ namespace FastTripApp.DAO.Models
         [CheckDateRangeAttribute]
         [DisplayName("Planned start time")]
         public DateTime TimePlain { get; set; }
-
         
         public long EstimatedTime { get; set; }
         [DisplayName("Estimated time")]
@@ -55,7 +54,7 @@ namespace FastTripApp.DAO.Models
         public string AddressEndLongitude { get; set; }
 
         public string UserId { get; set; }
-        public UsingIdentityUser User { get; set; }
+        public User User { get; set; }
 
         public int? ReviewId { get; set; }
         public Review? Review { get; set; }

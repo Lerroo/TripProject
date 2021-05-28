@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FastTripApp.DAO.Repository
 {
-    public class RepositoryHistoryTrip : RepositoryGeneric<HistoryTrip>, IRepositoryHistory
+    public class RepositoryHistoryTrip : RepositoryGeneric<HistoryTrip>, IRepositoryHistoryTrip
     {
         private readonly UsingIdentityContext _context;
 
@@ -20,17 +20,16 @@ namespace FastTripApp.DAO.Repository
 
         public void TripToHistory(Trip trip)
         {
+            var timeTrack = trip.TimeInfo.End - trip.TimeInfo.Start;
             HistoryTrip historyTrip = new HistoryTrip
             {
                 TripId = trip.Id,
                 Name = trip.Name,
-                TimePlain = trip.TimePlain,
-                EstimatedTime = trip.EstimatedTime,
                 Image = trip.Image,
                 Descriprion = trip.Descriprion,
                 StartTrip = trip.TimeInfo.Start,
                 EndTrip = trip.TimeInfo.End,
-                TimeTrack = trip.TimeInfo.TimeTrack,
+                TimeTrack = timeTrack.Value.Seconds,
                 AddressStart = trip.AddressStart,
                 AddressEnd = trip.AddressEnd,
                 AddressEndLatitude = trip.AddressEndLatitude,

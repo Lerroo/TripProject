@@ -1,0 +1,167 @@
+﻿@model IEnumerable<FastTripApp.DAO.Models.Trip>
+
+@{
+    ViewData["Title"] = "My trips";
+    //fix
+    FastTripApp.DAO.Models.Trip currentTrip = Model.FirstOrDefault();
+    var googlee = @"https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=500x500&maptype=roadmap&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+
+
+}
+
+<div class="container shadow-lg p-3 rounded border-dark text-dark border-5">
+    
+    <div class="row pt-4 ">
+        <div class="col-6">
+            <h2 class="text-center">Next trip</h2>
+
+        </div>
+        <div class="col-6 text-right p-3">
+
+            <a asp-controller="Trip" asp-action="Create" class="btn btn-primary text-light">Create new trip</a>
+            @{
+                if (Model.Count() > 0)
+                {
+                    <a asp-controller="Trip" asp-action="End" asp-route-id="@currentTrip.Id" class="btn btn-danger text-light">
+                        //go trip to history
+                    </a>
+                }
+            }
+        </div>
+
+    </div>
+    <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded">
+        <div class="col-6 text-black-50 bg-white p-3">
+            @{
+                if (Model.Count() > 0)
+                {
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.Name"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="@currentTrip.Name" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.TimePlain"></label>
+
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="@currentTrip.TimePlain" disabled class="form-control" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.EstimatedTimeView"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="@currentTrip.EstimatedTimeView" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.Descriprion"></label>
+                        </div>
+                        <div class="col-8">
+                            <textarea asp-for="@currentTrip.Descriprion" disabled class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.AddressStart"></label>
+                        </div>
+                        <div class="col-8">
+                            <textarea cols="2" id="InputStart" type="text" disabled class="form-control" placeholder="Start trip" asp-for="@currentTrip.AddressStart"></textarea>
+                            <input id="InputStartLatitude" type="text" class="form-control d-none" asp-for="@currentTrip.AddressStartLatitude">
+                            <input id="InputStartLongitude" type="text" class="form-control d-none" placeholder="Start trip" asp-for="@currentTrip.AddressStartLongitude">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@currentTrip.AddressEnd"></label>
+                        </div>
+                        <div class="col-8">
+                            <textarea cols="2" id="InputEnd" type="text" disabled class="form-control" placeholder="End trip" asp-for="@currentTrip.AddressEnd"></textarea>
+                            <input id="InputEndLatitude" type="text" class="form-control d-none" asp-for="@currentTrip.AddressEndLatitude">
+                            <input id="InputEndLongitude" type="text" class="form-control d-none " placeholder="Start trip" asp-for="@currentTrip.AddressEndLongitude">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row bd-highlight">
+                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Edit" class="btn btn-primary mx-3 w-25">Edit</a>
+                        <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3 w-25">Cancel</a>
+                        <a asp-controller="Trip" asp-action="Start" asp-route-id="@currentTrip.Id" class="btn btn-primary text-light mx-3 w-25">Start trip</a>
+                    </div>
+                }
+                else
+                {
+                    <p> No trips exists. Create some new trip.</p>
+                }
+            }
+        </div>
+        
+        <div id="image_div">
+            <img id="googleStaticPicture" src="~/uploads/defaultStaticMap.png" />
+        </div>
+        
+
+
+    </div>
+
+    @if (Model.Count() > 0)
+    {
+        <br /> <br />
+        <h1 class="text-center">My booked trips</h1>
+
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                    </th>
+                    <th style="WIDTH: 180px;">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimePlain)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Descriprion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressStart)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressEnd)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().EstimatedTime)
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trip in Model)
+                {
+                    <tr>
+                        <td>@trip.Name</td>
+                        <td>@trip.TimePlain</td>
+                        <td>@trip.Descriprion</td>
+                        <td>@trip.AddressStart</td>
+                        <td>@trip.AddressEnd</td>
+                        <td>@Html.DisplayFor(modelItem => trip.EstimatedTimeView)</td>
+                        <td><a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3">Cancel</a></td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+</div>
