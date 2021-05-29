@@ -16,7 +16,7 @@ namespace FastTripApp.DAO.Repository
 
         public IEnumerable<Trip> TripsByUserId(string id)
         {
-            return _сontext.Trips.FromSqlRaw("Select * from Trips where UserId='" + id + "'");
+            return _сontext.Trips.FromSqlRaw("Select * from Trips where UserId='" + id + "'").Include(p=>p.User);
         }
     }
 }

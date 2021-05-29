@@ -18,7 +18,7 @@ namespace FastTripApp.DAO.Repository
 
         List<Review> IRepositoryReview.Get()
         {
-            return _сontext.Reviews.Include(p => p.Comments).ToList();
+            return _сontext.Reviews.Include(p => p.Comments).Include(p=>p.User).ToList();
         }
     }
 }

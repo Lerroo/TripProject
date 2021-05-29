@@ -49,6 +49,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Display(Name = "Profile Image")]
             public string ImagePath { get; set; }
 
             [Required]
@@ -95,8 +96,18 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                _unitOfWork.UploadImage(file);
-                var user = new User { UserName = Input.Email, Email = Input.Email,Firstname =Input.FirstName,LastName=Input.LastName,PhoneNumber=Input.PhoneNumber, ImagePath = file.FileName};
+                string fileName = "";
+                if (file != null)
+                {
+                    _unitOfWork.UploadImage(file);
+                    fileName = file.FileName;
+                }
+                else
+                {
+                    fileName = "defaultProfilePhoto.jpg";
+                }
+                
+                var user = new User { UserName = Input.Email, Email = Input.Email,Firstname =Input.FirstName,LastName=Input.LastName,PhoneNumber=Input.PhoneNumber, ImagePath = fileName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

@@ -57,9 +57,6 @@ namespace FastTripApp.Controllers
             {
                 review.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 review.TimePost = _repositoryTimeInfo.TimeNow();
-                review.User.Id = review.UserId;
-                //fix
-                //review.User = _db.Users.FromSqlRaw("Select * from AspNetUsers where Id='" + review.Id + "'").First();
 
                 _repositoryReview.Add(review);
                 return RedirectToRoute(new { controller = "Trip", action = "Index" });

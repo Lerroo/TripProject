@@ -86,10 +86,5 @@ namespace FastTripApp.Controllers
                 return View();
             }
         }
-
-        public void UploadImage(IFormFile file)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

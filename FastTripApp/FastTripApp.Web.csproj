@@ -46,10 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\profile_pic\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml" />
     <None Include="wwwroot\js\jquery-1.9.1.min.js" />
     <None Include="wwwroot\js\jquery-ui.js" />

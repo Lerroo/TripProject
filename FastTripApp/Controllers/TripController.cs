@@ -43,16 +43,16 @@ namespace FastTripApp.Controllers
             if (objList.Any())
             {
                 var trip = objList.First();
-                //using (var connection = JobStorage.Current.GetConnection())
-                //{
-                //    foreach (var recurringJob in connection.GetRecurringJobs())
-                //    {
-                //        RecurringJob.RemoveIfExists(recurringJob.Id);
-                //    }
-                //}
+                using (var connection = JobStorage.Current.GetConnection())
+                {
+                    foreach (var recurringJob in connection.GetRecurringJobs())
+                    {
+                        RecurringJob.RemoveIfExists(recurringJob.Id);
+                    }
+                }
 
-                
-                //var timeDelay = TimeSpan.FromSeconds(trip.EstimatedTime);
+
+                var timeDelay = TimeSpan.FromSeconds(trip.EstimatedTime);
                 //var idJob = BackgroundJob.Schedule(() => ToHistory(trip.Id), timeDelay);
                 //BackgroundJob.ContinueJobWith(
                 //    idJob, () => BackgroundJob.Schedule(() => RedirectToAction("Index"), timeDelay + TimeSpan.FromSeconds(1))

@@ -5,8 +5,6 @@
 }
 
 <div class="container p-3 ">
-    
-
     @if (Model.Count() > 0)
     {
         <br /> <br />
@@ -16,19 +14,19 @@
             <thead>
                 <tr>
                     <th>
-                        Name
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                    </th>
+                    <th style="WIDTH: 180px;">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().StartTrip)
                     </th>
                     <th>
-                        Description
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeTrack)
                     </th>
                     <th>
-                        Start date
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressStart)
                     </th>
                     <th>
-                        End date
-                    </th>
-                    <th>
-                        Travel time
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressEnd)
                     </th>
                     <th>
                     </th>
@@ -37,23 +35,21 @@
             <tbody>
                 @foreach (var trip in Model)
                 {
-                <tr>
-                    <td>@trip.Name</td>
-                    <td>@trip.Descriprion</td>
-                    <td>@trip.StartTrip</td>
-                    <td>@trip.EndTrip</td>
-                    <td>@Html.DisplayFor(modelItem => trip.TimeTrackView)</td>
-                    <td>info</td>
-                </tr>
+                    <tr>
+                        <td>@trip.Name</td>
+                        <td>@trip.StartTrip</td>
+                        <td>@Html.DisplayFor(modelItem => trip.TimeTrackView)</td>
+                        <td>@trip.AddressStart</td>
+                        <td>@trip.AddressEnd</td>
+                        <td>more</td>
+                    </tr>
                 }
             </tbody>
 
-        </table>      }
-            else
-            {
-<h2>History is clear. Try book some trip</h2>
-            }
-    @*с помощью js фиксануть*@
+        </table> }
+    else
+    {
+        <h1 class="text-center">History is clear. Try book some trip</h1>
+    }
 </div>
 
-        

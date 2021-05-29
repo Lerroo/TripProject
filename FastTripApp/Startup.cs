@@ -53,6 +53,7 @@ namespace UsingIdentity
             services.AddScoped<IRepositoryTimeInfo, RepositoryTimeInfo>();
             services.AddScoped<IRepositoryReview, RepositoryReview>();
             services.AddScoped<IRepositoryComment, RepositoryComment>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

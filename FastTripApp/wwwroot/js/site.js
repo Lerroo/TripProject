@@ -23,7 +23,7 @@ let directionsService = new google.maps.DirectionsService();
 google.maps.event.addDomListener(window, 'load', initMap);
 
 function  defaultMap(){
-    alert("Karta")
+
     let center = new google.maps.LatLng(55.8782557, 37.65372);
     let start = "55.8782557, 37.65372"
 

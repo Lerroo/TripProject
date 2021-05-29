@@ -80,6 +80,17 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            //////fixx
+            ///
+            if (file != null)
+            {
+                _unitOfWork.UploadImage(file);
+                user.ImagePath = file.FileName;
+            }
+           
+                
+            
+
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
@@ -97,9 +108,8 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            //////fixx
-            _unitOfWork.UploadImage(file);
-            user.ImagePath = file.FileName;
+            
+            
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
