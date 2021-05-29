@@ -3,6 +3,7 @@ using FastTripApp.DAO;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Repository;
 using FastTripApp.DAO.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using System.Security.Claims;
 
 namespace FastTripApp.Controllers
 {
+
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;
@@ -26,7 +28,7 @@ namespace FastTripApp.Controllers
         // GET: ReviewController
         public ActionResult Index()
         {
-            List<Review> objList = _repositoryReview.Get();
+            List<Review> objList = _repositoryReview.GetWithInclude();
             return View(objList);
         }
 
@@ -48,7 +50,15 @@ namespace FastTripApp.Controllers
             return View();
         }
 
+        public ActionResult GetComments(int id)
+        {
+            var la = _repositoryReview.GetByIdWithInclude(id);
+            List<Comment> comments = la.Comments;
+            return PartialView("../Comment/_Index", comments);
+        }
+
         // POST: ReviewController/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Review review)

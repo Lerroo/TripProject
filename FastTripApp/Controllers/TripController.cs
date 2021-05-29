@@ -15,12 +15,13 @@ using FastTripApp.DAO.Services;
 
 namespace FastTripApp.Controllers
 {
+    [Authorize]
     public class TripController : Controller
     {
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
         private readonly IRepositoryTimeInfo _repositoryTimeInfo;
-        private readonly ServiceHangFire _serviceHangFire;
+        private readonly TripService _tripService;
 
 
         public TripController(IRepositoryTrip tripRepository, IRepositoryHistoryTrip historyRepository, IRepositoryTimeInfo repositoryTimeInfo)
@@ -28,13 +29,13 @@ namespace FastTripApp.Controllers
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = historyRepository;
             _repositoryTimeInfo = repositoryTimeInfo;
-            _serviceHangFire = new ServiceHangFire();
+            _tripService = new TripService();
         }
 
 
 
         // GET: TripController
-        [Authorize]
+        
         public ActionResult Index()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -51,15 +52,22 @@ namespace FastTripApp.Controllers
                     }
                 }
 
+                var timeDelay =  trip.TimePlain - _repositoryTimeInfo.TimeNow();
+                var idJob = BackgroundJob.Schedule(() => _tripService.ToHistory(trip.Id), timeDelay);
+                BackgroundJob.ContinueJobWith(
+                    idJob, () => Response.Redirect("Trip/Index"));
 
-                var timeDelay = TimeSpan.FromSeconds(trip.EstimatedTime);
-                //var idJob = BackgroundJob.Schedule(() => ToHistory(trip.Id), timeDelay);
-                //BackgroundJob.ContinueJobWith(
-                //    idJob, () => BackgroundJob.Schedule(() => RedirectToAction("Index"), timeDelay + TimeSpan.FromSeconds(1))
-                //    );
 
             }
             return View(objList);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var historyTrip = _repositoryTrip.GetById(id);
+            if (historyTrip != null)
+                return PartialView("_Details", historyTrip);
+            return NotFound();
         }
 
         // GET: TripController/Start/5
@@ -75,12 +83,7 @@ namespace FastTripApp.Controllers
             return View(obj);
         }
 
-        //public void ToHistory(int id)
-        //{
-        //    var trip = _repositoryTrip.GetById(id);
-        //    _repositoryHistoryTrip.TripToHistory(trip);
-        //    _repositoryTrip.Delete(trip.Id);
-        //}
+        
 
 
         [HttpPost]
@@ -89,7 +92,7 @@ namespace FastTripApp.Controllers
             var trip = _repositoryTrip.GetById(id);
             trip.TimeInfo = _repositoryTimeInfo.CalculateTime(timeInfo);
 
-            //ToHistory(id);
+            _tripService.ToHistory(id);
 
             return RedirectToRoute(new { controller = "Review", action = "Create" });
         }

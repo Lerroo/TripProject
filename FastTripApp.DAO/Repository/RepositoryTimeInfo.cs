@@ -18,7 +18,6 @@ namespace FastTripApp.DAO.Repository
         public TimeInfo CalculateTime(TimeInfo timeInfo)
         {
             timeInfo.End = TimeNow();
-            timeInfo.TimeTrack = timeInfo.End - timeInfo.Start;
             return timeInfo;
         }
 

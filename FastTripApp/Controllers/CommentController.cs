@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using FastTripApp.DAO.Repository;
 using FastTripApp.DAO.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FastTripApp.Controllers
 {
@@ -37,6 +38,7 @@ namespace FastTripApp.Controllers
         }
 
         // GET: CommentController/Create
+
         public ActionResult Create(int id)
         {
             ViewBag.Id = id;
@@ -44,6 +46,7 @@ namespace FastTripApp.Controllers
         }
 
         // POST: CommentController/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Comment comment)

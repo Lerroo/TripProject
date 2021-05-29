@@ -4,11 +4,18 @@
     ViewData["Title"] = "My history trips";
 }
 
+
+
 <div class="container p-3 ">
+
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+
     @if (Model.Count() > 0)
     {
         <br /> <br />
-        <h1>all trips history</h1>
+        <h1 class="text-center mb-4">All trips history</h1>
 
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>
@@ -35,13 +42,23 @@
             <tbody>
                 @foreach (var trip in Model)
                 {
-                    <tr>
+                    var styleLine = "";
+                    if (trip.TimeTrack == 0)
+                    {
+                        styleLine = "background-color: #fb5e6d";
+                    }
+                    <tr style="@styleLine">
                         <td>@trip.Name</td>
                         <td>@trip.StartTrip</td>
                         <td>@Html.DisplayFor(modelItem => trip.TimeTrackView)</td>
                         <td>@trip.AddressStart</td>
                         <td>@trip.AddressEnd</td>
-                        <td>more</td>
+                        <td>
+                            @{
+                                var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
+                            }
+                            <a class="historyItem" onclick="getInfo(@trip.Id)">Details</a>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -52,4 +69,18 @@
         <h1 class="text-center">History is clear. Try book some trip</h1>
     }
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function getInfo(id) {
+            $.ajaxSetup({ cache: false });
+
+            $.get('Trip/Details?id=' + id, function (data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        }
+    </script>
+}
 

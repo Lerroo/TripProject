@@ -86,7 +86,7 @@ namespace UsingIdentity
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseHangfireDashboard("/mydashboard");
+            app.UseHangfireDashboard("/board");
 
             app.UseEndpoints(endpoints =>
             {

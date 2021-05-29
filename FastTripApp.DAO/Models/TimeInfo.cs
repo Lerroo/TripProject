@@ -9,6 +9,11 @@ namespace FastTripApp.DAO.Models
 {
     public class TimeInfo
     {
+        public TimeInfo()
+        {
+            Start = new DateTime();
+            End = new DateTime();
+        }
         [Key]
         public int key { get; set; }
         [DisplayName("Actual start time")]
@@ -19,6 +24,6 @@ namespace FastTripApp.DAO.Models
 
         [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m {0:%s}s", ApplyFormatInEditMode = true)]
         [DisplayName("Track time")]
-        public TimeSpan? TimeTrack { get; set; }
+        public TimeSpan? TimeTrack { get => End - Start;}
     }
 }

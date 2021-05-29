@@ -14,9 +14,10 @@ namespace FastTripApp.DAO.Repository
             _сontext = usingIdentityContext;
         }
 
+
         public IEnumerable<Trip> TripsByUserId(string id)
         {
-            return _сontext.Trips.FromSqlRaw("Select * from Trips where UserId='" + id + "'").Include(p=>p.User);
+            return _сontext.Trips.FromSqlRaw("Select * from Trips where UserId='" + id + "'").Include(p=>p.User).Include(r => r.TimeInfo);
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<FastTripApp.DAO.Models.Comment>
+
+@{ if (Model.Count == 0)
+    {
+        <p>Comments absent. Write the first comment</p>
+    }
+    else
+    {
+        foreach (var comment in Model)
+        {
+            var commentUser = comment.User;
+            <div id="#comment-@comment.ReviewId" class="bg-light p-2 collapse" data-parent="#myGroup">
+                <div class="bg-white p-2 m-2 rounded">
+                    <div class="d-flex flex-row user-info">
+                        <img class="profile-pic" src="~/uploads/profile_pic/@commentUser.ImagePath" width="40">
+                        <div class="d-flex flex-column justify-content-start ml-2">
+                            <span class="d-block font-weight-bold name">@commentUser.Firstname @commentUser.LastName</span>
+                            <span class="date text-black-50">@comment.TimePost</span>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <p class="comment-text">@comment.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}

@@ -20,6 +20,10 @@ namespace FastTripApp.DAO.Repository
 
         public void TripToHistory(Trip trip)
         {
+            if (trip.TimeInfo == null)
+            {
+                trip.TimeInfo = new TimeInfo();
+            } 
             var timeTrack = trip.TimeInfo.End - trip.TimeInfo.Start;
             HistoryTrip historyTrip = new HistoryTrip
             {

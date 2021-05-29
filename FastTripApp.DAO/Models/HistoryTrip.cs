@@ -27,7 +27,7 @@ namespace FastTripApp.DAO.Models
         public DateTime? EndTrip { get; set; }
 
         public long TimeTrack { get; set; }
-        [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m {0:%s}s", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m", ApplyFormatInEditMode = true)]
         [DisplayName("Track time")]
         [NotMapped]
         public TimeSpan TimeTrackView

@@ -1,0 +1,30 @@
+﻿@model FastTripApp.DAO.Models.Trip
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4>Detailed information about the trip</h4>
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+    </div>
+    <div class="modal-body">
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.Descriprion)</dt>
+            <dd>@Html.DisplayFor(model => model.Descriprion)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.TimePlain)</dt>
+            <dd>@Html.DisplayFor(model => model.TimePlain)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.EstimatedTimeView)</dt>
+            <dd>@Html.DisplayFor(model => model.EstimatedTimeView)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.AddressStart)</dt>
+            <dd>@Html.DisplayFor(model => model.AddressStart)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.AddressEnd)</dt>
+            <dd>@Html.DisplayFor(model => model.AddressEnd)</dd>
+
+        </dl>
+    </div>
+</div>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FastTripApp.DAO.Models.Identity;
 using Microsoft.AspNetCore.Identity;
-
+using System;
 
 namespace FastTripApp.DAO
 {
@@ -17,6 +17,8 @@ namespace FastTripApp.DAO
         public DbSet<Trip> Trips { get; set; }
         public DbSet<HistoryTrip> HistoryTrips { get; set; }
         public DbSet<Review> Reviews { get; set; }
+
+
         public DbSet<Comment> Comments { get; set; }
        
 

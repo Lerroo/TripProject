@@ -30,7 +30,7 @@ function  defaultMap(){
     var URL = "https://maps.googleapis.com/maps/api/staticmap?center=" + start + "&zoom=9&size=500x500&maptype=roadmap&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
     console.log(URL)
 
-    document.getElementById("googleStaticPicture").src = URL;;
+    document.getElementById("googleStaticPicture").src = URL;
 
 }
 
@@ -125,3 +125,22 @@ function isEmptyObject(obj) {
     }
     return true;
 }
+
+
+
+
+
+
+$('#confirm-delete').on('click', '.btn-ok', function (e) {
+    var $modalDiv = $(e.delegateTarget);
+    var id = $(this).data('tripId');
+    $modalDiv.addClass('loading');
+    $.post('/Trip/Delete/' + id).then(function () {
+        $modalDiv.modal('hide').removeClass('loading');
+    });
+});
+$('#confirm-delete').on('show.bs.modal', function (e) {
+    var data = $(e.relatedTarget).data();
+    $('.description', this).text(data.itemDescription);
+    $('.btn-ok', this).data('tripId', data.itemId);
+});

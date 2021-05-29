@@ -5,28 +5,21 @@
     //fix
     FastTripApp.DAO.Models.Trip currentTrip = Model.FirstOrDefault();
     var googlee = @"https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=500x500&maptype=roadmap&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-
-
 }
 
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
 <div class="container shadow-lg p-3 rounded border-dark text-dark border-5">
-    
+
     <div class="row pt-4 ">
         <div class="col-6">
             <h1 class="text-center">Next trip</h1>
 
         </div>
         <div class="col-6 text-right p-3">
-
             <a asp-controller="Trip" asp-action="Create" class="btn btn-primary text-light">Create new trip</a>
-            @{
-                if (Model.Count() > 0)
-                {
-                    <a asp-controller="Trip" asp-action="End" asp-route-id="@currentTrip.Id" class="btn btn-danger text-light">
-                        //go trip to history
-                    </a>
-                }
-            }
         </div>
 
     </div>
@@ -108,12 +101,10 @@
                 }
             }
         </div>
-        
+
         <div id="image_div">
             <img id="googleStaticPicture" src="~/uploads/defaultStaticMap.png" />
         </div>
-        
-
 
     </div>
 
@@ -132,16 +123,10 @@
                         @Html.DisplayNameFor(model => model.FirstOrDefault().TimePlain)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Descriprion)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().AddressStart)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().AddressEnd)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().EstimatedTime)
                     </th>
                     <th>
                     </th>
@@ -150,14 +135,16 @@
             <tbody>
                 @foreach (var trip in Model)
                 {
+                    var linkInfo = "Trip/Details?id=" + trip.Id;
                     <tr>
                         <td>@trip.Name</td>
                         <td>@trip.TimePlain</td>
-                        <td>@trip.Descriprion</td>
                         <td>@trip.AddressStart</td>
                         <td>@trip.AddressEnd</td>
-                        <td>@Html.DisplayFor(modelItem => trip.EstimatedTimeView)</td>
-                        <td><a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="btn btn-danger mx-3">Cancel</a></td>
+                        <td class="text-center">
+                            <a class="historyItem  btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
+                            <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="delete-link btn btn-danger">Cancel</a>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -165,3 +152,17 @@
         </table>
     }
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function getInfo(id) {
+            $.ajaxSetup({ cache: false });
+
+            $.get('Trip/Details?id=' + id, function (data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        }
+    </script>
+}

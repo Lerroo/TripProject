@@ -16,9 +16,31 @@ namespace FastTripApp.DAO.Repository
             _сontext = usingIdentityContext;
         }
 
-        List<Review> IRepositoryReview.Get()
+        public List<Review> GetWithInclude()
         {
-            return _сontext.Reviews.Include(p => p.Comments).Include(p=>p.User).ToList();
+            return _сontext.Reviews.Include(p => p.Comments).ThenInclude(p=>p.User).Include(p => p.User).ToList();
+        }
+
+
+        public Review GetByIdWithInclude(int id)
+        {
+            var list = GetWithInclude();
+            return list.FirstOrDefault(p=>p.ReviewId == id);
         }
     }
 }
+
+
+//@section scripts
+//{
+//    <script type="text/javascript">
+//        function getInfo(id) {
+//            $.ajaxSetup({ cache: false });
+
+//            $.get('Trip/Details?id=' + id, function(data) {
+//                $('#dialogContent').html(data);
+//                $('#modDialog').modal('show');
+//        });
+//    }
+//    </script>
+//}
