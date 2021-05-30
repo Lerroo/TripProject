@@ -13,14 +13,19 @@
             <dt>@Html.DisplayNameFor(model => model.Descriprion)</dt>
             <dd>@Html.DisplayFor(model => model.Descriprion)</dd>
 
-            <dt>@Html.DisplayNameFor(model => model.StartTrip)</dt>
-            <dd>@Html.DisplayFor(model => model.StartTrip)</dd>
+            @{
+                if (Model.TimeTrack != 0)
+                {
+                    <dt>@Html.DisplayNameFor(model => model.StartTrip)</dt>
+                    <dd>@Html.DisplayFor(model => model.StartTrip)</dd>
 
-            <dt>@Html.DisplayNameFor(model => model.EndTrip)</dt>
-            <dd>@Html.DisplayFor(model => model.EndTrip)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.EndTrip)</dt>
+                    <dd>@Html.DisplayFor(model => model.EndTrip)</dd>
 
-            <dt>@Html.DisplayNameFor(model => model.TimeTrackView)</dt>
-            <dd>@Html.DisplayFor(model => model.TimeTrackView)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.TimeTrackView)</dt>
+                    <dd>@Html.DisplayFor(model => model.TimeTrackView)</dd>
+                }
+            }
 
             <dt>@Html.DisplayNameFor(model => model.AddressStart)</dt>
             <dd>@Html.DisplayFor(model => model.AddressStart)</dd>

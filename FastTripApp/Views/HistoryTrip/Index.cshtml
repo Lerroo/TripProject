@@ -47,20 +47,30 @@
                     {
                         styleLine = "background-color: #fb5e6d";
                     }
-                    <tr style="@styleLine">
-                        <td>@trip.Name</td>
-                        <td>@trip.StartTrip</td>
-                        <td>@Html.DisplayFor(modelItem => trip.TimeTrackView)</td>
-                        <td>@trip.AddressStart</td>
-                        <td>@trip.AddressEnd</td>
-                        <td>
-                            @{
-                                
-                                var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
-                            }
-                            <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
-                        </td>
-                    </tr>
+
+                    string startTrip;
+                    if (trip.TimeTrack == 0)
+                    {
+                        startTrip = "Abandon";
+                    }
+                    else
+                    {
+                        startTrip = trip.StartTrip.ToString();
+                    }
+                <tr style="@styleLine">
+                    <td>@trip.Name</td>
+                    <td>@startTrip</td>
+                    <td>@Html.DisplayFor(modelItem => trip.TimeTrackView)</td>
+                    <td>@trip.AddressStart</td>
+                    <td>@trip.AddressEnd</td>
+                    <td>
+                        @{
+
+                            var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
+                        }
+                        <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
+                    </td>
+                </tr>
                 }
             </tbody>
 

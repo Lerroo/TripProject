@@ -11,8 +11,9 @@ namespace FastTripApp.DAO.Models
     {
         public TimeInfo()
         {
-            Start = new DateTime();
-            End = new DateTime();
+            var dataError = new DateTime();
+            Start = dataError;
+            End = dataError;
         }
         [Key]
         public int key { get; set; }

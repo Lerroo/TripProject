@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace FastTripApp.Controllers
 {
-
+    [Authorize]
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;

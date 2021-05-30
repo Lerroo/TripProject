@@ -47,6 +47,7 @@ namespace UsingIdentity
                 options.Password.RequiredLength = 4;
             }).AddEntityFrameworkStores<UsingIdentityContext>()
                 .AddDefaultTokenProviders();
+            services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Identity/Account/Login");
 
             services.AddScoped<IRepositoryTrip, RepositoryTrip>();
             services.AddScoped<IRepositoryHistoryTrip, RepositoryHistoryTrip>();

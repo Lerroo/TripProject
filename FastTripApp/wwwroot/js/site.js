@@ -127,22 +127,16 @@ function isEmptyObject(obj) {
 }
 
 
-
-
-
-
-
-
-$('#confirm-delete').on('click', '.btn-ok', function (e) {
-    var $modalDiv = $(e.delegateTarget);
-    var id = $(this).data('tripId');
-    $modalDiv.addClass('loading');
-    $.post('/Trip/Delete/' + id).then(function () {
-        $modalDiv.modal('hide').removeClass('loading');
+$(function () {
+    $('#modal-delete').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let id = button.data("id");
+        let modal = $(this);
+        modal.find('.modal-content input').val(id);
     });
-});
-$('#confirm-delete').on('show.bs.modal', function (e) {
-    var data = $(e.relatedTarget).data();
-    $('.description', this).text(data.itemDescription);
-    $('.btn-ok', this).data('tripId', data.itemId);
+
+    $("#modalDeleteButton").click(function () {
+        $("#myForm").submit();
+
+    });
 });
