@@ -1,33 +1,35 @@
 ﻿@model FastTripApp.DAO.Models.Review
 
 <form asp-action="Create" method="post">
-    <div class="border p-3">
+    <div class="col-5 border p-3">
         <div class="form-group row">
-            <h2 class="text-info pl-3">Share your impressions or skip</h2>
+            <h2 class="text-info pl-3">Share your impressions</h2>
         </div>
         <div class="row justify-content-center">
-            <div class="col-8">
-                <div class="rating-area">
-                    <input type="radio" id="star-5" name="rating" value="5">
-                    <label for="star-5" title="Оценка «5»"></label>
-                    <input type="radio" id="star-4" name="rating" value="4">
-                    <label for="star-4" title="Оценка «4»"></label>
-                    <input type="radio" id="star-3" name="rating" value="3">
-                    <label for="star-3" title="Оценка «3»"></label>
-                    <input type="radio" id="star-2" name="rating" value="2">
-                    <label for="star-2" title="Оценка «2»"></label>
-                    <input type="radio" id="star-1" name="rating" value="1">
-                    <label for="star-1" title="Оценка «1»"></label>
-                </div>
+            <div class="col">
+                
 
                 <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="Appraisal"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Appraisal" class="form-control" />
+                        <div class="rating-area d-flex justify-content-end flex-row-reverse" onclick="check()">
+                            <input type="radio" id="star-5" name="rating" value="5">
+                            <label for="star-5" title="Оценка «5»"></label>
+                            <input type="radio" id="star-4" name="rating" value="4">
+                            <label for="star-4" title="Оценка «4»"></label>
+                            <input type="radio" id="star-3" name="rating" value="3">
+                            <label for="star-3" title="Оценка «3»"></label>
+                            <input type="radio" id="star-2" name="rating" value="2">
+                            <label for="star-2" title="Оценка «2»"></label>
+                            <input type="radio" id="star-1" name="rating" value="1">
+                            <label for="star-1" title="Оценка «1»"></label>
+                        </div>
                         <span asp-validation-for="Appraisal" class="text-danger"></span>
                     </div>
+                    <input id="appraisal" asp-for="Appraisal" class="d-none form-control" />
+                    
                 </div>
 
                 <div class="form-group row">
@@ -35,12 +37,12 @@
                         <label asp-for="Description"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Description" class="form-control" />
+                        <textarea asp-for="Description" class="form-control" ></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-8 offset-4 row">
+                <div class="form-group row justify-content-center">
+                    <div class="col row">
 
                         <div class="col">
                             <input type="submit" class="btn btn-success w-100" value="Post Review" />
@@ -55,3 +57,16 @@
         </div>        
     </div>
 </form>
+
+<script>
+    function check() {
+        var inp = document.getElementsByName('rating');
+        for (var i = 0; i < inp.length; i++) {
+            if (inp[i].type == "radio" && inp[i].checked) {
+                document.getElementById('appraisal').value = inp[i].value;
+                break;
+            }
+        }
+    }
+
+</script>

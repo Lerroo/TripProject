@@ -18,21 +18,12 @@ function reloadPage() {
 
 let directionsDisplay;
 let directionsService = new google.maps.DirectionsService();
+let map;
 /*let geocoder = new google.maps.Geocoder();*/
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
-function  defaultMap(){
 
-    let center = new google.maps.LatLng(55.8782557, 37.65372);
-    let start = "55.8782557, 37.65372"
-
-    var URL = "https://maps.googleapis.com/maps/api/staticmap?center=" + start + "&zoom=9&size=500x500&maptype=roadmap&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-    console.log(URL)
-
-    document.getElementById("googleStaticPicture").src = URL;
-
-}
 
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer();
@@ -42,10 +33,35 @@ function initMap() {
         center: start
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    directionsDisplay.setMap(map);
-
     GenAutocomplete("InputStart");
+}
+
+function defaultMap(center, path) {
+
+    
+    let clearPath = preparePath(path)
+    let clearStart = prepareLatLng(center)
+    console.log(clearStart)
+    var URL = "https://maps.googleapis.com/maps/api/staticmap?center=" + clearStart + "&zoom=9&size=500x500&maptype=roadmap&path=" + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+
+    document.getElementById("googleStaticPicture").src = URL;
+}
+
+function preparePath(path) {
+    let preparePath = "color:0x0000ff80|weight:1";
+
+    var blkstr = [];
+    path.forEach(function (item, i, arr) {
+        var clearLatLng = prepareLatLng(item)
+        blkstr.push(clearLatLng);
+    });
+    preparePath += blkstr.join("|")
+    return preparePath
+}
+
+function prepareLatLng(obj) {
+    return obj.lat() + "," + obj.lng();
+
 }
 
 function calcRoute(googleLatLngStart, googleLatLngEnd) {
@@ -67,11 +83,13 @@ function calcRoute(googleLatLngStart, googleLatLngEnd) {
         if (status === 'OK') {
             let seconds = response.routes[0].legs[0].duration.value
             document.getElementById("EstimatedTime").value = seconds
-            console.log(response.routes)
-            var path = google.maps.geometry.encoding.encodePath()
-            console.log("lala" + google.maps.geometry.encoding.decodePath(path))
+            
 
-            directionsDisplay.setDirections(response);
+            directionsDisplay.setDirections(response);  
+
+            console.log(response.routes[0])
+            var path = response.routes[0].overview_path
+            defaultMap(map.getCenter(), path)
         } else {
             alert("directions request failed, status=" + status)
         }

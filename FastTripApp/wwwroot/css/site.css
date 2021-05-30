@@ -3,9 +3,8 @@ for details on configuring this project to bundle and minify static web assets. 
 
 
 
-.rating-area {
+.rating-area .ml-0{
     overflow: hidden;
-    width: 265px;
     margin: 0 auto;
 }
 

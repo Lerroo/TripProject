@@ -20,6 +20,8 @@
     <Compile Include="Migrations\20210528162618_first.Designer.cs" />
     <Compile Include="Migrations\20210528163409_a.cs" />
     <Compile Include="Migrations\20210528163409_a.Designer.cs" />
+    <Compile Include="Migrations\20210530125514_Required review appraisal.cs" />
+    <Compile Include="Migrations\20210530125514_Required review appraisal.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 

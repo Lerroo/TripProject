@@ -82,11 +82,7 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
 
             //////fixx
             ///
-            if (file != null)
-            {
-                _unitOfWork.UploadImage(file);
-                user.ImagePath = file.FileName;
-            }
+            
            
                 
             
@@ -108,8 +104,13 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            
-            
+
+            if (file != null)
+            {
+                _unitOfWork.UploadImage(file);
+                user.ImagePath = file.FileName;
+                await _userManager.UpdateAsync(user);
+            }
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

@@ -14,7 +14,9 @@ namespace FastTripApp.DAO.Models
         [Key]
         public int ReviewId { get; set; }
         public string Description { get; set; }
-        public int Appraisal { get; set; }
+
+        [Required(ErrorMessage = "rate the trip")]
+        public int? Appraisal { get; set; }
         public DateTime? TimePost { get; set; }
         public List<Comment> Comments { get; set; }
         

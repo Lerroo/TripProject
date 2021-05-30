@@ -19,6 +19,7 @@ using FastTripApp.DAO.Repository.Interfaces;
 using FastTripApp.DAO.Repository;
 using FastTripApp.DAO.Services;
 using FastTripApp.DAO.Infrastructure;
+using FastTripApp.DAO.Services.Interfaces;
 
 namespace UsingIdentity
 {
@@ -54,6 +55,8 @@ namespace UsingIdentity
             services.AddScoped<IRepositoryTimeInfo, RepositoryTimeInfo>();
             services.AddScoped<IRepositoryReview, RepositoryReview>();
             services.AddScoped<IRepositoryComment, RepositoryComment>();
+
+            services.AddScoped<ITripService, TripService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

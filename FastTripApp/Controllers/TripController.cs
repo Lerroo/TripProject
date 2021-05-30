@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Hangfire.States;
 using Hangfire.Storage;
 using FastTripApp.DAO.Services;
+using FastTripApp.DAO.Services.Interfaces;
 
 namespace FastTripApp.Controllers
 {
@@ -21,15 +22,18 @@ namespace FastTripApp.Controllers
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
         private readonly IRepositoryTimeInfo _repositoryTimeInfo;
-        private readonly TripService _tripService;
+        private readonly ITripService _tripService;
 
 
-        public TripController(IRepositoryTrip tripRepository, IRepositoryHistoryTrip historyRepository, IRepositoryTimeInfo repositoryTimeInfo)
+        public TripController(IRepositoryTrip tripRepository, 
+            IRepositoryHistoryTrip historyRepository, 
+            IRepositoryTimeInfo repositoryTimeInfo,
+            ITripService tripService)
         {
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = historyRepository;
             _repositoryTimeInfo = repositoryTimeInfo;
-            _tripService = new TripService();
+            _tripService = tripService;
         }
 
 

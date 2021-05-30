@@ -38,11 +38,7 @@ namespace FastTripApp.Controllers
             return View();
         }
 
-        // GET: ReviewController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        
 
         public ActionResult AddComment(int idReview)
         {
@@ -55,6 +51,12 @@ namespace FastTripApp.Controllers
             var la = _repositoryReview.GetById(id);
             List<Comment> comments = la.Comments;
             return PartialView("../Comment/_Index", comments);
+        }
+
+        // GET: ReviewController/Create
+        public ActionResult Create()
+        {
+            return View("_Create");
         }
 
         // POST: ReviewController/Create
@@ -72,7 +74,7 @@ namespace FastTripApp.Controllers
                 return RedirectToRoute(new { controller = "Trip", action = "Index" });
             }
 
-            return View(review);
+            return View("_Create", review);
         }
 
         // GET: ReviewController/Edit/5
