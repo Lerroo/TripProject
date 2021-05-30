@@ -37,8 +37,12 @@ namespace FastTripApp.Controllers
             return View();
         }
 
-        // GET: CommentController/Create
+        public ActionResult CreatePartual()
+        {
+            return View();
+        }
 
+        // GET: CommentController/Create
         public ActionResult Create(int id)
         {
             ViewBag.Id = id;

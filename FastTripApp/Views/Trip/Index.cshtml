@@ -135,14 +135,15 @@
             <tbody>
                 @foreach (var trip in Model)
                 {
-                    var linkInfo = "Trip/Details?id=" + trip.Id;
+                    var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
                     <tr>
                         <td>@trip.Name</td>
                         <td>@trip.TimePlain</td>
                         <td>@trip.AddressStart</td>
                         <td>@trip.AddressEnd</td>
                         <td class="text-center">
-                            <a class="historyItem  btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
+
+                            <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
                             <a asp-controller="Trip" asp-route-Id="@currentTrip.Id" asp-action="Delete" class="delete-link btn btn-danger">Cancel</a>
                         </td>
                     </tr>

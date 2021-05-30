@@ -36,7 +36,9 @@
                                             @{
                                                 string collapseId = "collapse-" + review.ReviewId;
                                             }
-                                            <div class="btn btn-info btn-circle text-uppercase ml-2 cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#@collapseId">
+                                            <div class="btn btn-info btn-circle text-uppercase ml-2 cursor action-collapse" 
+                                                 data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" 
+                                                 href="#@collapseId">
                                                 <span class="ml-1">Write comment</span>
 
                                             </div>
@@ -46,9 +48,12 @@
                                         <div class="d-flex flex-row fs-12">
                                             @{
                                                 string collapseCommentId = "comment-" + review.ReviewId;
+                                                string collapseCommentListId = "commentList-" + review.ReviewId;
                                             }
-                                            <div class="btn btn-warning btn-circle text-uppercase cursor action-collapse" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#@collapseCommentId">
-                                                <button onclick="getComments(@review.ReviewId)"></button>
+                                            <div class="btn btn-warning btn-circle text-uppercase cursor action-collapse" 
+                                                 data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" 
+                                                 href="#@collapseCommentId">
+                                                <span lass="ml-1">Comments</span>
                                             </div>
                                         </div>
                                     </div>
@@ -56,23 +61,38 @@
                             </div>
 
                             <div id="@collapseId" class="bg-light pt-3 collapse" data-parent="#myGroup">
-
-                                <button id="search">Search</button>
-
-                                <form action="/" method="post"></form>
-                                <div class="d-flex flex-row align-items-start">
-                                    <img class="rounded-circle" src="" width="40">
-                                    <textarea class="form-control ml-1 shadow-none textarea"></textarea>
-                                </div>
-                                <div class="mt-2 text-right">
-                                    <button class="btn btn-primary btn-sm shadow-none" type="button">Post comment</button>
-                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button>
-                                </div>
-                                <a asp-controller="Comment" asp-action="Create" asp-route-id="@review.ReviewId">new comment</a>
+                                @Html.Partial("../Comment/_Create", 
+                                    new FastTripApp.DAO.Models.Comment(), 
+                                    new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
+                                )
                             </div>
 
-                            <div class="commentsPartial">
+                            <div id="@collapseCommentId" class="bg-light p-2 collapse" data-parent="#myGroup">
+                                @{ if (review.Comments.Count == 0)
+                                    {
+                                        <p>Comments absent. Write the first comment</p>
+                                    }
+                                    else
+                                    {
+                                        foreach (var comment in review.Comments)
+                                        {
+                                            var commentUser = comment.User;
 
+                                            <div class="bg-white p-2 m-2 rounded">
+                                                <div class="d-flex flex-row user-info">
+                                                    <img class="profile-pic" src="~/uploads/profile_pic/@commentUser.ImagePath" width="40">
+                                                    <div class="d-flex flex-column justify-content-start ml-2">
+                                                        <span class="d-block font-weight-bold name">@commentUser.Firstname @commentUser.LastName</span>
+                                                        <span class="date text-black-50">@comment.TimePost</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <p class="comment-text">@comment.Description</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
                             </div>
 
 
@@ -85,10 +105,10 @@
 </div>
 
 <script type="text/javascript">
-    function getComments(reviewId) {
-        let link = 'Review/GetComments?id=' + reviewId;
+    function createComment() {
+        let link = 'Comment/CreatePartual';
         $.get(link, function(data) {
-        $('.commentsPartial').replaceWith(data);
+            $('.commentList-' + reviewId).replaceWith(data);
         });
     }
 </script>

@@ -79,7 +79,7 @@ namespace FastTripApp.Controllers
                 Start = _repositoryTimeInfo.TimeNow()
             };
 
-            ViewBag.Id = id;
+            ViewBag.IdTrip = id;
             return View(obj);
         }
 

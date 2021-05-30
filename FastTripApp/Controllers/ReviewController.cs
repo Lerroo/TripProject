@@ -52,7 +52,7 @@ namespace FastTripApp.Controllers
 
         public ActionResult GetComments(int id)
         {
-            var la = _repositoryReview.GetByIdWithInclude(id);
+            var la = _repositoryReview.GetById(id);
             List<Comment> comments = la.Comments;
             return PartialView("../Comment/_Index", comments);
         }

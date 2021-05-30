@@ -131,6 +131,8 @@ function isEmptyObject(obj) {
 
 
 
+
+
 $('#confirm-delete').on('click', '.btn-ok', function (e) {
     var $modalDiv = $(e.delegateTarget);
     var id = $(this).data('tripId');
