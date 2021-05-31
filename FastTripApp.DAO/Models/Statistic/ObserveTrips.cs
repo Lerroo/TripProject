@@ -6,11 +6,10 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.Statistic
 {
-    [Schema]
-    public class Duration
+    public class ObserveTrips
     {
-        public int Shortest { get; set; }
-        public int Maximum { get; set; }
-        public int Average { get; set; }
+        public TimeSpan? Minimum { get; set; }
+        public TimeSpan? Maximum { get; set; }
+        public TimeSpan? Average { get; set; }
     }
 }

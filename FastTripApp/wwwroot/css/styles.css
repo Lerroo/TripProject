@@ -27,3 +27,9 @@
 #review_stars label:hover i, #review_stars label:hover ~ label i{
   color: #ec9801;
 }
+.trava-border {
+    margin-bottom: -30px;
+    border: 3px solid;
+    border-color: #6fb182;
+    border-bottom: 0;
+}

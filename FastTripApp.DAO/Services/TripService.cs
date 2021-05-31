@@ -1,9 +1,5 @@
-﻿using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Repository.Interfaces;
+﻿using FastTripApp.DAO.Repository.Interfaces;
 using FastTripApp.DAO.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FastTripApp.DAO.Services
@@ -59,7 +55,6 @@ namespace FastTripApp.DAO.Services
             _repositoryTrip.SetStatus(trip.Id);
 
             ToHistory(id);
-
         }
     }
 }

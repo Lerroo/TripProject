@@ -23,7 +23,7 @@ namespace FastTripApp.Controllers
         public ActionResult Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IEnumerable<HistoryTrip> historyTrips = _repositoryHistoryTrip.HistoryByUserId(userId);
+            IEnumerable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
             return View(historyTrips);
         }
 

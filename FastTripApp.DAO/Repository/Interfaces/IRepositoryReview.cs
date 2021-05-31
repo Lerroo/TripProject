@@ -7,7 +7,7 @@ namespace FastTripApp.DAO.Repository.Interfaces
 {
     public interface IRepositoryReview : IRepository<Review>
     {
-        IEnumerable<Review> GetWithInclude()
+        IEnumerable<Review> GetWithInclude();
         Review GetByIdWithInclude(int id);
     }
 }

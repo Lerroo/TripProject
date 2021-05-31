@@ -7,5 +7,6 @@ namespace FastTripApp.DAO.Repository.Interfaces
 {
     public interface IRepositoryUser : IRepository<User>
     {
+        User GetUserById(string id);
     }
 }

@@ -88,8 +88,6 @@ namespace FastTripApp.Controllers
         public ActionResult End(int id)
         {
             _tripService.End(id);
-            
-            _tripService.ToHistory(id);
             return RedirectToRoute(new { controller = "Trip", action = "Index" });
         }
 

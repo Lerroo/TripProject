@@ -14,6 +14,7 @@ namespace FastTripApp.DAO.Repository
     {
         private readonly UsingIdentityContext _context;
 
+
         public RepositoryHistoryTrip(UsingIdentityContext context) :base(context)
         {
             _context = context;
@@ -27,7 +28,8 @@ namespace FastTripApp.DAO.Repository
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<HistoryTrip> HistoryByUserId(string id)
+
+        public IQueryable<HistoryTrip> GetHistoryByUserId(string id)
         {
             return _context.HistoryTrips
                 .Include(p => p.Address)
@@ -35,5 +37,9 @@ namespace FastTripApp.DAO.Repository
                 .Where(p => p.UserId == id);
         }
 
+        public HistoryTrip GetLatsTrip(string userId)
+        {
+            return GetHistoryByUserId(userId).OrderBy(p=>p.Id).Last();
+        }
     }
 }

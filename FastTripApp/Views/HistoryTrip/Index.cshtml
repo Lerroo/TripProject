@@ -1,11 +1,10 @@
 ﻿
 @model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
+@using FastTripApp.DAO.Models.StatusEnum
 
 @{
     ViewData["Title"] = "My history trips";
 }
-
-
 
 <div class="container p-3 ">
 
@@ -36,9 +35,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().Address.End)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().StatusEnum)
-                    </th>
                     <th style="width: 100px">
                     </th>
                 </tr>
@@ -46,24 +42,17 @@
             <tbody>
                 @foreach (var trip in Model)
                 {
-                    var styleLine = "";
-                    string startTrip;
-                    if (trip.StatusEnum == FastTripApp.DAO.Models.StatusEnum.Status.Abandon)
+                    var styleLine = "table-success";
+                    if (trip.StatusEnum == Status.Abandon)
                     {
-                        styleLine = "background-color: #fb5e6d";
-                        startTrip = "Abandon";
+                        styleLine = "table-danger";
                     }
-                    else
-                    {
-                        startTrip = trip.TimeAfterDeparture.Start.ToString();
-                    }
-                <tr style="@styleLine">
+                <tr class="@styleLine">
                     <td>@trip.Name</td>
-                    <td>@startTrip</td>
+                    <td>@trip.TimeAfterDeparture.Start</td>
                     <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
-                    <td>@trip.Address.End</td>
                     <td>@trip.Address.Start</td>
-                    <td>@trip.Status</td>
+                    <td>@trip.Address.End</td>
                     <td>
                         @{
                             var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
@@ -89,7 +78,7 @@
             $.ajaxSetup({ cache: false });
 
             $.get('HistoryTrip/Details?id=' + id, function (data) {
-            
+
                 $('#dialogContent').html(data);
                 $('#modDialog').modal('show');
             });
