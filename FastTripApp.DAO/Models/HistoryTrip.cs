@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastTripApp.DAO.Models.StatusEnum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,11 @@ namespace FastTripApp.DAO.Models
         public string Descriprion { get; set; }
 
         public TimeAfterDeparture TimeAfterDeparture { get; set; }
+        
+        [DisplayName("Status")]
+        public Status StatusEnum { get; set; }
+        [NotMapped]
+        public string Status { get => StatusEnum.GetStringValue(); }
 
         public Address Address { get; set; }
 

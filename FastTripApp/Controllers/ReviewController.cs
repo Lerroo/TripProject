@@ -37,7 +37,7 @@ namespace FastTripApp.Controllers
         // GET: ReviewController
         public ActionResult Index()
         {
-            List<Review> objList = _repositoryReview.GetWithInclude();
+            List<Review> objList = _repositoryReview.GetWithInclude().ToList();
             return View(objList);
         }
 

@@ -16,16 +16,17 @@ namespace FastTripApp.DAO.Repository
             _сontext = usingIdentityContext;
         }
 
-        public List<Review> GetWithInclude()
+        public IEnumerable<Review> GetWithInclude()
         {
-            return _сontext.Reviews.Include(p => p.Comments).ThenInclude(p=>p.User).Include(p => p.User).ToList();
+            return _сontext.Reviews
+                .Include(p => p.Comments)
+                .ThenInclude(p => p.User)
+                .Include(p => p.User);
         }
-
 
         public Review GetByIdWithInclude(int id)
         {
-            var list = GetWithInclude();
-            return list.FirstOrDefault(p=>p.ReviewId == id);
+            return GetWithInclude().FirstOrDefault(p=>p.ReviewId == id);
         }
     }
 }

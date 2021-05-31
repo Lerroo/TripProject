@@ -1,4 +1,5 @@
 ﻿using FastTripApp.DAO.Models.Identity;
+using FastTripApp.DAO.Models.StatusEnum;
 using FastTripApp.Validation;
 using System;
 using System.ComponentModel;
@@ -24,6 +25,11 @@ namespace FastTripApp.DAO.Models
         public TimeAfterDeparture TimeAfterDeparture { get; set; }
 
         public Address Address { get; set; }
+
+        [DisplayName("Status")]
+        public Status StatusEnum { get; set; }
+        [NotMapped]
+        public string Status { get => StatusEnum.GetStringValue(); }
 
         public string UserId { get; set; }
         public User User { get; set; }

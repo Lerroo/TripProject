@@ -26,9 +26,15 @@ namespace FastTripApp.DAO.Services
                 Descriprion = trip.Descriprion,
                 TimeAfterDeparture = trip.TimeAfterDeparture ??= _repositoryTimeAfterDeparture.getAbandonTime(),
                 Address = trip.Address,
+                StatusEnum = trip.StatusEnum,
                 UserId = trip.UserId
             };
             return historyTrip;
+        }
+
+        public void SetStatus(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

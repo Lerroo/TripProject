@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
+﻿
+@model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
 
 @{
     ViewData["Title"] = "My history trips";
@@ -33,7 +34,10 @@
                         @Html.DisplayNameFor(model => model.FirstOrDefault().Address.Start)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.Start)
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.End)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().StatusEnum)
                     </th>
                     <th style="width: 100px">
                     </th>
@@ -44,7 +48,7 @@
                 {
                     var styleLine = "";
                     string startTrip;
-                    if (trip.TimeAfterDeparture.Observe.Value.Seconds == 0)
+                    if (trip.StatusEnum == FastTripApp.DAO.Models.StatusEnum.Status.Abandon)
                     {
                         styleLine = "background-color: #fb5e6d";
                         startTrip = "Abandon";
@@ -59,6 +63,7 @@
                     <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
                     <td>@trip.Address.End</td>
                     <td>@trip.Address.Start</td>
+                    <td>@trip.Status</td>
                     <td>
                         @{
                             var linkInfo = "HistoryTrip/Details?id=" + trip.Id;

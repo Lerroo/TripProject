@@ -8,5 +8,6 @@ namespace FastTripApp.DAO.Services.Interfaces
     public interface IHistoryTripService
     {
         HistoryTrip ConvertToHistoryTrip(Trip trip);
+        void SetStatus(int id);
     }
 }

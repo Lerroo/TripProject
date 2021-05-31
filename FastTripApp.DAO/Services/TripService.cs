@@ -56,6 +56,10 @@ namespace FastTripApp.DAO.Services
         {
             var trip = _repositoryTrip.GetByIdWithInclude(id);
             _repositoryTimeAfterDeparture.SetEndById(trip.TimeAfterDeparture.Id);
+            _repositoryTrip.SetStatus(trip.Id);
+
+            ToHistory(id);
+
         }
     }
 }

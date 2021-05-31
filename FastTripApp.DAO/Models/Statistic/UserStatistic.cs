@@ -8,7 +8,6 @@ namespace FastTripApp.DAO.Models.Statistic
     {
         public int Year { get; set; }
         public Duration Duration { get; set; }
-        public Trip Trip { get; set; }
-        public int Count { get; set; }
+        public Trips Trip { get; set; }
     }
 }

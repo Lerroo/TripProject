@@ -4,14 +4,16 @@ using FastTripApp.DAO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FastTripApp.Web.Migrations
 {
     [DbContext(typeof(UsingIdentityContext))]
-    partial class UsingIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210531124811_first endstatus")]
+    partial class firstendstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace FastTripApp.Web.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusEnum")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int?>("TimeAfterDepartureId")
@@ -290,9 +292,6 @@ namespace FastTripApp.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ReviewId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusEnum")
                         .HasColumnType("int");
 
                     b.Property<int?>("TimeBeforeDepartureId")

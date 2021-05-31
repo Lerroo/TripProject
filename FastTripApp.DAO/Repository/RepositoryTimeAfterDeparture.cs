@@ -30,28 +30,33 @@ namespace FastTripApp.DAO.Repository
                 a.Start == GetErrorTime()).First();
         }
 
-        //0001-01-01 00:00:00.0000000
+        /// <summary>
+        /// Return bad DateTime like 0001-01-01 00:00:00.0000000
+        /// </summary>
+        /// <returns></returns>
         public DateTime GetErrorTime()
         {
             return new DateTime();
         }
 
+        /// <summary>
+        /// Create new TimeAfterDeparture() with start time = now
+        /// </summary>
+        /// <returns></returns>
         public TimeAfterDeparture GetWithStart()
         {
             var timeAfterDeparture = new TimeAfterDeparture() { Start = _util.DateTimeNow() };
-            _context.Add(timeAfterDeparture);
 
+            _context.Add(timeAfterDeparture);
             return timeAfterDeparture;
         }
 
         public void SetEndById(int id)
         {
-            //fix getby id
-            var timeAfterDeparture = _context.TimeAfterDepartures.Find(id);
+            var timeAfterDeparture = GetById(id);
             timeAfterDeparture.End = _util.DateTimeNow();
+
             _context.Update(timeAfterDeparture);
         }
-
-
     }
 }

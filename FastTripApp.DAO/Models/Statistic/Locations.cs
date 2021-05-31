@@ -4,8 +4,9 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.Statistic
 {
-    public class Trip
+    class Locations
     {
-        
+        public int StartFavorite { get; set; }
+        public int EndFavorite { get; set; }
     }
 }

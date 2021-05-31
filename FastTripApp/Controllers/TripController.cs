@@ -87,9 +87,7 @@ namespace FastTripApp.Controllers
 
         public ActionResult End(int id)
         {
-            var trip = _repositoryTrip.GetByIdWithInclude(id);
-            trip.TimeAfterDeparture.End = _util.DateTimeNow();
-            _repositoryTrip.Update(trip);
+            _tripService.End(id);
             
             _tripService.ToHistory(id);
             return RedirectToRoute(new { controller = "Trip", action = "Index" });

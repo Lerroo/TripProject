@@ -20,6 +20,12 @@
     <Compile Include="Migrations\20210531115348_first.Designer.cs" />
     <Compile Include="Migrations\20210531120837_first1.cs" />
     <Compile Include="Migrations\20210531120837_first1.Designer.cs" />
+    <Compile Include="Migrations\20210531124811_first endstatus.cs" />
+    <Compile Include="Migrations\20210531124811_first endstatus.Designer.cs" />
+    <Compile Include="Migrations\20210531125753_first endstatusdad.cs" />
+    <Compile Include="Migrations\20210531125753_first endstatusdad.Designer.cs" />
+    <Compile Include="Migrations\20210531135359_first endstatusdaddada.cs" />
+    <Compile Include="Migrations\20210531135359_first endstatusdaddada.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 
