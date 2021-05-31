@@ -7,6 +7,7 @@ namespace FastTripApp.DAO.Repository.Interfaces
 {
     public interface IRepositoryHistoryTrip : IRepository<HistoryTrip>
     {
-        void TripToHistory(Trip trip);
+        HistoryTrip GetWithInclude(int id);
+        IEnumerable<HistoryTrip> HistoryByUserId(string id);
     }
 }

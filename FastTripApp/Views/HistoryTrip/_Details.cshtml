@@ -14,24 +14,24 @@
             <dd>@Html.DisplayFor(model => model.Descriprion)</dd>
 
             @{
-                if (Model.TimeTrack != 0)
+                if (Model.TimeAfterDeparture.Observe.Value.TotalSeconds != 0)
                 {
-                    <dt>@Html.DisplayNameFor(model => model.StartTrip)</dt>
-                    <dd>@Html.DisplayFor(model => model.StartTrip)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.Start)</dt>
+                    <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.Start)</dd>
 
-                    <dt>@Html.DisplayNameFor(model => model.EndTrip)</dt>
-                    <dd>@Html.DisplayFor(model => model.EndTrip)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.End)</dt>
+                    <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.End)</dd>
 
-                    <dt>@Html.DisplayNameFor(model => model.TimeTrackView)</dt>
-                    <dd>@Html.DisplayFor(model => model.TimeTrackView)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.Observe)</dt>
+                    <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.Observe)</dd>
                 }
             }
 
-            <dt>@Html.DisplayNameFor(model => model.AddressStart)</dt>
-            <dd>@Html.DisplayFor(model => model.AddressStart)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Address.Start)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.Start)</dd>
 
-            <dt>@Html.DisplayNameFor(model => model.AddressEnd)</dt>
-            <dd>@Html.DisplayFor(model => model.AddressEnd)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Address.End)</dt>
+            <dd>@Html.DisplayFor(model => model.Address.End)</dd>
 
         </dl>
     </div>

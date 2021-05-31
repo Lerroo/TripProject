@@ -4,14 +4,16 @@ using FastTripApp.DAO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FastTripApp.Web.Migrations
 {
     [DbContext(typeof(UsingIdentityContext))]
-    partial class UsingIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20210530190524_firstdsada")]
+    partial class firstdsada
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,9 +208,6 @@ namespace FastTripApp.Web.Migrations
                     b.Property<DateTime?>("TimePost")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TripId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -234,7 +233,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeAfterDepartures");
+                    b.ToTable("TimeAfterDeparture");
                 });
 
             modelBuilder.Entity("FastTripApp.DAO.Models.TimeBeforeDeparture", b =>
@@ -279,9 +278,6 @@ namespace FastTripApp.Web.Migrations
                     b.Property<int?>("ReviewId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReviewId1")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TimeAfterDepartureId")
                         .HasColumnType("int");
 
@@ -295,7 +291,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("ReviewId1");
+                    b.HasIndex("ReviewId");
 
                     b.HasIndex("TimeAfterDepartureId");
 
@@ -486,7 +482,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasOne("FastTripApp.DAO.Models.Review", "Review")
                         .WithMany()
-                        .HasForeignKey("ReviewId1");
+                        .HasForeignKey("ReviewId");
 
                     b.HasOne("FastTripApp.DAO.Models.TimeAfterDeparture", "TimeAfterDeparture")
                         .WithMany()

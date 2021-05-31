@@ -3,6 +3,7 @@ using FastTripApp.DAO;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Repository;
 using FastTripApp.DAO.Repository.Interfaces;
+using FastTripApp.DAO.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,23 @@ namespace FastTripApp.Controllers
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;
-        private readonly IRepositoryTimeInfo _repositoryTimeInfo;
+        private readonly IRepositoryTimeAfterDeparture _repositoryTimeInfo;
+        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
+        private readonly ITripService _tripService;
+        private readonly IUtilService _util;
 
-        public ReviewController(IRepositoryReview repositoryReview, IRepositoryTimeInfo repositoryTimeInfo)
+        public ReviewController(
+            IRepositoryReview repositoryReview,
+            IRepositoryTimeAfterDeparture repositoryTimeInfo,
+            ITimeAfterDepartureService timeAfterDepartureService,
+            ITripService tripService,
+            IUtilService util)
         {
             _repositoryTimeInfo = repositoryTimeInfo;
             _repositoryReview = repositoryReview;
+            _timeAfterDepartureService = timeAfterDepartureService;
+            _util = util;
+            _tripService = tripService;
         }
 
         // GET: ReviewController
@@ -30,20 +42,6 @@ namespace FastTripApp.Controllers
         {
             List<Review> objList = _repositoryReview.GetWithInclude();
             return View(objList);
-        }
-
-        // GET: ReviewController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        
-
-        public ActionResult AddComment(int idReview)
-        {
-
-            return View();
         }
 
         public ActionResult GetComments(int id)
@@ -56,7 +54,8 @@ namespace FastTripApp.Controllers
         // GET: ReviewController/Create
         public ActionResult Create()
         {
-            return View("_Create");
+
+            return PartialView("_Create");
         }
 
         // POST: ReviewController/Create
@@ -68,10 +67,11 @@ namespace FastTripApp.Controllers
             if (ModelState.IsValid)
             {
                 review.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                review.TimePost = _repositoryTimeInfo.TimeNow();
+                review.TimePost = _util.DateTimeNow();
 
                 _repositoryReview.Add(review);
-                return RedirectToRoute(new { controller = "Trip", action = "Index" });
+                _tripService.ToHistory(review.TripId);
+                return RedirectToRoute(new { controller = "Review", action = "Index" });
             }
 
             return View("_Create", review);

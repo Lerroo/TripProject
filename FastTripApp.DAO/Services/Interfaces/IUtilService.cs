@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FastTripApp.DAO.Services.Interfaces
 {
-    public interface ITripService
+    public interface IUtilService
     {
-        Task ToHistory(int? id);
+        DateTime DateTimeNow();
+
     }
 }

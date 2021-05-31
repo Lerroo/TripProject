@@ -1,6 +1,7 @@
 ﻿
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,32 +19,20 @@ namespace FastTripApp.DAO.Repository
             _context = context;
         }
 
-        public void TripToHistory(Trip trip)
+        public HistoryTrip GetWithInclude(int id)
         {
-            if (trip.TimeInfo == null)
-            {
-                trip.TimeInfo = new TimeInfo();
-            } 
-            var timeTrack = trip.TimeInfo.End - trip.TimeInfo.Start;
-            HistoryTrip historyTrip = new HistoryTrip
-            {
-                TripId = trip.Id,
-                Name = trip.Name,
-                Image = trip.Image,
-                Descriprion = trip.Descriprion,
-                StartTrip = trip.TimeInfo.Start,
-                EndTrip = trip.TimeInfo.End,
-                TimeTrack = timeTrack.Value.Seconds,
-                AddressStart = trip.AddressStart,
-                AddressEnd = trip.AddressEnd,
-                AddressEndLatitude = trip.AddressEndLatitude,
-                AddressEndLongitude = trip.AddressEndLongitude,
-                AddressStartLatitude = trip.AddressStartLatitude,
-                AddressStartLongitude = trip.AddressStartLongitude,
-                UserId = trip.UserId
-            };
+            return _context.HistoryTrips
+                .Include(p => p.Address)
+                .Include(p => p.TimeAfterDeparture)
+                .FirstOrDefault(p => p.Id == id);
+        }
 
-            _context.Add(historyTrip);
+        public IEnumerable<HistoryTrip> HistoryByUserId(string id)
+        {
+            return _context.HistoryTrips
+                .Include(p => p.Address)
+                .Include(p => p.TimeAfterDeparture)
+                .Where(p => p.UserId == id);
         }
 
     }

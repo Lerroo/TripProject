@@ -17,8 +17,7 @@ namespace FastTripApp.DAO
         public DbSet<Trip> Trips { get; set; }
         public DbSet<HistoryTrip> HistoryTrips { get; set; }
         public DbSet<Review> Reviews { get; set; }
-
-
+        public DbSet<TimeAfterDeparture> TimeAfterDepartures { get; set; }
         public DbSet<Comment> Comments { get; set; }
        
 
@@ -32,10 +31,6 @@ namespace FastTripApp.DAO
 
             builder.Entity<IdentityRole>()
                 .ToTable("Roles");
-
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
 }

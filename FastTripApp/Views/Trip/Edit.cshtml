@@ -1,109 +1,84 @@
 ﻿@model FastTripApp.DAO.Models.Trip
 
-<style>
-    #map {
-        height: 400px;
-        width: 400px;
-    }
-</style>
 
-<form method="post">
+<form asp-action="Edit" method="post">
     <div class="border p-3">
         <div class="form-group row">
-            <h2 class="text-info pl-3">Edit curent Fast Trip</h2>
+            <h2 class="text-info pl-3">Edit Fast Trip</h2>
         </div>
         <div class="row">
-
-            <div class="col-8">
-
+            <div class="col">
+                <input asp-for="Id" class="d-none" />
+                <input asp-for="UserId" class="d-none" />
                 <div class="form-group row">
-                    <div class="col-4">
+                    <div class="col-3">
                         <label asp-for="Name"></label>
                     </div>
-                    <div class="col-8">
+                    <div class="col">
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="TimePlain"></label>
+                    <div class="col-3">
+                        <label asp-for="TimeBeforeDeparture.ApproximateStart"></label>
                     </div>
-                    <div class="col-8">
-                        <input asp-for="TimePlain" class="form-control" />
-                        <span asp-validation-for="TimePlain" class="text-danger"></span>
+                    <div class="col">
+                        <input asp-for="TimeBeforeDeparture.ApproximateStart" class="form-control" />
+                        <span asp-validation-for="TimeBeforeDeparture.ApproximateStart" class="text-danger"></span>
                     </div>
                 </div>
 
+                <input class="form-control d-none" asp-for="TimeBeforeDeparture.Estimated">
+
                 <div class="form-group row">
-                    <div class="col-4">
+                    <div class="col-3">
                         <label asp-for="Descriprion"></label>
                     </div>
-                    <div class="col-8">
+                    <div class="col">
                         <textarea asp-for="Descriprion" class="form-control" rows="3"></textarea>
                         <span asp-validation-for="Descriprion" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="AddressStart"></label>
+                    <div class="col-3">
+                        <label asp-for="Address.Start"></label>
                     </div>
-                    <div class="col-8">
-                        <input id="InputStart" type="text" class="form-control" placeholder="Start trip" asp-for="AddressStart">
-                        <input id="InputStartLatitude" type="text" class="form-control d-none" asp-for="AddressStartLatitude">
-                        <input id="InputStartLongitude" type="text" class="form-control d-none" placeholder="Start trip" asp-for="AddressStartLongitude">
+                    <div class="col">
+                        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Address.Start"></textarea>
+                        <span asp-validation-for="Address.Start" class="text-danger"></span>
+                        <input type="text" class="form-control d-none" asp-for="Address.StartCoords">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="AddressEnd"></label>
+                    <div class="col-3">
+                        <label asp-for="Address.End"></label>
                     </div>
-                    <div class="col-8">
-                        <input id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="AddressEnd">
-                        <input id="InputEndLatitude" type="text" class="form-control d-none" asp-for="AddressEndLatitude">
-                        <input id="InputEndLongitude" type="text" class="form-control d-none " placeholder="Start trip" asp-for="AddressEndLongitude">
+                    <div class="col">
+                        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Address.End"></textarea>
+                        <span asp-validation-for="Address.End" class="text-danger"></span>
+                        <input type="text" class="form-control d-none" asp-for="Address.EndCoords">
                     </div>
                 </div>
-                <input type="text" class="form-control d-none" asp-for="UserId">
-                <input type="text" class="form-control d-none" asp-for="EstimatedTime">
 
-                <div class="form-group row">
+                <div class="row d-flex justify-content-end">
                     <div class="col-8 offset-4 row">
-
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Update" />
+                            <input type="submit" class="btn btn-info w-100" value="Edit" />
                         </div>
                         <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i>Back</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4 text-right" id="map">
-                @* Keep this empty *@
-            </div>
+            <div class="col-5 text-right mx-auto" id="map"> </div>
         </div>
     </div>
 </form>
 
+
 <div class="col-6 text-right" id="map"></div>
-<script>
-    let directionsDisplay;
-    let directionsService = new google.maps.DirectionsService();
-    let geocoder = new google.maps.Geocoder();
-
-    document.getElementById("InputStart").onclick = function () {
-        const start = GenAutocomplete("InputStart")
-        const end = GenAutocomplete("InputEnd")
-        Promise.all([start, end]).then((lala) => calcRoute(lala[0], lala[1]))
-
-    }
-    document.getElementById("InputEnd").onclick = function () {
-        GenAutocomplete("InputStart").then(coords => calcRoute(coords));
-    }
-
-    google.maps.event.addDomListener(window, 'load', initMap);
-</script>

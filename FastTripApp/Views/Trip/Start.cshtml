@@ -1,54 +1,23 @@
-﻿@model FastTripApp.DAO.Models.TimeInfo
-
+﻿
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog bg-white">
-        @Html.Partial("../Review/_Create",
+        <div class="modal-content">
+            @Html.Partial("../Review/_Create",
             new FastTripApp.DAO.Models.Review()
         )
+        </div>        
     </div>
 </div>
 
-
-
 <div class="container p-3 col-10">
-    <a class="btn btn-info" onclick="getInfo()">Details</a>
-
-    <div class="review_stars_wrap">
-        <div id="review_stars">
-            <input id="star-4" type="radio" name="stars">
-            <label title="Отлично" for="star-4">
-                <i class="fas fa-star"></i>
-            </label>
-            <input id="star-3" type="radio" name="stars">
-            <label title="Хорошо" for="star-3">
-                <i class="fas fa-star"></i>
-            </label>
-            <input id="star-2" type="radio" name="stars">
-            <label title="Нормально" for="star-2">
-                <i class="fas fa-star"></i>
-            </label>
-            <input id="star-1" type="radio" name="stars">
-            <label title="Плохо" for="star-1">
-                <i class="fas fa-star"></i>
-            </label>
-            <input id="star-0" type="radio" name="stars">
-            <label title="Ужасно" for="star-0">
-                <i class="fas fa-star"></i>
-            </label>
-        </div>
-    </div>
-
+    <a onclick="showReviewModalWindow()">dsadad</a>
     <div class="d-flex justify-content-center align-items-center row">
-
         <div class="col-8">
             <h2 class="text-primary">We are glad that you have chosen us. Write a Review at the end of your trip. Here's a cat for you while you are on your way.</h2>
             <img src="~/uploads/cat.gif" alt="я джифка" class="img-thumbnail rounded m-3 mx-auto d-block">
-            <form name=MyForm asp-controller="Trip" asp-action="End" asp-route-id="@ViewData["IdTrip"]">
-                <input asp-for="Start" class="d-none" />
-                <input type="submit" class="btn btn-info w-100" value="End trip" />
-            </form>
+            
+            <input type="submit" class="btn btn-info w-100" onclick="showReviewModalWindow()" value="End trip" />
         </div>
-
     </div>
 </div>
 
@@ -56,7 +25,7 @@
 @section scripts
 {
     <script type="text/javascript">
-        function getInfo() {
+        function showReviewModalWindow() {
             $.ajaxSetup({ cache: false });
             $('#modDialog').modal('show');
         }

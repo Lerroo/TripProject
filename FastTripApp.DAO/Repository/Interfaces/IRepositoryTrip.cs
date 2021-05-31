@@ -7,8 +7,7 @@ namespace FastTripApp.DAO.Repository.Interfaces
 {
     public interface IRepositoryTrip : IRepository<Trip>
     {
-        //fix
-
+        Trip GetByIdWithInclude(int? id);
         IEnumerable<Trip> TripsByUserId(string id);
     }
 }

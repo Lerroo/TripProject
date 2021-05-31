@@ -20,36 +20,9 @@ namespace FastTripApp.DAO.Models
 
         public string Descriprion { get; set; }
 
-        [DisplayName("Actual start time")]
-        public DateTime? StartTrip { get; set; }
+        public TimeAfterDeparture TimeAfterDeparture { get; set; }
 
-        [DisplayName("Actual end time")]
-        public DateTime? EndTrip { get; set; }
-
-        public long TimeTrack { get; set; }
-        [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m {0:%m}s", ApplyFormatInEditMode = true)]
-        [DisplayName("Track time")]
-        [NotMapped]
-        public TimeSpan TimeTrackView
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(TimeTrack);
-            }
-            set
-            {
-                TimeTrack = value.Seconds;
-            }
-        }
-
-        [DisplayName("Address Start")]
-        public string AddressStart { get; set; }
-        public string AddressStartLatitude { get; set; }
-        public string AddressStartLongitude { get; set; }
-        [DisplayName("Address End")]
-        public string AddressEnd { get; set; }
-        public string AddressEndLatitude { get; set; }
-        public string AddressEndLongitude { get; set; }
+        public Address Address { get; set; }
 
         public string UserId { get; set; }
     }

@@ -5,9 +5,8 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository.Interfaces
 {
-    public interface IRepositoryTimeInfo : IRepository<TimeInfo>
+    public interface IRepositoryTimeAfterDeparture : IRepository<TimeAfterDeparture>
     {
-        DateTime TimeNow();
-        TimeInfo CalculateTime(TimeInfo timeInfo);
+        TimeAfterDeparture getAbandonTime();
     }
 }

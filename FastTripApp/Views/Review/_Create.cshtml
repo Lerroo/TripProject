@@ -1,20 +1,22 @@
 ﻿@model FastTripApp.DAO.Models.Review
+@{ 
+    var tripId = ViewData["TripId"];
+}
 
-<form asp-action="Create" method="post">
-    <div class="col-5 border p-3">
+<form asp-action="Create" asp-controller="Review"  method="post">
+    <div class="col border p-3">
         <div class="form-group row">
             <h2 class="text-info pl-3">Share your impressions</h2>
         </div>
         <div class="row justify-content-center">
-            <div class="col">
-                
-
+            <div class="col">     
+                <input asp-for="TripId" class="d-none" value="@tripId" />
                 <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="Appraisal"></label>
                     </div>
                     <div class="col-8">
-                        <div class="rating-area d-flex justify-content-end flex-row-reverse" onclick="check()">
+                        <div class="rating-area d-flex justify-content-end flex-row-reverse" onclick="setAppratialStarsRating()">
                             <input type="radio" id="star-5" name="rating" value="5">
                             <label for="star-5" title="Оценка «5»"></label>
                             <input type="radio" id="star-4" name="rating" value="4">
@@ -29,7 +31,6 @@
                         <span asp-validation-for="Appraisal" class="text-danger"></span>
                     </div>
                     <input id="appraisal" asp-for="Appraisal" class="d-none form-control" />
-                    
                 </div>
 
                 <div class="form-group row">
@@ -48,7 +49,7 @@
                             <input type="submit" class="btn btn-success w-100" value="Post Review" />
                         </div>
                         <div class="col">
-                            <a asp-controller="Trip" asp-action="Index" class="btn btn-danger w-100"><i class="fas fa-sign-out-alt"></i>Skip</a>
+                            <a asp-controller="Trip" asp-action="End" asp-route-id="@tripId" asp-me class="btn btn-danger w-100"><i class="fas fa-sign-out-alt"></i>Skip</a>
                         </div>
                     </div>
                 </div>
@@ -57,16 +58,3 @@
         </div>        
     </div>
 </form>
-
-<script>
-    function check() {
-        var inp = document.getElementsByName('rating');
-        for (var i = 0; i < inp.length; i++) {
-            if (inp[i].type == "radio" && inp[i].checked) {
-                document.getElementById('appraisal').value = inp[i].value;
-                break;
-            }
-        }
-    }
-
-</script>

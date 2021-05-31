@@ -3,99 +3,70 @@
 
 // Write your JavaScript code.
 
-
-
-class CoordsLatLng {
-    constructor(lat, lng) {
-        this.lat = lat
-        this.lng = lng
-    }
-}
-
-function reloadPage() {
-    window.location.reload()
-}
-
-let directionsDisplay;
-let directionsService = new google.maps.DirectionsService();
-let map;
-/*let geocoder = new google.maps.Geocoder();*/
-
 google.maps.event.addDomListener(window, 'load', initMap);
 
-
-
-function initMap() {
-    directionsDisplay = new google.maps.DirectionsRenderer();
+async function initMap() {
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
     let start = new google.maps.LatLng(55.8782557, 37.65372);
     let mapOptions = {
         zoom: 9,
         center: start
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    GenAutocomplete("InputStart");
-}
 
-function defaultMap(center, path) {
+    directionsRenderer.setMap(map);
 
-    
-    let clearPath = preparePath(path)
-    let clearStart = prepareLatLng(center)
-    console.log(clearStart)
-    var URL = "https://maps.googleapis.com/maps/api/staticmap?center=" + clearStart + "&zoom=9&size=500x500&maptype=roadmap&path=" + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+    GenAutocomplete("Address_Start").then(() => calculateAndDisplayRoute(
+        directionsService,
+        directionsRenderer
+    ));
+    GenAutocomplete("Address_End").then(() => calculateAndDisplayRoute(
+        directionsService,
+        directionsRenderer
+    ));
 
-    document.getElementById("googleStaticPicture").src = URL;
-}
 
-function preparePath(path) {
-    let preparePath = "color:0x0000ff80|weight:1";
-
-    var blkstr = [];
-    path.forEach(function (item, i, arr) {
-        var clearLatLng = prepareLatLng(item)
-        blkstr.push(clearLatLng);
-    });
-    preparePath += blkstr.join("|")
-    return preparePath
-}
-
-function prepareLatLng(obj) {
-    return obj.lat() + "," + obj.lng();
-
-}
-
-function calcRoute(googleLatLngStart, googleLatLngEnd) {
-    console.log('calcRoute');
-
-    console.log(googleLatLngEnd)
-    let request = {
-        origin: googleLatLngStart,
-        destination: googleLatLngEnd,
-        travelMode: 'DRIVING',
-        drivingOptions: {
-            departureTime: new Date(document.getElementById("TimePlain").value),
-            trafficModel: 'pessimistic'
-        },
-        unitSystem: google.maps.UnitSystem.METRIC
+    const onChangeHandler = function () {
+        calculateAndDisplayRoute(directionsService, directionsRenderer);
     };
 
-    directionsService.route(request, function (response, status) {
-        if (status === 'OK') {
-            let seconds = response.routes[0].legs[0].duration.value
-            document.getElementById("EstimatedTime").value = seconds
-            
-
-            directionsDisplay.setDirections(response);  
-
-            console.log(response.routes[0])
-            var path = response.routes[0].overview_path
-            defaultMap(map.getCenter(), path)
-        } else {
-            alert("directions request failed, status=" + status)
-        }
-    });
-
+    document.getElementById("Address_Start").addEventListener("change", onChangeHandler);
+    document.getElementById("Address_End").addEventListener("change", onChangeHandler);
 }
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    let startCoords = document.getElementById("Address_StartCoords").value;
+    let endCoords = document.getElementById("Address_EndCoords").value;
+
+    if (startCoords != "" && endCoords != "") {
+        directionsService.route(
+            {
+                origin: JSON.parse(startCoords),
+                destination: JSON.parse(endCoords),
+                travelMode: google.maps.TravelMode.DRIVING,
+                drivingOptions: {
+                    departureTime: new Date(document.getElementById("TimeBeforeDeparture_ApproximateStart").value),
+                    trafficModel: 'pessimistic'
+                },
+                unitSystem: google.maps.UnitSystem.METRIC
+            },
+            (response, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(response);
+                    let seconds = response.routes[0].legs[0].duration.value
+                    document.getElementById("TimeBeforeDeparture_Estimated").value = seconds
+
+                    var path = response.routes[0].overview_path
+                    getStaticMap(path)
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
+    }
+}
+
 
 function GenAutocomplete(elementid) {
     return new Promise((resolve, reject) => {
@@ -116,34 +87,41 @@ function GenAutocomplete(elementid) {
             strictBounds: false,
             types: ["establishment"],
         };
-        let autocomplete = new google.maps.places.Autocomplete(input, options);
+        let autocomplete = new google.maps.places.Autocomplete(input, options);           
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             let place = autocomplete.getPlace();
             document.getElementById(elementid).value = place.name;
-            console.log("addListener-")
 
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
+            let googleLatLng = JSON.stringify( new google.maps.LatLng(lat, lng))
 
-            let googleLatLng = new google.maps.LatLng(lat, lng)
-
-            document.getElementById(elementid + "Latitude").value = lat
-            document.getElementById(elementid + "Longitude").value = lng
+            document.getElementById(elementid+"Coords").value = googleLatLng
             resolve(googleLatLng)
         });
     })
 }
 
-function isEmptyObject(obj) {
+function isNotEmptyObject(obj) {
     for (let i in obj) {
         if (obj.hasOwnProperty(i)) {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
+function getStaticMap(path) {
+    //let clearPath = preparePath(path)
+    //let clearStart = prepareLatLng(map.getCenter())
+    //console.log(clearStart)
+    //console.log(map.getZoom())
+    //var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
+    //    + clearStart + "&zoom=9&size=500x500&maptype=roadmap&path="
+    //    + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+    //document.getElementById("googleStaticPicture").src = URL;
+}
 
 $(function () {
     $('#modal-delete').on('show.bs.modal', function (event) {
@@ -158,3 +136,13 @@ $(function () {
 
     });
 });
+
+function setAppratialStarsRating() {
+    var inp = document.getElementsByName('rating');
+    for (var i = 0; i < inp.length; i++) {
+        if (inp[i].type == "radio" && inp[i].checked) {
+            document.getElementById('appraisal').value = inp[i].value;
+            break;
+        }
+    }
+}

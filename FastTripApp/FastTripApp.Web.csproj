@@ -16,12 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210528162618_first.cs" />
-    <Compile Include="Migrations\20210528162618_first.Designer.cs" />
-    <Compile Include="Migrations\20210528163409_a.cs" />
-    <Compile Include="Migrations\20210528163409_a.Designer.cs" />
-    <Compile Include="Migrations\20210530125514_Required review appraisal.cs" />
-    <Compile Include="Migrations\20210530125514_Required review appraisal.Designer.cs" />
+    <Compile Include="Migrations\20210530185100_first.cs" />
+    <Compile Include="Migrations\20210530185100_first.Designer.cs" />
+    <Compile Include="Migrations\20210530190524_firstdsada.cs" />
+    <Compile Include="Migrations\20210530190524_firstdsada.Designer.cs" />
+    <Compile Include="Migrations\20210530224232_firstdsadada.cs" />
+    <Compile Include="Migrations\20210530224232_firstdsadada.Designer.cs" />
+    <Compile Include="Migrations\20210530232242_firstdsadadadad.cs" />
+    <Compile Include="Migrations\20210530232242_firstdsadadadad.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 
@@ -44,6 +46,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.6" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.11.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 

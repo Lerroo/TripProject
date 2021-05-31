@@ -19,8 +19,9 @@ namespace FastTripApp.DAO.Models
         public int? Appraisal { get; set; }
         public DateTime? TimePost { get; set; }
         public List<Comment> Comments { get; set; }
-        
-        public string? UserId { get; set; }
+
+        public int TripId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
         

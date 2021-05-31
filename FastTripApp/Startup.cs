@@ -52,11 +52,14 @@ namespace UsingIdentity
 
             services.AddScoped<IRepositoryTrip, RepositoryTrip>();
             services.AddScoped<IRepositoryHistoryTrip, RepositoryHistoryTrip>();
-            services.AddScoped<IRepositoryTimeInfo, RepositoryTimeInfo>();
+            services.AddScoped<IRepositoryTimeAfterDeparture, RepositoryTimeAfterDeparture>();
             services.AddScoped<IRepositoryReview, RepositoryReview>();
             services.AddScoped<IRepositoryComment, RepositoryComment>();
 
             services.AddScoped<ITripService, TripService>();
+            services.AddScoped<ITimeAfterDepartureService, TimeAfterDepartureService>();
+            services.AddScoped<IUtilService, UtilService>();
+            services.AddScoped<IHistoryTripService, HistoryTripService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

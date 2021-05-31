@@ -9,7 +9,11 @@ namespace FastTripApp.Validation
     public class CheckDateRangeAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {            
+        {
+            if (value == null)
+            {
+                return new ValidationResult(ErrorMessage ?? "Select day and time");
+            }
             DateTime dt = (DateTime)value;
             if (dt >= DateTime.UtcNow)
             {

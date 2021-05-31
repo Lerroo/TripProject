@@ -24,16 +24,16 @@
                         @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
                     </th>
                     <th style="WIDTH: 180px;">
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().StartTrip)
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Start)
+                    </th>
+                    <th style="WIDTH: 125px;">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Observe)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeTrack)
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.Start)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressStart)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().AddressEnd)
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.Start)
                     </th>
                     <th>
                     </th>
@@ -43,29 +43,24 @@
                 @foreach (var trip in Model)
                 {
                     var styleLine = "";
-                    if (trip.TimeTrack == 0)
+                    string startTrip;
+                    if (trip.TimeAfterDeparture.Observe.Value.Seconds == 0)
                     {
                         styleLine = "background-color: #fb5e6d";
-                    }
-
-                    string startTrip;
-                    if (trip.TimeTrack == 0)
-                    {
                         startTrip = "Abandon";
                     }
                     else
                     {
-                        startTrip = trip.StartTrip.ToString();
+                        startTrip = trip.TimeAfterDeparture.Start.ToString();
                     }
                 <tr style="@styleLine">
                     <td>@trip.Name</td>
                     <td>@startTrip</td>
-                    <td>@Html.DisplayFor(modelItem => trip.TimeTrackView)</td>
-                    <td>@trip.AddressStart</td>
-                    <td>@trip.AddressEnd</td>
+                    <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
+                    <td>@trip.Address.End</td>
+                    <td>@trip.Address.Start</td>
                     <td>
                         @{
-
                             var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
                         }
                         <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>

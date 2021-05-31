@@ -8,8 +8,7 @@
         </div>
         <div class="row">
             <div class="col">
-
-
+                
                 <div class="form-group row">
                     <div class="col-3">
                         <label asp-for="Name"></label>
@@ -22,13 +21,15 @@
 
                 <div class="form-group row">
                     <div class="col-3">
-                        <label asp-for="TimePlain"></label>
+                        <label asp-for="TimeBeforeDeparture.ApproximateStart"></label>
                     </div>
                     <div class="col">
-                        <input asp-for="TimePlain" class="form-control" />
-                        <span asp-validation-for="TimePlain" class="text-danger"></span>
+                        <input asp-for="TimeBeforeDeparture.ApproximateStart" class="form-control" />
+                        <span asp-validation-for="TimeBeforeDeparture.ApproximateStart" class="text-danger"></span>
                     </div>
                 </div>
+
+                <input class="form-control d-none" asp-for="TimeBeforeDeparture.Estimated">
 
                 <div class="form-group row">
                     <div class="col-3">
@@ -42,27 +43,23 @@
 
                 <div class="form-group row">
                     <div class="col-3">
-                        <label asp-for="AddressStart"></label>
+                        <label asp-for="Address.Start"></label>
                     </div>
                     <div class="col">
-                        <textarea cols="2" id="InputStart" type="text" class="form-control" placeholder="Start trip" asp-for="AddressStart"></textarea>
-                        <span asp-validation-for="AddressStart" class="text-danger"></span>
-                        <input id="InputStartLatitude" type="text" class="form-control d-none" asp-for="AddressStartLatitude">
-                        <input id="InputStartLongitude" type="text" class="form-control d-none" placeholder="Start trip" asp-for="AddressStartLongitude">
+                        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Address.Start"></textarea>
+                        <span asp-validation-for="Address.Start" class="text-danger"></span>
+                        <input type="text" class="form-control d-none" asp-for="Address.StartCoords">
                     </div>
                 </div>
 
-                <input class="form-control d-none" asp-for="EstimatedTime">
-
                 <div class="form-group row">
                     <div class="col-3">
-                        <label asp-for="AddressEnd"></label>
+                        <label asp-for="Address.End"></label>
                     </div>
                     <div class="col">
-                        <textarea cols="2" id="InputEnd" type="text" class="form-control" placeholder="End trip" asp-for="AddressEnd"></textarea>
-                        <span asp-validation-for="AddressEnd" class="text-danger"></span>
-                        <input id="InputEndLatitude" type="text" class="form-control d-none" asp-for="AddressEndLatitude">
-                        <input id="InputEndLongitude" type="text" class="form-control d-none " placeholder="Start trip" asp-for="AddressEndLongitude">
+                        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Address.End"></textarea>
+                        <span asp-validation-for="Address.End" class="text-danger"></span>
+                        <input type="text" class="form-control d-none" asp-for="Address.EndCoords">
                     </div>
                 </div>
 
@@ -86,12 +83,3 @@
     <img id="googleStaticPicture" />
 </div>
 
-<script>
-
-    document.getElementById("InputStart").onclick = function () {
-        let start = GenAutocomplete("InputStart")
-        let end = GenAutocomplete("InputEnd")
-        Promise.all([start, end]).then(lala => calcRoute(lala[0], lala[1]))
-    }
-
-</script>
