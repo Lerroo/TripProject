@@ -9,7 +9,7 @@ namespace FastTripApp.DAO.Services
     {
         public DateTime DateTimeNow()
         {
-            return DateTime.UtcNow;
+            return DateTime.Now;
         }
     }
 }

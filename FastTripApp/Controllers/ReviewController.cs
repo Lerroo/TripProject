@@ -18,19 +18,16 @@ namespace FastTripApp.Controllers
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;
-        private readonly IRepositoryTimeAfterDeparture _repositoryTimeInfo;
         private readonly ITimeAfterDepartureService _timeAfterDepartureService;
         private readonly ITripService _tripService;
         private readonly IUtilService _util;
 
         public ReviewController(
             IRepositoryReview repositoryReview,
-            IRepositoryTimeAfterDeparture repositoryTimeInfo,
             ITimeAfterDepartureService timeAfterDepartureService,
             ITripService tripService,
             IUtilService util)
         {
-            _repositoryTimeInfo = repositoryTimeInfo;
             _repositoryReview = repositoryReview;
             _timeAfterDepartureService = timeAfterDepartureService;
             _util = util;
@@ -70,8 +67,7 @@ namespace FastTripApp.Controllers
                 review.TimePost = _util.DateTimeNow();
 
                 _repositoryReview.Add(review);
-                _tripService.ToHistory(review.TripId);
-                return RedirectToRoute(new { controller = "Review", action = "Index" });
+                return RedirectToRoute(new { controller = "Trip", action = "End", id = review.TripId });
             }
 
             return View("_Create", review);

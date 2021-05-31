@@ -22,21 +22,21 @@ namespace FastTripApp.Controllers
     {
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
-        private readonly IRepositoryTimeAfterDeparture _repositoryTimeAfterDeparture;
+
         private readonly ITripService _tripService;
         private readonly ITimeAfterDepartureService _timeAfterDepartureService;
         private readonly IUtilService _util;
 
         public TripController(IRepositoryTrip tripRepository, 
             IRepositoryHistoryTrip historyRepository, 
-            IRepositoryTimeAfterDeparture repositoryTimeAfterDeparture,
+
             ITripService tripService,
             ITimeAfterDepartureService timeAfterDepartureService,
             IUtilService util)
         {
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = historyRepository;
-            _repositoryTimeAfterDeparture = repositoryTimeAfterDeparture;
+
             _tripService = tripService;
             _timeAfterDepartureService = timeAfterDepartureService;
             _util = util;
@@ -64,7 +64,7 @@ namespace FastTripApp.Controllers
                 //BackgroundJob.ContinueJobWith(
                 //    idJob, () => Response.Redirect(HttpContext.Request.Path));
                 //    
-                BackgroundJob.Schedule(() => Response.Redirect("/adad"), timeDelay);
+                BackgroundJob.Schedule(() => Response.Redirect(Request.Path), timeDelay);
             }
             return View(objList);
         }
@@ -77,21 +77,20 @@ namespace FastTripApp.Controllers
             return NotFound();
         }
 
-        [Authorize]
         public ActionResult Start(int id)
         {
-            var timeAfterDeparture = new TimeAfterDeparture
-            {
-                Start = _util.DateTimeNow()
-            };
-            _repositoryTimeAfterDeparture.Add(timeAfterDeparture);
+            _tripService.Start(id);
 
             ViewBag.TripId = id;
             return View();
-        }   
+        }
 
         public ActionResult End(int id)
         {
+            var trip = _repositoryTrip.GetByIdWithInclude(id);
+            trip.TimeAfterDeparture.End = _util.DateTimeNow();
+            _repositoryTrip.Update(trip);
+            
             _tripService.ToHistory(id);
             return RedirectToRoute(new { controller = "Trip", action = "Index" });
         }

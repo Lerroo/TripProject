@@ -8,5 +8,9 @@ namespace FastTripApp.DAO.Repository.Interfaces
     public interface IRepositoryTimeAfterDeparture : IRepository<TimeAfterDeparture>
     {
         TimeAfterDeparture getAbandonTime();
+        DateTime GetErrorTime();
+        TimeAfterDeparture GetWithStart();
+        void SetEndById(int id);
+
     }
 }

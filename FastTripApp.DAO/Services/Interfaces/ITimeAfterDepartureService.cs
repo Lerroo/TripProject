@@ -8,6 +8,5 @@ namespace FastTripApp.DAO.Services.Interfaces
     public interface ITimeAfterDepartureService
     {
         TimeAfterDeparture CalculateTime(TimeAfterDeparture timeInfo);
-        DateTime GetErrorTime();
     }
 }

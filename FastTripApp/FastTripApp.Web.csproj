@@ -16,14 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210530185100_first.cs" />
-    <Compile Include="Migrations\20210530185100_first.Designer.cs" />
-    <Compile Include="Migrations\20210530190524_firstdsada.cs" />
-    <Compile Include="Migrations\20210530190524_firstdsada.Designer.cs" />
-    <Compile Include="Migrations\20210530224232_firstdsadada.cs" />
-    <Compile Include="Migrations\20210530224232_firstdsadada.Designer.cs" />
-    <Compile Include="Migrations\20210530232242_firstdsadadadad.cs" />
-    <Compile Include="Migrations\20210530232242_firstdsadadadad.Designer.cs" />
+    <Compile Include="Migrations\20210531115348_first.cs" />
+    <Compile Include="Migrations\20210531115348_first.Designer.cs" />
+    <Compile Include="Migrations\20210531120837_first1.cs" />
+    <Compile Include="Migrations\20210531120837_first1.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastTripApp.Web.Migrations
 {
     [DbContext(typeof(UsingIdentityContext))]
-    [Migration("20210530185100_first")]
+    [Migration("20210531115348_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -208,6 +208,9 @@ namespace FastTripApp.Web.Migrations
                     b.Property<DateTime?>("TimePost")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TripId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -231,9 +234,15 @@ namespace FastTripApp.Web.Migrations
                     b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TripId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("TimeAfterDeparture");
+                    b.HasIndex("TripId")
+                        .IsUnique();
+
+                    b.ToTable("TimeAfterDepartures");
                 });
 
             modelBuilder.Entity("FastTripApp.DAO.Models.TimeBeforeDeparture", b =>
@@ -275,10 +284,10 @@ namespace FastTripApp.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReviewId")
+                    b.Property<int?>("ReviewId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TimeAfterDepartureId")
+                    b.Property<int?>("ReviewId1")
                         .HasColumnType("int");
 
                     b.Property<int?>("TimeBeforeDepartureId")
@@ -291,9 +300,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("ReviewId");
-
-                    b.HasIndex("TimeAfterDepartureId");
+                    b.HasIndex("ReviewId1");
 
                     b.HasIndex("TimeBeforeDepartureId");
 
@@ -474,6 +481,15 @@ namespace FastTripApp.Web.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FastTripApp.DAO.Models.TimeAfterDeparture", b =>
+                {
+                    b.HasOne("FastTripApp.DAO.Models.Trip", null)
+                        .WithOne("TimeAfterDeparture")
+                        .HasForeignKey("FastTripApp.DAO.Models.TimeAfterDeparture", "TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FastTripApp.DAO.Models.Trip", b =>
                 {
                     b.HasOne("FastTripApp.DAO.Models.Address", "Address")
@@ -482,13 +498,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasOne("FastTripApp.DAO.Models.Review", "Review")
                         .WithMany()
-                        .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FastTripApp.DAO.Models.TimeAfterDeparture", "TimeAfterDeparture")
-                        .WithMany()
-                        .HasForeignKey("TimeAfterDepartureId");
+                        .HasForeignKey("ReviewId1");
 
                     b.HasOne("FastTripApp.DAO.Models.TimeBeforeDeparture", "TimeBeforeDeparture")
                         .WithMany()
@@ -501,8 +511,6 @@ namespace FastTripApp.Web.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Review");
-
-                    b.Navigation("TimeAfterDeparture");
 
                     b.Navigation("TimeBeforeDeparture");
 
@@ -568,6 +576,11 @@ namespace FastTripApp.Web.Migrations
             modelBuilder.Entity("FastTripApp.DAO.Models.Review", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("FastTripApp.DAO.Models.Trip", b =>
+                {
+                    b.Navigation("TimeAfterDeparture");
                 });
 #pragma warning restore 612, 618
         }

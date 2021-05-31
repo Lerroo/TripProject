@@ -1,4 +1,5 @@
-﻿
+﻿@model FastTripApp.DAO.Models.TimeAfterDeparture
+
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog bg-white">
         <div class="modal-content">
@@ -10,24 +11,13 @@
 </div>
 
 <div class="container p-3 col-10">
-    <a onclick="showReviewModalWindow()">dsadad</a>
     <div class="d-flex justify-content-center align-items-center row">
         <div class="col-8">
             <h2 class="text-primary">We are glad that you have chosen us. Write a Review at the end of your trip. Here's a cat for you while you are on your way.</h2>
             <img src="~/uploads/cat.gif" alt="я джифка" class="img-thumbnail rounded m-3 mx-auto d-block">
             
+            <form action="/" method="post"></form>
             <input type="submit" class="btn btn-info w-100" onclick="showReviewModalWindow()" value="End trip" />
         </div>
     </div>
 </div>
-
-
-@section scripts
-{
-    <script type="text/javascript">
-        function showReviewModalWindow() {
-            $.ajaxSetup({ cache: false });
-            $('#modDialog').modal('show');
-        }
-    </script>
-}

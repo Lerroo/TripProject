@@ -67,7 +67,6 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     }
 }
 
-
 function GenAutocomplete(elementid) {
     return new Promise((resolve, reject) => {
         const center = { lat: 50.064192, lng: -130.605469 };
@@ -103,15 +102,6 @@ function GenAutocomplete(elementid) {
     })
 }
 
-function isNotEmptyObject(obj) {
-    for (let i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            return true;
-        }
-    }
-    return false;
-}
-
 function getStaticMap(path) {
     //let clearPath = preparePath(path)
     //let clearStart = prepareLatLng(map.getCenter())
@@ -122,6 +112,11 @@ function getStaticMap(path) {
     //    + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
     //document.getElementById("googleStaticPicture").src = URL;
 }
+
+function showReviewModalWindow() {
+    $.ajaxSetup({ cache: false });
+        $('#modDialog').modal('show');
+    }
 
 $(function () {
     $('#modal-delete').on('show.bs.modal', function (event) {

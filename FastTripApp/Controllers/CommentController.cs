@@ -17,16 +17,16 @@ namespace FastTripApp.Controllers
 {
     public class CommentController : Controller
     {
-        private readonly IRepositoryTimeAfterDeparture _repositoryTimeInfo;
+
         private readonly IRepositoryComment _repositoryComment;
         private readonly IUtilService _util;
 
         public CommentController(
             IRepositoryComment repositoryComment, 
-            IRepositoryTimeAfterDeparture repositoryTimeInfo,
+
             IUtilService util)
         {
-            _repositoryTimeInfo = repositoryTimeInfo;
+
             _repositoryComment = repositoryComment;
             _util = util;
         }

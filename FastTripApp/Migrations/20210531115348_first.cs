@@ -38,20 +38,6 @@ namespace FastTripApp.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeAfterDeparture",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Start = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TimeAfterDeparture", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TimeBeforeDeparture",
                 columns: table => new
                 {
@@ -113,37 +99,6 @@ namespace FastTripApp.Web.Migrations
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HistoryTrips",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TripId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Descriprion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TimeAfterDepartureId = table.Column<int>(type: "int", nullable: true),
-                    AddressId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HistoryTrips", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HistoryTrips_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HistoryTrips_TimeAfterDeparture_TimeAfterDepartureId",
-                        column: x => x.TimeAfterDepartureId,
-                        principalTable: "TimeAfterDeparture",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,6 +195,7 @@ namespace FastTripApp.Web.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Appraisal = table.Column<int>(type: "int", nullable: false),
                     TimePost = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TripId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -291,10 +247,10 @@ namespace FastTripApp.Web.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descriprion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TimeBeforeDepartureId = table.Column<int>(type: "int", nullable: true),
-                    TimeAfterDepartureId = table.Column<int>(type: "int", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                    ReviewId = table.Column<int>(type: "int", nullable: true),
+                    ReviewId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,16 +262,10 @@ namespace FastTripApp.Web.Migrations
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Trips_Reviews_ReviewId",
-                        column: x => x.ReviewId,
+                        name: "FK_Trips_Reviews_ReviewId1",
+                        column: x => x.ReviewId1,
                         principalTable: "Reviews",
                         principalColumn: "ReviewId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Trips_TimeAfterDeparture_TimeAfterDepartureId",
-                        column: x => x.TimeAfterDepartureId,
-                        principalTable: "TimeAfterDeparture",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Trips_TimeBeforeDeparture_TimeBeforeDepartureId",
@@ -328,6 +278,58 @@ namespace FastTripApp.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeAfterDepartures",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Start = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TripId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeAfterDepartures", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeAfterDepartures_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HistoryTrips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TripId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Descriprion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeAfterDepartureId = table.Column<int>(type: "int", nullable: true),
+                    AddressId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoryTrips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HistoryTrips_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HistoryTrips_TimeAfterDepartures_TimeAfterDepartureId",
+                        column: x => x.TimeAfterDepartureId,
+                        principalTable: "TimeAfterDepartures",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -384,19 +386,20 @@ namespace FastTripApp.Web.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TimeAfterDepartures_TripId",
+                table: "TimeAfterDepartures",
+                column: "TripId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trips_AddressId",
                 table: "Trips",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_ReviewId",
+                name: "IX_Trips_ReviewId1",
                 table: "Trips",
-                column: "ReviewId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Trips_TimeAfterDepartureId",
-                table: "Trips",
-                column: "TimeAfterDepartureId");
+                column: "ReviewId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_TimeBeforeDepartureId",
@@ -445,19 +448,19 @@ namespace FastTripApp.Web.Migrations
                 name: "HistoryTrips");
 
             migrationBuilder.DropTable(
-                name: "Trips");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "TimeAfterDepartures");
+
+            migrationBuilder.DropTable(
+                name: "Trips");
 
             migrationBuilder.DropTable(
                 name: "Address");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
-
-            migrationBuilder.DropTable(
-                name: "TimeAfterDeparture");
 
             migrationBuilder.DropTable(
                 name: "TimeBeforeDeparture");

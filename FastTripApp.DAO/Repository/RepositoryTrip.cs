@@ -20,6 +20,7 @@ namespace FastTripApp.DAO.Repository
             return _сontext.Trips
                 .Include(i => i.Address)
                 .Include(i => i.TimeBeforeDeparture)
+                .Include(i => i.TimeAfterDeparture)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -28,8 +29,9 @@ namespace FastTripApp.DAO.Repository
             return _сontext.Trips.FromSqlRaw("Select * from Trips where UserId='" + id + "'")
                 .Include(p => p.User)
                 .Include(r => r.Address)
+                .Include(p => p.TimeAfterDeparture)
                 .Include(p => p.TimeBeforeDeparture)
-                .Include(p => p.TimeAfterDeparture);
+                ;
         }
     }
 }

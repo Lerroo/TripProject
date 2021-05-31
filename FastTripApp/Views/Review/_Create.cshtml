@@ -1,6 +1,7 @@
 ﻿@model FastTripApp.DAO.Models.Review
 @{ 
     var tripId = ViewData["TripId"];
+    var startTime = ViewData["StartTime"];
 }
 
 <form asp-action="Create" asp-controller="Review"  method="post">

@@ -232,7 +232,14 @@ namespace FastTripApp.Web.Migrations
                     b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("TripId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TripId")
+                        .IsUnique()
+                        .HasFilter("[TripId] IS NOT NULL");
 
                     b.ToTable("TimeAfterDepartures");
                 });
@@ -282,9 +289,6 @@ namespace FastTripApp.Web.Migrations
                     b.Property<int?>("ReviewId1")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TimeAfterDepartureId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TimeBeforeDepartureId")
                         .HasColumnType("int");
 
@@ -296,8 +300,6 @@ namespace FastTripApp.Web.Migrations
                     b.HasIndex("AddressId");
 
                     b.HasIndex("ReviewId1");
-
-                    b.HasIndex("TimeAfterDepartureId");
 
                     b.HasIndex("TimeBeforeDepartureId");
 
@@ -478,6 +480,13 @@ namespace FastTripApp.Web.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FastTripApp.DAO.Models.TimeAfterDeparture", b =>
+                {
+                    b.HasOne("FastTripApp.DAO.Models.Trip", null)
+                        .WithOne("TimeAfterDeparture")
+                        .HasForeignKey("FastTripApp.DAO.Models.TimeAfterDeparture", "TripId");
+                });
+
             modelBuilder.Entity("FastTripApp.DAO.Models.Trip", b =>
                 {
                     b.HasOne("FastTripApp.DAO.Models.Address", "Address")
@@ -487,10 +496,6 @@ namespace FastTripApp.Web.Migrations
                     b.HasOne("FastTripApp.DAO.Models.Review", "Review")
                         .WithMany()
                         .HasForeignKey("ReviewId1");
-
-                    b.HasOne("FastTripApp.DAO.Models.TimeAfterDeparture", "TimeAfterDeparture")
-                        .WithMany()
-                        .HasForeignKey("TimeAfterDepartureId");
 
                     b.HasOne("FastTripApp.DAO.Models.TimeBeforeDeparture", "TimeBeforeDeparture")
                         .WithMany()
@@ -503,8 +508,6 @@ namespace FastTripApp.Web.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Review");
-
-                    b.Navigation("TimeAfterDeparture");
 
                     b.Navigation("TimeBeforeDeparture");
 
@@ -570,6 +573,11 @@ namespace FastTripApp.Web.Migrations
             modelBuilder.Entity("FastTripApp.DAO.Models.Review", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("FastTripApp.DAO.Models.Trip", b =>
+                {
+                    b.Navigation("TimeAfterDeparture");
                 });
 #pragma warning restore 612, 618
         }

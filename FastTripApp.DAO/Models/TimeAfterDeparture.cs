@@ -9,6 +9,10 @@ namespace FastTripApp.DAO.Models
 {
     public class TimeAfterDeparture
     {
+        public TimeAfterDeparture()
+        {
+
+        }
         [Key]
         public int Id { get; set; }
         [DisplayName("Actual start time")]
@@ -20,5 +24,7 @@ namespace FastTripApp.DAO.Models
         [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m {0:%s}s", ApplyFormatInEditMode = true)]
         [DisplayName("Track time")]
         public TimeSpan? Observe { get => End - Start;}
+
+        public int? TripId { get; set; }
     }
 }
