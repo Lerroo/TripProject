@@ -12,5 +12,4 @@ namespace FastTripApp.DAO.Models.StatusEnum
         [StringValue("Success")]
         Success
     };
-
 }

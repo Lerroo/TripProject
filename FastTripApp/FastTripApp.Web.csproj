@@ -91,6 +91,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FastTripApp.BL\FastTripApp.BL.csproj" />
     <ProjectReference Include="..\FastTripApp.DAO\FastTripApp.DAO.csproj" />
   </ItemGroup>
 

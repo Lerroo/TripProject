@@ -1,15 +1,11 @@
-﻿using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Models.Identity;
-using FastTripApp.DAO.Models.Statistic;
+﻿using FastTripApp.DAO.Models.Statistic;
 using FastTripApp.DAO.Repository.Interfaces;
-using FastTripApp.DAO.Services.Interfaces;
+using FastTripApp.BL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace FastTripApp.DAO.Services
+namespace FastTripApp.BL.Services
 {
     public class UserStatisticService : IUserStatisticService
     {
@@ -32,7 +28,7 @@ namespace FastTripApp.DAO.Services
         {
             var years = new List<SelectListItem>();
             foreach (var vi in _historyTripService.GetTripYears(userId).Select((x, i) =>
-                                                                        new { Value = x.ToString(), Index = i.ToString() }))
+                                                        new { Value = x.ToString(), Index = i.ToString() }))
             {
                 var newItem = new SelectListItem { Text = vi.Value, Value = vi.Index };
                 years.Add(newItem);
@@ -45,7 +41,7 @@ namespace FastTripApp.DAO.Services
                 CountTrips = _historyTripService.GetCountTrips(userId),
                 LocationsTrips = _historyTripService.GetLocationsTrips(userId),
                 LastTrip = _repositoryHistory.GetLatsTrip(userId),
-                User = _repositoryUser.GetUserById(userId),
+                User = _repositoryUser.GetById(userId),
             };
             return statistic;
         }

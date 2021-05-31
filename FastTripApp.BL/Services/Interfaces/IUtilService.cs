@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FastTripApp.DAO.Services.Interfaces
+namespace FastTripApp.BL.Services.Interfaces
 {
     public interface IUtilService
     {
         DateTime DateTimeNow();
-
     }
 }

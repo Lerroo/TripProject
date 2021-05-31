@@ -1,18 +1,13 @@
 ﻿using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Repository;
 using FastTripApp.DAO.Repository.Interfaces;
-using FastTripApp;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using Hangfire.States;
 using Hangfire.Storage;
-using FastTripApp.DAO.Services;
-using FastTripApp.DAO.Services.Interfaces;
+using FastTripApp.BL.Services.Interfaces;
 
 
 namespace FastTripApp.Controllers

@@ -17,9 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using FastTripApp.DAO.Repository.Interfaces;
 using FastTripApp.DAO.Repository;
-using FastTripApp.DAO.Services;
-using FastTripApp.DAO.Infrastructure;
-using FastTripApp.DAO.Services.Interfaces;
+using FastTripApp.BL.Services;
+using FastTripApp.BL.Services.Interfaces;
 
 namespace UsingIdentity
 {
@@ -63,7 +62,7 @@ namespace UsingIdentity
             services.AddScoped<IHistoryTripService, HistoryTripService>();
             services.AddScoped<IUserStatisticService, UserStatisticService>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();

@@ -1,22 +1,19 @@
-﻿using FastTripApp.DAO.Infrastructure;
+﻿using FastTripApp.BL.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FastTripApp.DAO.Services
+namespace FastTripApp.BL.Services
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWorkService : IUnitOfWorkService
     {
         private IHostingEnvironment _hostingEnvironment;
 
-        public UnitOfWork(IHostingEnvironment hostingEnvironment)
+        public UnitOfWorkService(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
+
         public async void UploadImage(IFormFile file)
         {
             long totalBytes = file.Length;
@@ -44,8 +41,6 @@ namespace FastTripApp.DAO.Services
                 fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
             }
             return fileName;
-
-            //2141Ddsa*
         }        
 
         private string PathAndFileName(string fileName)

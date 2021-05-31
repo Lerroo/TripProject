@@ -1,13 +1,10 @@
-﻿
-using FastTripApp.DAO;
+﻿using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Repository;
 using FastTripApp.DAO.Repository.Interfaces;
-using FastTripApp.DAO.Services.Interfaces;
+using FastTripApp.BL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -18,17 +15,20 @@ namespace FastTripApp.Controllers
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;
+
         private readonly ITimeAfterDepartureService _timeAfterDepartureService;
         private readonly ITripService _tripService;
         private readonly IUtilService _util;
 
         public ReviewController(
             IRepositoryReview repositoryReview,
+
             ITimeAfterDepartureService timeAfterDepartureService,
             ITripService tripService,
             IUtilService util)
         {
             _repositoryReview = repositoryReview;
+
             _timeAfterDepartureService = timeAfterDepartureService;
             _util = util;
             _tripService = tripService;

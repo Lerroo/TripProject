@@ -14,7 +14,7 @@ namespace FastTripApp.DAO.Repository
             _context = context;
         }
 
-        public User GetUserById(string id)
+        public User GetById(string id)
         {
             return _context.Users.Find(id);
         }

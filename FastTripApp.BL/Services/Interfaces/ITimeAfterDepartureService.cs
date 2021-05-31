@@ -1,12 +1,11 @@
 ﻿using FastTripApp.DAO.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FastTripApp.DAO.Services.Interfaces
+namespace FastTripApp.BL.Services.Interfaces
 {
     public interface ITimeAfterDepartureService
     {
         TimeAfterDeparture CalculateTime(TimeAfterDeparture timeInfo);
+        TimeAfterDeparture GetWithStart();
+        void SetEndById(int id);
     }
 }

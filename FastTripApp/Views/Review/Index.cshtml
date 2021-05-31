@@ -8,95 +8,95 @@
 <div class="container mt-5">
     <h2 class="text-center">The latest reviews from our clients</h2>
     <div class="d-flex justify-content-center row">
-
         <div class="col-md-8">
             @{
                 foreach (var review in Model)
                 {
-                        <div class="d-flex flex-column comment-section card card-body bg-light mb-3" id="myGroup">
-                            <div class="bg-white p-2 rounded-top">
-                                <div class="d-flex flex-row user-info">
-                                    @{
-                                        var reviewUser = review.User;
-                                    }
-                                    <img class="profile-pic" src="~/uploads/profile_pic/@reviewUser.ImagePath" width="40">
+                    <div class="d-flex flex-column comment-section card card-body bg-light mb-3" id="myGroup">
+                        <div class="bg-white p-2 rounded-top">
 
-                                    <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">@reviewUser.Firstname @reviewUser.LastName</span><span class="date text-black-50">@review.TimePost</span></div>
-                                </div>
-                                <div class="mt-2">
-                                    <p class="comment-text">@review.Description</p>
-                                </div>
+                            <div class="d-flex flex-row user-info">
+                                @{
+                                    var reviewUser = review.User;
+                                }
+                                <img class="profile-pic" src="~/uploads/profile_pic/@reviewUser.ImagePath" width="40">
+
+                                <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">@reviewUser.Firstname @reviewUser.LastName</span><span class="date text-black-50">@review.TimePost</span></div>
                             </div>
 
-                            <div class="col">
-                                <div class="row bg-white">
-                                    <div class="bg-white p-2">
-                                        <div class="d-flex flex-row fs-12">
-                                            @{
-                                                string collapseId = "collapse-" + review.ReviewId;
-                                            }
-                                            <div class="btn btn-info btn-circle text-uppercase ml-2 cursor action-collapse" 
-                                                 data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" 
-                                                 href="#@collapseId">
-                                                <span class="ml-1">Write comment</span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-white p-2 ">
-                                        <div class="d-flex flex-row fs-12">
-                                            @{
-                                                string collapseCommentId = "comment-" + review.ReviewId;
-                                                string collapseCommentListId = "commentList-" + review.ReviewId;
-                                            }
-                                            <div class="btn btn-warning btn-circle text-uppercase cursor action-collapse" 
-                                                 data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" 
-                                                 href="#@collapseCommentId">
-                                                <span lass="ml-1">Comments</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="mt-2">
+                                <p class="comment-text">@review.Description</p>
                             </div>
+                        </div>
 
-                            <div id="@collapseId" class="bg-light pt-3 collapse" data-parent="#myGroup">
-                                @Html.Partial("../Comment/_Create", 
-                                    new FastTripApp.DAO.Models.Comment(), 
-                                    new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
-                                )
-                            </div>
+                        <div class="col">
+                            <div class="row bg-white">
 
-                            <div id="@collapseCommentId" class="bg-light p-2 collapse" data-parent="#myGroup">
-                                @{ if (review.Comments.Count == 0)
-                                    {
-                                        <p>Comments absent. Write the first comment</p>
-                                    }
-                                    else
-                                    {
-                                        foreach (var comment in review.Comments)
-                                        {
-                                            var commentUser = comment.User;
-
-                                            <div class="bg-white p-2 m-2 rounded">
-                                                <div class="d-flex flex-row user-info">
-                                                    <img class="profile-pic" src="~/uploads/profile_pic/@commentUser.ImagePath" width="40">
-                                                    <div class="d-flex flex-column justify-content-start ml-2">
-                                                        <span class="d-block font-weight-bold name">@commentUser.Firstname @commentUser.LastName</span>
-                                                        <span class="date text-black-50">@comment.TimePost</span>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-2">
-                                                    <p class="comment-text">@comment.Description</p>
-                                                </div>
-                                            </div>
+                                <div class="bg-white p-2">
+                                    <div class="d-flex flex-row fs-12">
+                                        @{
+                                            string collapseId = "collapse-" + review.ReviewId;
                                         }
+                                        <div class="btn btn-info btn-circle text-uppercase ml-2 cursor action-collapse"
+                                             data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1"
+                                             href="#@collapseId">
+                                            <span class="ml-1">Write comment</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-2 ">
+                                    <div class="d-flex flex-row fs-12">
+                                        @{
+                                            string collapseCommentId = "comment-" + review.ReviewId;
+                                            string collapseCommentListId = "commentList-" + review.ReviewId;
+                                        }
+                                        <div class="btn btn-warning btn-circle text-uppercase cursor action-collapse"
+                                             data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1"
+                                             href="#@collapseCommentId">
+                                            <span lass="ml-1">Comments</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="@collapseId" class="bg-light pt-3 collapse" data-parent="#myGroup">
+                            @Html.Partial("../Comment/_Create",
+                                new FastTripApp.DAO.Models.Comment(),
+                                new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
+                            )
+                        </div>
+
+                        <div id="@collapseCommentId" class="bg-light p-2 collapse" data-parent="#myGroup">
+                            @{ if (review.Comments.Count == 0)
+                                {
+                                    <p>Comments absent. Write the first comment</p>
+                                }
+                                else
+                                {
+                                    foreach (var comment in review.Comments)
+                                    {
+                                        var commentUser = comment.User;
+
+                                        <div class="bg-white p-2 m-2 rounded">
+                                            <div class="d-flex flex-row user-info">
+                                                <img class="profile-pic" src="~/uploads/profile_pic/@commentUser.ImagePath" width="40">
+                                                <div class="d-flex flex-column justify-content-start ml-2">
+                                                    <span class="d-block font-weight-bold name">@commentUser.Firstname @commentUser.LastName</span>
+                                                    <span class="date text-black-50">@comment.TimePost</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p class="comment-text">@comment.Description</p>
+                                            </div>
+                                        </div>
                                     }
                                 }
-                            </div>
-
-
-
+                            }
                         </div>
+                    </div>
                 }
             }
         </div>
@@ -106,7 +106,7 @@
 <script type="text/javascript">
     function createComment() {
         let link = 'Comment/CreatePartual';
-        $.get(link, function(data) {
+        $.get(link, function (data) {
             $('.commentList-' + reviewId).replaceWith(data);
         });
     }

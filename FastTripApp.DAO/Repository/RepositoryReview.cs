@@ -30,18 +30,3 @@ namespace FastTripApp.DAO.Repository
         }
     }
 }
-
-
-//@section scripts
-//{
-//    <script type="text/javascript">
-//        function getInfo(id) {
-//            $.ajaxSetup({ cache: false });
-
-//            $.get('Trip/Details?id=' + id, function(data) {
-//                $('#dialogContent').html(data);
-//                $('#modDialog').modal('show');
-//        });
-//    }
-//    </script>
-//}

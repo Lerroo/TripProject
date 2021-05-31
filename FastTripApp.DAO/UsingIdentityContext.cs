@@ -9,8 +9,7 @@ namespace FastTripApp.DAO
 {
     public class UsingIdentityContext : IdentityDbContext<User>
     {
-        public UsingIdentityContext(DbContextOptions<UsingIdentityContext> options)
-            : base(options)
+        public UsingIdentityContext(DbContextOptions<UsingIdentityContext> options): base(options)
         {
         }
 
@@ -20,9 +19,6 @@ namespace FastTripApp.DAO
         public DbSet<TimeAfterDeparture> TimeAfterDepartures { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<User> Users { get; set; }
-
-
-
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

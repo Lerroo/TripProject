@@ -1,7 +1,5 @@
 ﻿using FastTripApp.DAO.Models.Identity;
 using FastTripApp.DAO.Models.StatusEnum;
-using FastTripApp.Validation;
-using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -38,6 +36,5 @@ namespace FastTripApp.DAO.Models
         public int? ReviewId { get; set; }        
         public Review? Review { get; set; }
         #nullable disable
-
     }
 }

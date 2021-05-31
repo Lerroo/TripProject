@@ -1,35 +1,26 @@
 ﻿using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Models.Statistic;
 using FastTripApp.DAO.Repository.Interfaces;
-using FastTripApp.DAO.Services.Interfaces;
+using FastTripApp.BL.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FastTripApp.DAO.Models.StatusEnum;
 
-namespace FastTripApp.DAO.Services
+namespace FastTripApp.BL.Services
 {
     public class HistoryTripService : IHistoryTripService
     {
-        private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
         private readonly IRepositoryTimeAfterDeparture _repositoryTimeAfterDeparture;
 
-        private readonly IUtilService _utilService;
-        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
-
-        public HistoryTripService(IRepositoryTrip tripRepository,
+        public HistoryTripService(
             IRepositoryHistoryTrip repositoryHistoryTrip,
-            IRepositoryTimeAfterDeparture repositoryTimeAfterDeparture,
-            ITimeAfterDepartureService timeAfterDepartureService,
-            IUtilService utilService)
+            IRepositoryTimeAfterDeparture repositoryTimeAfterDeparture)
         {
-            _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = repositoryHistoryTrip;
             _repositoryTimeAfterDeparture = repositoryTimeAfterDeparture;
-
-            _utilService = utilService;
-            _timeAfterDepartureService = timeAfterDepartureService;
         }
 
         public HistoryTrip ConvertToHistoryTrip(Trip trip)
@@ -53,8 +44,8 @@ namespace FastTripApp.DAO.Services
             IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
             
             int CountAll = historyTrips.Count();
-            int CountAbandon = historyTrips.Where(p => p.StatusEnum == Models.StatusEnum.Status.Abandon).Count();
-            int CountSucces = historyTrips.Where(p => p.StatusEnum == Models.StatusEnum.Status.Success).Count();
+            int CountAbandon = historyTrips.Where(p => p.StatusEnum == Status.Abandon).Count();
+            int CountSucces = historyTrips.Where(p => p.StatusEnum == Status.Success).Count();
 
             var newCountTrips = new CountTrips()
             {
@@ -118,11 +109,6 @@ namespace FastTripApp.DAO.Services
                 .Where(a=>a != 1) 
                 .Distinct();
             return years;
-        }
-
-        public void SetStatus(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

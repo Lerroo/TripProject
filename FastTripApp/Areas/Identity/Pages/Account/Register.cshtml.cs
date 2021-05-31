@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using FastTripApp.DAO.Infrastructure;
+using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models.Identity;
 using FastTripApp.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -23,7 +23,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkService _unitOfWork;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -32,7 +32,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IUnitOfWork unitOfWork)
+            IUnitOfWorkService unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;

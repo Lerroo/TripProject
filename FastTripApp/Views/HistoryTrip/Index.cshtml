@@ -47,29 +47,27 @@
                     {
                         styleLine = "table-danger";
                     }
-                <tr class="@styleLine">
-                    <td>@trip.Name</td>
-                    <td>@trip.TimeAfterDeparture.Start</td>
-                    <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
-                    <td>@trip.Address.Start</td>
-                    <td>@trip.Address.End</td>
-                    <td>
-                        @{
-                            var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
-                        }
-                        <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
-                    </td>
-                </tr>
+                    <tr class="@styleLine">
+                        <td>@trip.Name</td>
+                        <td>@trip.TimeAfterDeparture.Start</td>
+                        <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
+                        <td>@trip.Address.Start</td>
+                        <td>@trip.Address.End</td>
+                        <td>
+                            @{
+                                var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
+                            }
+                            <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
-
         </table> }
     else
     {
         <h1 class="text-center">History is clear. Try book some trip</h1>
     }
 </div>
-
 
 @section scripts
 {

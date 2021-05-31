@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using FastTripApp.DAO.Infrastructure;
+using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models.Identity;
 using FastTripApp.Models;
 using Microsoft.AspNetCore.Http;
@@ -18,12 +18,12 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkService _unitOfWork;
 
         public IndexModel( 
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IUnitOfWork unitOfWork)
+            IUnitOfWorkService unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;

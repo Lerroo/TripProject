@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FastTripApp.DAO.Models
 {
     public class TimeAfterDeparture
     {
-        public TimeAfterDeparture()
-        {
-
-        }
         [Key]
         public int Id { get; set; }
         [DisplayName("Actual start time")]

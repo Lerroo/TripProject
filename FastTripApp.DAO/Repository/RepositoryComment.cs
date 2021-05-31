@@ -8,7 +8,6 @@ namespace FastTripApp.DAO.Repository
 {
     public class RepositoryComment : RepositoryGeneric<Comment>, IRepositoryComment
     {
-
         private readonly UsingIdentityContext _context;
 
         public RepositoryComment(UsingIdentityContext context) : base(context)

@@ -1,11 +1,8 @@
 ﻿using FastTripApp.DAO.Models;
 using Hangfire;
 using Hangfire.Storage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FastTripApp.DAO.Services
+namespace FastTripApp.BL.Services
 {
     public class ServiceHangFire
     {

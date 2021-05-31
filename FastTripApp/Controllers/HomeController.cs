@@ -3,7 +3,6 @@ using FastTripApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-
 namespace FastTripApp.Controllers
 {
     public class HomeController : Controller
