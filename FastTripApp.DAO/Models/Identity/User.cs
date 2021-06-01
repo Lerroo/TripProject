@@ -19,5 +19,7 @@ namespace FastTripApp.DAO.Models.Identity
         public List<Review> Reviews { get; set; }
         [DisplayName("Profile photo")]
         public string ImagePath { get; set; }
+        [DisplayName("User name")]
+        public string DisplayName { get; set; }
     }
 }

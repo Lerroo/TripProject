@@ -8,6 +8,15 @@
 <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.DisplayName"></label>
+                <input asp-for="Input.DisplayName" class="form-control" />
+                <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+            </div>
+        </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>

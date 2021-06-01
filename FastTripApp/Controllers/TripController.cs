@@ -8,7 +8,8 @@ using System.Linq;
 using System.Security.Claims;
 using Hangfire.Storage;
 using FastTripApp.BL.Services.Interfaces;
-
+using System.Net;
+using Grpc.Core;
 
 namespace FastTripApp.Controllers
 {
@@ -97,6 +98,7 @@ namespace FastTripApp.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 trip.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 _repositoryTrip.Add(trip);
                 

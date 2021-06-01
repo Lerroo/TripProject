@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using FastTripApp.BL.Services.Interfaces;
+﻿using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models.Identity;
-using FastTripApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace UsingIdentity.Areas.Identity.Pages.Account
 {
@@ -53,6 +49,10 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             public string ImagePath { get; set; }
 
             [Required]
+            [Display(Name = "Display Name")]
+            public string DisplayName { get; set; }
+
+            [Required]
             [DataType(DataType.Text)]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
@@ -73,7 +73,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             public string Password { get; set; }
 
             [Required]
-            [DataType(DataType.Text)]
+            [DataType(DataType.PhoneNumber)]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
@@ -91,7 +91,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(IFormFile file, string returnUrl = null)
         {
-            
+
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -106,15 +106,16 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
                 {
                     fileName = "defaultProfilePhoto.jpg";
                 }
-                
-                var user = new User { UserName = Input.Email, Email = Input.Email,Firstname =Input.FirstName,LastName=Input.LastName,PhoneNumber=Input.PhoneNumber, ImagePath = fileName };
+
+                var user = new User { UserName = Input.Email, Email = Input.Email, Firstname = Input.FirstName, 
+                    LastName = Input.LastName, PhoneNumber = Input.PhoneNumber, ImagePath = fileName, DisplayName = Input.DisplayName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));                    
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

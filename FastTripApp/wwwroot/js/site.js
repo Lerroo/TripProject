@@ -5,7 +5,7 @@
 
 google.maps.event.addDomListener(window, 'load', initMap);
 
-async function initMap() {
+function initMap() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     let start = new google.maps.LatLng(55.8782557, 37.65372);
@@ -29,24 +29,27 @@ async function initMap() {
 
     const onChangeHandler = function () {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
+
     };
 
     document.getElementById("Address_Start").addEventListener("change", onChangeHandler);
     document.getElementById("Address_End").addEventListener("change", onChangeHandler);
+    document.getElementById("TimeBeforeDeparture_ApproximateStart").addEventListener("change", onChangeHandler);
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     let startCoords = document.getElementById("Address_StartCoords").value;
     let endCoords = document.getElementById("Address_EndCoords").value;
+    let approximateStart = document.getElementById("TimeBeforeDeparture_ApproximateStart").value;
 
-    if (startCoords != "" && endCoords != "") {
+    if (startCoords != "" && endCoords != "" && approximateStart != "") {
         directionsService.route(
             {
                 origin: JSON.parse(startCoords),
                 destination: JSON.parse(endCoords),
                 travelMode: google.maps.TravelMode.DRIVING,
                 drivingOptions: {
-                    departureTime: new Date(document.getElementById("TimeBeforeDeparture_ApproximateStart").value),
+                    departureTime: new Date(approximateStart),
                     trafficModel: 'pessimistic'
                 },
                 unitSystem: google.maps.UnitSystem.METRIC
@@ -102,15 +105,51 @@ function GenAutocomplete(elementid) {
     })
 }
 
-function getStaticMap(path) {
-    let clearPath = preparePath(path)
-    let clearStart = prepareLatLng(map.getCenter())
-    console.log(clearStart)
-    console.log(map.getZoom())
-    var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
-        + clearStart + "&zoom=9&size=500x500&maptype=roadmap&path="
-        + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-    document.getElementById("googleStaticPicture").src = URL;
+function getStaticMap(pathArray) {
+
+    let markersStartEnd = getStartLabel(pathArray) + getEndLabel(pathArray);
+    let clearPath = preparePath(pathArray);
+
+    setTimeout(function () {
+        let clearStart = prepareLatLng(map.getCenter())
+        let zoom = map.getZoom()
+        var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
+            + clearStart + "&zoom=" + zoom + "&size=500x500&maptype=roadmap&path="
+            + clearPath + markersStartEnd + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+        console.log('zoomafter-', zoom)
+        document.getElementById("googleStaticPicture").src = URL;
+
+    }, 2000);    
+
+    
+}
+
+function getStartLabel(pathArray) {
+    let first = pathArray[0];
+    let markerLatLng = prepareLatLng(first)
+    return '&markers=color:red|label:A|' + markerLatLng;
+}
+
+function getEndLabel(pathArray) {
+    let last = pathArray[pathArray.length - 1];
+    let markerLatLng = prepareLatLng(last)
+    return '&markers=color:red|label:B|' + markerLatLng;
+}
+
+function preparePath(pathArray) {
+    let preparePath = "color:0x0000ff80|weight:1";
+
+    var blkstr = [];
+    pathArray.forEach(function (item, i, arr) {
+        var clearLatLng = prepareLatLng(item)
+        blkstr.push(clearLatLng);
+    });
+    preparePath += blkstr.join("|")
+    return preparePath
+}
+
+function prepareLatLng(obj) {
+    return obj.lat() + "," + obj.lng();
 }
 
 function showReviewModalWindow() {
