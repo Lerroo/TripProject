@@ -100,7 +100,7 @@ namespace UsingIdentity
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=UserStatistic}/{action=Index}");
+                    pattern: "{controller=Review}/{action=Index}");
             endpoints.MapRazorPages();
             });
         }

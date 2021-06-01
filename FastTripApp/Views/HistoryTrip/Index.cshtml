@@ -43,23 +43,30 @@
                 @foreach (var trip in Model)
                 {
                     var styleLine = "table-success";
-                    if (trip.StatusEnum == Status.Abandon)
+                    var tripStatus = trip.StatusEnum;
+                    if (tripStatus == Status.Abandon)
                     {
                         styleLine = "table-danger";
                     }
-                    <tr class="@styleLine">
+                <tr class="@styleLine">
+                    @if (tripStatus == Status.Abandon)
+                    {
+                        <td colspan="3">@trip.Name</td>
+                        <td>@trip.Address.Start</td>
+                        <td>@trip.Address.End</td>
+                        <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
+                    }
+                    else
+                    {
                         <td>@trip.Name</td>
                         <td>@trip.TimeAfterDeparture.Start</td>
                         <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
                         <td>@trip.Address.Start</td>
                         <td>@trip.Address.End</td>
-                        <td>
-                            @{
-                                var linkInfo = "HistoryTrip/Details?id=" + trip.Id;
-                            }
-                            <a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a>
-                        </td>
-                    </tr>
+                        <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
+                    }
+
+                </tr>
                 }
             </tbody>
         </table> }

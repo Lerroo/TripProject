@@ -51,7 +51,6 @@ namespace FastTripApp.Controllers
         // GET: ReviewController/Create
         public ActionResult Create()
         {
-
             return PartialView("_Create");
         }
 
@@ -70,7 +69,7 @@ namespace FastTripApp.Controllers
                 return RedirectToRoute(new { controller = "Trip", action = "End", id = review.TripId });
             }
 
-            return View("_Create", review);
+            return View("Trip/Start/", review);
         }
 
         // GET: ReviewController/Edit/5

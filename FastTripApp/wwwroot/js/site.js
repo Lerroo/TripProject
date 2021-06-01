@@ -103,14 +103,14 @@ function GenAutocomplete(elementid) {
 }
 
 function getStaticMap(path) {
-    //let clearPath = preparePath(path)
-    //let clearStart = prepareLatLng(map.getCenter())
-    //console.log(clearStart)
-    //console.log(map.getZoom())
-    //var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
-    //    + clearStart + "&zoom=9&size=500x500&maptype=roadmap&path="
-    //    + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-    //document.getElementById("googleStaticPicture").src = URL;
+    let clearPath = preparePath(path)
+    let clearStart = prepareLatLng(map.getCenter())
+    console.log(clearStart)
+    console.log(map.getZoom())
+    var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
+        + clearStart + "&zoom=9&size=500x500&maptype=roadmap&path="
+        + clearPath + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+    document.getElementById("googleStaticPicture").src = URL;
 }
 
 function showReviewModalWindow() {
@@ -139,5 +139,16 @@ function setAppratialStarsRating() {
             document.getElementById('appraisal').value = inp[i].value;
             break;
         }
+    }
+}
+
+function loadAppratialStarsRating() {
+    var listDivReview = document.getElementsByName('divReview');
+
+    for (var step = 0; step < listDivReview.length; step++) {
+        var divReview = listDivReview[step];
+        var listStras = divReview.getElementsByClassName('rating')
+        var appraisal = divReview.getElementsByClassName('reviewAppraisal')[0].attributes.getNamedItem('value').value;
+        listStras[5 - appraisal].checked = true;
     }
 }

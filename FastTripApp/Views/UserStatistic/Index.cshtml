@@ -1,4 +1,5 @@
 ﻿@model FastTripApp.DAO.Models.Statistic.UserStatistic
+@using FastTripApp.DAO.Models.StatusEnum
 @{
     var trip = Model.LastTrip;
     var user = Model.User;
@@ -8,7 +9,14 @@
 
 <div class="container shadow-lg p-3 rounded border-dark text-dark border-5">
     <h1 class="p-3">Last trip</h1>
-    <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded">
+    @{
+        var style = "danger-trava-bg";
+        if (trip.StatusEnum == Status.Success)
+        {
+            style = "success-trava-bg";
+        }
+    }
+    <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded @style">
         <div class="col-6 bg-white p-3">
             @{
                 if (trip != null)
@@ -23,25 +31,28 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@trip.TimeAfterDeparture.Start"></label>
+                    if (trip.TimeAfterDeparture.Start != new DateTime())
+                    {
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label asp-for="@trip.TimeAfterDeparture.Start"></label>
+                            </div>
+                            <div class="col">
+                                <input asp-for="@trip.TimeAfterDeparture.Start" class="form-control" />
+                                <span asp-validation-for="@trip.TimeAfterDeparture.Start" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="col">
-                            <input asp-for="@trip.TimeAfterDeparture.Start" class="form-control" />
-                            <span asp-validation-for="@trip.TimeAfterDeparture.Start" class="text-danger"></span>
-                        </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@trip.TimeAfterDeparture.End"></label>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                <label asp-for="@trip.TimeAfterDeparture.End"></label>
+                            </div>
+                            <div class="col">
+                                <input asp-for="@trip.TimeAfterDeparture.End" class="form-control" />
+                                <span asp-validation-for="@trip.TimeAfterDeparture.End" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="col">
-                            <input asp-for="@trip.TimeAfterDeparture.End" class="form-control" />
-                            <span asp-validation-for="@trip.TimeAfterDeparture.End" class="text-danger"></span>
-                        </div>
-                    </div>
+                    }
 
                     <div class="form-group row">
                         <div class="col-3">
@@ -74,6 +85,15 @@
                             <input type="text" class="form-control d-none" asp-for="@trip.Address.EndCoords">
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="@trip.Status"></label>
+                        </div>
+                        <div class="col">
+                            <p class="form-control">@trip.Status</p>
+                        </div>
+                    </div>
                 }
                 else
                 {
@@ -93,7 +113,7 @@
     <div class="p-3">
         <div class="col ml-4 p-3 d-flex">
             <div class="d-flex align-items-center">
-                <img class="profile-pic" src="/uploads/profile_pic/defaultProfilePhoto.jpg">
+                <img class="profile-pic img-fluid" src="/uploads/profile_pic/defaultProfilePhoto.jpg">
                 <h1 class="m-3">@user.Firstname @user.LastName statistics</h1>
             </div>
             <div class="col d-flex justify-content-end align-items-center">
@@ -110,7 +130,7 @@
                     <table class="table table-user-information">
                         <tbody>
                             <tr>
-                                <td><label asp-for="@userStatistic.LocationsTrips.StartFavorite"></label></td>
+                                <td class="col-2"><label asp-for="@userStatistic.LocationsTrips.StartFavorite"></label></td>
                                 <td>@userStatistic.LocationsTrips.StartFavorite</td>
                             </tr>
                             <tr>

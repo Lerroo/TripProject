@@ -27,7 +27,7 @@
                         <a class="nav-link text-dark" asp-controller="HistoryTrip" asp-action="Index">My history runs</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Statistic" asp-action="Index">My statistic</a>
+                    <a class="nav-link text-dark" asp-controller="UserStatistic" asp-action="Index">My statistic</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />
@@ -51,7 +51,6 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI&v=3.exp&libraries=places"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @RenderSection("Scripts", required: false)
 
 </body>

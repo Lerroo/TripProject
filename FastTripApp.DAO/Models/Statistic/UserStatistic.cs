@@ -8,7 +8,7 @@ namespace FastTripApp.DAO.Models.Statistic
 {
     public class UserStatistic
     {
-        [DisplayName("for")]
+        [DisplayName("in")]
         public IEnumerable<SelectListItem> Years { get; set; }
         [NotMapped]
         public int Year { get; set; }
