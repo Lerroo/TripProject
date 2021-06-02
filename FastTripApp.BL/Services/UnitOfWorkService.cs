@@ -1,7 +1,14 @@
-﻿using FastTripApp.BL.Services.Interfaces;
+﻿
+using FastTripApp.BL.Services.Interfaces;
+using FastTripApp.DAO.Models.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Web.Providers.Entities;
 
 namespace FastTripApp.BL.Services
 {
@@ -14,13 +21,13 @@ namespace FastTripApp.BL.Services
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public async void UploadImage(IFormFile file)
+        public async void UploadImage(IFormFile file, string userId, string folder)
         {
             long totalBytes = file.Length;
             string fileName = file.FileName.Trim('"');
             fileName = EnsureFileName(fileName);
             byte[] buffer = new byte[16 * 1024];
-            using (FileStream output = File.Create(PathAndFileName(fileName)))
+            using (FileStream output = File.Create(PathAndFileName(fileName, userId, folder)))
             {
                 using (Stream input = file.OpenReadStream())
                 {
@@ -43,14 +50,14 @@ namespace FastTripApp.BL.Services
             return fileName;
         }        
 
-        private string PathAndFileName(string fileName)
+        public string PathAndFileName(string fileName, string userId, string folder)
         {
-            string path = _hostingEnvironment.WebRootPath + "\\uploads\\profile_pic\\";
+            string path = Path.Combine("wwwroot\\uploads\\users\\", userId, folder);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            return path + fileName;
+            return Path.Combine(path, fileName);
         }
     }
 }

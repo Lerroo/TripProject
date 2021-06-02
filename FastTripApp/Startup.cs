@@ -40,7 +40,7 @@ namespace UsingIdentity
                     .EnableSensitiveDataLogging();
             });
 
-            services.AddIdentity<User, IdentityRole>(options => {
+            services.AddIdentity<UserCustom, IdentityRole>(options => {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -48,6 +48,7 @@ namespace UsingIdentity
             }).AddEntityFrameworkStores<UsingIdentityContext>()
                 .AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Identity/Account/Login");
+            
 
             services.AddScoped<IRepositoryTrip, RepositoryTrip>();
             services.AddScoped<IRepositoryHistoryTrip, RepositoryHistoryTrip>();
@@ -61,6 +62,7 @@ namespace UsingIdentity
             services.AddScoped<IUtilService, UtilService>();
             services.AddScoped<IHistoryTripService, HistoryTripService>();
             services.AddScoped<IUserStatisticService, UserStatisticService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
 

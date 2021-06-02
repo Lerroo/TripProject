@@ -9,6 +9,5 @@ namespace FastTripApp.DAO.Repository.Interfaces
     {
         Trip GetByIdWithInclude(int? id);
         IEnumerable<Trip> TripsByUserId(string id);
-        void SetStatus(int id);
     }
 }

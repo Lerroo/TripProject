@@ -17,13 +17,13 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserCustom> _userManager;
+        private readonly SignInManager<UserCustom> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, 
+        public LoginModel(SignInManager<UserCustom> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<User> userManager)
+            UserManager<UserCustom> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

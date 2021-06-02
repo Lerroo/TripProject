@@ -1,110 +1,102 @@
 ﻿@model FastTripApp.DAO.Models.Statistic.UserStatistic
 @using FastTripApp.DAO.Models.StatusEnum
 @{
-    var trip = Model.LastTrip;
+    var lastTrip = Model.LastTrip;
     var user = Model.User;
     var userStatistic = Model;
-
 }
 
 <div class="container shadow-lg p-3 rounded border-dark text-dark border-5">
-    <h1 class="p-3">Last trip</h1>
     @{
-        var style = "danger-trava-bg";
-        if (trip.StatusEnum == Status.Success)
+        if (lastTrip != null)
         {
-            style = "success-trava-bg";
-        }
-    }
-    <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded @style">
-        <div class="col-6 bg-white p-3">
-            @{
-                if (trip != null)
-                {
+            <h1 class="p-3">Last trip</h1>
+
+            var style = "danger-trava-bg";
+            if (lastTrip.StatusEnum == StatusEnum.Success)
+            {
+                style = "success-trava-bg";
+            }
+
+            <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded @style">
+
+                <div class="col-6 bg-white p-3">
+
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@trip.Name"></label>
+                            <label asp-for="@lastTrip.Name"></label>
                         </div>
                         <div class="col">
-                            <input asp-for="@trip.Name" class="form-control" />
-                            <span asp-validation-for="@trip.Name" class="text-danger"></span>
+                            <input asp-for="@lastTrip.Name" readonly class="form-control" />
                         </div>
                     </div>
 
-                    if (trip.TimeAfterDeparture.Start != new DateTime())
-                    {
-                        <div class="form-group row">
-                            <div class="col-3">
-                                <label asp-for="@trip.TimeAfterDeparture.Start"></label>
+                    @{if (lastTrip.TimeAfterDeparture.Observe.Value.TotalSeconds != 0)
+                        {
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="@lastTrip.TimeAfterDeparture.Start"></label>
+                                </div>
+                                <div class="col">
+                                    <input asp-for="@lastTrip.TimeAfterDeparture.Start" readonly class="form-control" />
+                                </div>
                             </div>
-                            <div class="col">
-                                <input asp-for="@trip.TimeAfterDeparture.Start" class="form-control" />
-                                <span asp-validation-for="@trip.TimeAfterDeparture.Start" class="text-danger"></span>
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <div class="col-3">
-                                <label asp-for="@trip.TimeAfterDeparture.End"></label>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="@lastTrip.TimeAfterDeparture.End"></label>
+                                </div>
+                                <div class="col">
+                                    <input asp-for="@lastTrip.TimeAfterDeparture.End" class="form-control" />
+                                </div>
                             </div>
-                            <div class="col">
-                                <input asp-for="@trip.TimeAfterDeparture.End" class="form-control" />
-                                <span asp-validation-for="@trip.TimeAfterDeparture.End" class="text-danger"></span>
-                            </div>
-                        </div>
+                        }
                     }
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@trip.Descriprion"></label>
+                            <label asp-for="@lastTrip.Descriprion"></label>
                         </div>
                         <div class="col">
-                            <textarea asp-for="@trip.Descriprion" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="@trip.Descriprion" class="text-danger"></span>
+                            <textarea asp-for="@lastTrip.Descriprion" readonly class="form-control" rows="3"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@trip.Address.Start"></label>
+                            <label asp-for="@lastTrip.Address.Start"></label>
                         </div>
                         <div class="col">
-                            <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="@trip.Address.Start"></textarea>
-                            <span asp-validation-for="@trip.Address.Start" class="text-danger"></span>
-                            <input type="text" class="form-control d-none" asp-for="@trip.Address.StartCoords">
+                            <textarea cols="2" type="text" class="form-control" readonly placeholder="Start lastTrip" asp-for="@lastTrip.Address.Start"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@trip.Address.End"></label>
+                            <label asp-for="@lastTrip.Address.End"></label>
                         </div>
                         <div class="col">
-                            <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="@trip.Address.End"></textarea>
-                            <span asp-validation-for="@trip.Address.End" class="text-danger"></span>
-                            <input type="text" class="form-control d-none" asp-for="@trip.Address.EndCoords">
+                            <textarea cols="2" type="text" class="form-control" readonly placeholder="End lastTrip" asp-for="@lastTrip.Address.End"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@trip.Status"></label>
+                            <label asp-for="@lastTrip.Status"></label>
                         </div>
                         <div class="col">
-                            <p class="form-control">@trip.Status</p>
+                            <p class="form-control" readonly>@lastTrip.Status</p>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <p> No trips exists. Create some new trip.</p>
-                }
-            }
-        </div>
-        <div id="image_div">
-            <img id="googleStaticPicture" src="~/uploads/defaultStaticMap.png" />
-        </div>
-    </div>
+
+                </div>
+                <div id="image_div">
+                    <img id="googleStaticPicture" src="@lastTrip.FullStaticImageWay" />
+                </div>
+
+            </div>
+        }
+    }
 
     <div class="form-group col-12">
         <hr>
@@ -113,7 +105,7 @@
     <div class="p-3">
         <div class="col ml-4 p-3 d-flex">
             <div class="d-flex align-items-center">
-                <img class="profile-pic img-fluid" src="/uploads/profile_pic/defaultProfilePhoto.jpg">
+                <img class="profile-pic img-fluid" src="@user.FullImagePath">
                 <h1 class="m-3">@user.Firstname @user.LastName statistics</h1>
             </div>
             <div class="col d-flex justify-content-end align-items-center">

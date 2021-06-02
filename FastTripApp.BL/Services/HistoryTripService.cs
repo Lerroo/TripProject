@@ -29,9 +29,9 @@ namespace FastTripApp.BL.Services
             {
                 TripId = trip.Id,
                 Name = trip.Name,
-                Image = trip.Image,
+                StaticImageWay = trip.StaticImageWay,
                 Descriprion = trip.Descriprion,
-                TimeAfterDeparture = trip.TimeAfterDeparture ??= _repositoryTimeAfterDeparture.getAbandonTime(),
+                TimeAfterDeparture = trip.TimeAfterDeparture,
                 Address = trip.Address,
                 StatusEnum = trip.StatusEnum,
                 UserId = trip.UserId
@@ -44,8 +44,8 @@ namespace FastTripApp.BL.Services
             IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
             
             int CountAll = historyTrips.Count();
-            int CountAbandon = historyTrips.Where(p => p.StatusEnum == Status.Abandon).Count();
-            int CountSucces = historyTrips.Where(p => p.StatusEnum == Status.Success).Count();
+            int CountAbandon = historyTrips.Where(p => p.StatusEnum == StatusEnum.Abandon).Count();
+            int CountSucces = historyTrips.Where(p => p.StatusEnum == StatusEnum.Success).Count();
 
             var newCountTrips = new CountTrips()
             {
@@ -78,9 +78,17 @@ namespace FastTripApp.BL.Services
             return newDuration;            
         }
 
+        public HistoryTrip GetLatsTrip(string userId)
+        {
+            return _repositoryHistoryTrip.GetHistoryByUserId(userId)
+                .OrderBy(p=>p.TimeAfterDeparture.End)
+                .Last();
+        }
+
         public LocationsTrips GetLocationsTrips(string userId)
         {
-            IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
+            IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId)
+                .Where(p=>p.StatusEnum != StatusEnum.Abandon);
 
             string StartFavoritePlace = historyTrips.GroupBy(id => id.Address.Start)
                 .OrderByDescending(id => id.Count())
@@ -101,14 +109,15 @@ namespace FastTripApp.BL.Services
 
         public IEnumerable<int> GetTripYears(string userId)
         {
-            IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
-            
+            IEnumerable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
+            var la = historyTrips.ToList().Count;
             // .Where(a=>a != 1) if Year error => new DateTime().Year
             IEnumerable<int> years = historyTrips
                 .Select(p => p.TimeAfterDeparture.End.Value.Year)
-                .Where(a=>a != 1) 
                 .Distinct();
             return years;
         }
+
+
     }
 }

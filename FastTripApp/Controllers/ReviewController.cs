@@ -1,7 +1,6 @@
 ﻿using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Repository.Interfaces;
-using FastTripApp.BL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,23 +14,31 @@ namespace FastTripApp.Controllers
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;
+        private readonly IRepositoryTrip _repositoryTrip;
+        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
 
-        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
         private readonly ITripService _tripService;
-        private readonly IUtilService _util;
+        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
+        private readonly IUtilService _utilService;
+        private readonly IUserService _userService;
 
-        public ReviewController(
+        public ReviewController(IRepositoryTrip tripRepository,
+            IRepositoryHistoryTrip historyRepository,
             IRepositoryReview repositoryReview,
 
-            ITimeAfterDepartureService timeAfterDepartureService,
             ITripService tripService,
-            IUtilService util)
+            ITimeAfterDepartureService timeAfterDepartureService,
+            IUtilService utilService,
+            IUserService userService)
         {
-            _repositoryReview = repositoryReview;
+            _repositoryTrip = tripRepository;
+            _repositoryHistoryTrip = historyRepository;
 
-            _timeAfterDepartureService = timeAfterDepartureService;
-            _util = util;
             _tripService = tripService;
+            _timeAfterDepartureService = timeAfterDepartureService;
+            _utilService = utilService;
+            _userService = userService;
+            _repositoryReview = repositoryReview;
         }
 
         // GET: ReviewController
@@ -62,56 +69,14 @@ namespace FastTripApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                review.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                review.TimePost = _util.DateTimeNow();
+                review.UserId = _userService.GetCurrentUserId();
+                review.TimePost = _utilService.DateTimeNow();
 
                 _repositoryReview.Add(review);
                 return RedirectToRoute(new { controller = "Trip", action = "End", id = review.TripId });
             }
 
             return View("Trip/Start/", review);
-        }
-
-        // GET: ReviewController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ReviewController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ReviewController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ReviewController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

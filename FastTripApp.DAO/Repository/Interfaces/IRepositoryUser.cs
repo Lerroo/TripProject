@@ -5,8 +5,8 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository.Interfaces
 {
-    public interface IRepositoryUser : IRepository<User>
+    public interface IRepositoryUser : IRepository<UserCustom>
     {
-        User GetById(string id);
+        UserCustom GetById(string id);
     }
 }

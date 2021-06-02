@@ -9,7 +9,7 @@
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
 
-@Html.Partial("_Delete")
+@Html.Partial("_Abandon")
 
 <div class="container shadow-lg p-3 rounded border-dark text-dark border-5">
 
@@ -32,8 +32,7 @@
                             <label asp-for="@firstTrip.Name"></label>
                         </div>
                         <div class="col">
-                            <input asp-for="@firstTrip.Name" class="form-control" />
-                            <span asp-validation-for="@firstTrip.Name" class="text-danger"></span>
+                            <input asp-for="@firstTrip.Name" readonly class="form-control" />
                         </div>
                     </div>
 
@@ -42,8 +41,7 @@
                             <label asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart"></label>
                         </div>
                         <div class="col">
-                            <input asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart" class="form-control" />
-                            <span asp-validation-for="@firstTrip.TimeBeforeDeparture.ApproximateStart" class="text-danger"></span>
+                            <input asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart" readonly class="form-control" />
                         </div>
                     </div>
 
@@ -52,8 +50,7 @@
                             <label asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView"></label>
                         </div>
                         <div class="col">
-                            <input asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView" class="form-control" />
-                            <span asp-validation-for="@firstTrip.TimeBeforeDeparture.EstimatedView" class="text-danger"></span>
+                            <input asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView" readonly class="form-control" />
                         </div>
                     </div>
 
@@ -62,8 +59,7 @@
                             <label asp-for="@firstTrip.Descriprion"></label>
                         </div>
                         <div class="col">
-                            <textarea asp-for="@firstTrip.Descriprion" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="@firstTrip.Descriprion" class="text-danger"></span>
+                            <textarea asp-for="@firstTrip.Descriprion" readonly class="form-control" rows="3"></textarea>
                         </div>
                     </div>
 
@@ -72,9 +68,7 @@
                             <label asp-for="@firstTrip.Address.Start"></label>
                         </div>
                         <div class="col">
-                            <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="@firstTrip.Address.Start"></textarea>
-                            <span asp-validation-for="@firstTrip.Address.Start" class="text-danger"></span>
-                            <input type="text" class="form-control d-none" asp-for="@firstTrip.Address.StartCoords">
+                            <textarea cols="2" type="text" class="form-control" placeholder="Start trip" readonly asp-for="@firstTrip.Address.Start"></textarea>
                         </div>
                     </div>
 
@@ -83,9 +77,7 @@
                             <label asp-for="@firstTrip.Address.End"></label>
                         </div>
                         <div class="col">
-                            <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="@firstTrip.Address.End"></textarea>
-                            <span asp-validation-for="@firstTrip.Address.End" class="text-danger"></span>
-                            <input type="text" class="form-control d-none" asp-for="@firstTrip.Address.EndCoords">
+                            <textarea cols="2" type="text" class="form-control" placeholder="End trip" readonly asp-for="@firstTrip.Address.End"></textarea>
                         </div>
                     </div>
 
@@ -109,7 +101,7 @@
         </div>
 
         <div id="image_div">
-            <img id="googleStaticPicture" src="~/uploads/defaultStaticMap.png" />
+            <img id="googleStaticPicture" src="@Url.Content("~"+firstTrip.FullStaticImageWay)" />
         </div>
     </div>
 

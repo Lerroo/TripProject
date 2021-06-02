@@ -1,7 +1,9 @@
-﻿namespace FastTripApp.BL.Services.Interfaces
+﻿using FastTripApp.DAO.Models.Statistic;
+
+namespace FastTripApp.BL.Services.Interfaces
 {
     public interface IUserStatisticService
     {
-        object GetByUserId(string userId);
+        UserStatistic GetByUserId(string userId);
     }
 }

@@ -1,68 +1,15 @@
 ﻿@model FastTripApp.DAO.Models.Trip
 
-<form asp-action="Edit" method="post">
-    <div class="border p-3">
-        <div class="form-group row">
-            <h2 class="text-info pl-3">Edit Fast Trip</h2>
-        </div>
-        <div class="row">
-            <div class="col">
+<div class="border p-3">
+    <div class="form-group row">
+        <h2 class="text-info pl-3">Edit Fast Trip</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form asp-action="Edit" method="post">
+
                 <input asp-for="Id" class="d-none" />
-                <input asp-for="UserId" class="d-none" />
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Name"></label>
-                    </div>
-                    <div class="col">
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="TimeBeforeDeparture.ApproximateStart"></label>
-                    </div>
-                    <div class="col">
-                        <input asp-for="TimeBeforeDeparture.ApproximateStart" class="form-control" />
-                        <span asp-validation-for="TimeBeforeDeparture.ApproximateStart" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <input class="form-control d-none" asp-for="TimeBeforeDeparture.Estimated">
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Descriprion"></label>
-                    </div>
-                    <div class="col">
-                        <textarea asp-for="Descriprion" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Descriprion" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Address.Start"></label>
-                    </div>
-                    <div class="col">
-                        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Address.Start"></textarea>
-                        <span asp-validation-for="Address.Start" class="text-danger"></span>
-                        <input type="text" class="form-control d-none" asp-for="Address.StartCoords">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Address.End"></label>
-                    </div>
-                    <div class="col">
-                        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Address.End"></textarea>
-                        <span asp-validation-for="Address.End" class="text-danger"></span>
-                        <input type="text" class="form-control d-none" asp-for="Address.EndCoords">
-                    </div>
-                </div>
+                @Html.Partial("_FormBody", Model)
 
                 <div class="row d-flex justify-content-end">
                     <div class="col-8 offset-4 row">
@@ -74,9 +21,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-5 text-right mx-auto" id="map"></div>
+            </form>
         </div>
+        <div class="col-5 text-right mx-auto" id="map"> </div>
     </div>
-</form>
+</div>
+
+

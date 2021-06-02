@@ -1,82 +1,32 @@
 ﻿@model FastTripApp.DAO.Models.Trip
 
-<form asp-action="Create" method="post">
+
     <div class="border p-3">
         <div class="form-group row">
             <h2 class="text-info pl-3">Create new Fast Trip</h2>
         </div>
         <div class="row">
             <div class="col">
-                
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Name"></label>
-                    </div>
-                    <div class="col">
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                </div>
+                <form asp-action="Create" method="post">
+                    @Html.Partial("_FormBody", Model)
 
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="TimeBeforeDeparture.ApproximateStart"></label>
-                    </div>
-                    <div class="col">
-                        <input asp-for="TimeBeforeDeparture.ApproximateStart" class="form-control" />
-                        <span asp-validation-for="TimeBeforeDeparture.ApproximateStart" class="text-danger"></span>
-                    </div>
-                </div>
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-8 offset-4 row">
 
-                <input class="form-control d-none" asp-for="TimeBeforeDeparture.Estimated">
+                            <div class="col">
+                                <input type="submit" class="btn btn-info w-100" value="Create" />
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                            </div>
 
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Descriprion"></label>
-                    </div>
-                    <div class="col">
-                        <textarea asp-for="Descriprion" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Descriprion" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Address.Start"></label>
-                    </div>
-                    <div class="col">
-                        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Address.Start"></textarea>
-                        <span asp-validation-for="Address.Start" class="text-danger"></span>
-                        <input type="text" class="form-control d-none" asp-for="Address.StartCoords">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Address.End"></label>
-                    </div>
-                    <div class="col">
-                        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Address.End"></textarea>
-                        <span asp-validation-for="Address.End" class="text-danger"></span>
-                        <input type="text" class="form-control d-none" asp-for="Address.EndCoords">
-                    </div>
-                </div>
-
-                <div class="row d-flex justify-content-end">
-                    <div class="col-8 offset-4 row">
-                        <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Create" />
-                        </div>
-                        <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="col-5 text-right mx-auto" id="map" > </div>
         </div>
     </div>
-</form>
 
 <div id="image_div">
     <img id="googleStaticPicture" />

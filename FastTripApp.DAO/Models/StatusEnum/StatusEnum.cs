@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.StatusEnum
 {
-    public enum Status : int
+    public enum StatusEnum : int
     {
         [StringValue("Abandon")]
         Abandon,

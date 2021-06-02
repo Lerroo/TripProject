@@ -6,6 +6,15 @@ namespace FastTripApp.DAO.Models
 {
     public class TimeAfterDeparture
     {
+        /// <summary>
+        /// Set Start and End time =  DateTime.Now;
+        /// </summary>
+        public TimeAfterDeparture()
+        {
+            var currentTime = DateTime.Now;
+            Start = currentTime;
+            End = currentTime;
+        }
         [Key]
         public int Id { get; set; }
         [DisplayName("Actual start time")]

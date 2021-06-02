@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastTripApp.Web.Migrations
 {
     [DbContext(typeof(UsingIdentityContext))]
-    [Migration("20210531124811_first endstatus")]
-    partial class firstendstatus
+    [Migration("20210602162206_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,13 +89,13 @@ namespace FastTripApp.Web.Migrations
                     b.Property<string>("Descriprion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("StaticImageWay")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusEnum")
                         .HasColumnType("int");
 
                     b.Property<int?>("TimeAfterDepartureId")
@@ -116,7 +116,7 @@ namespace FastTripApp.Web.Migrations
                     b.ToTable("HistoryTrips");
                 });
 
-            modelBuilder.Entity("FastTripApp.DAO.Models.Identity.User", b =>
+            modelBuilder.Entity("FastTripApp.DAO.Models.Identity.UserCustom", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)")
@@ -127,6 +127,9 @@ namespace FastTripApp.Web.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -167,9 +170,6 @@ namespace FastTripApp.Web.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -281,9 +281,6 @@ namespace FastTripApp.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -292,6 +289,12 @@ namespace FastTripApp.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("ReviewId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StaticImageWay")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusEnum")
                         .HasColumnType("int");
 
                     b.Property<int?>("TimeBeforeDepartureId")
@@ -452,7 +455,7 @@ namespace FastTripApp.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", "User")
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -478,7 +481,7 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("FastTripApp.DAO.Models.Review", b =>
                 {
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", "User")
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
@@ -506,7 +509,7 @@ namespace FastTripApp.Web.Migrations
                         .WithMany()
                         .HasForeignKey("TimeBeforeDepartureId");
 
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", "User")
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -530,7 +533,7 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", null)
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -539,7 +542,7 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", null)
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -554,7 +557,7 @@ namespace FastTripApp.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", null)
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -563,14 +566,14 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("FastTripApp.DAO.Models.Identity.User", null)
+                    b.HasOne("FastTripApp.DAO.Models.Identity.UserCustom", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FastTripApp.DAO.Models.Identity.User", b =>
+            modelBuilder.Entity("FastTripApp.DAO.Models.Identity.UserCustom", b =>
                 {
                     b.Navigation("Reviews");
                 });

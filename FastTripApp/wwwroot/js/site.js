@@ -117,7 +117,7 @@ function getStaticMap(pathArray) {
             + clearStart + "&zoom=" + zoom + "&size=500x500&maptype=roadmap&path="
             + clearPath + markersStartEnd + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
         console.log('zoomafter-', zoom)
-        document.getElementById("googleStaticPicture").src = URL;
+        document.getElementById("StaticImageWayUrl").value = URL;
 
     }, 2000);    
 

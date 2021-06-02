@@ -20,7 +20,7 @@ namespace FastTripApp.DAO.Models
         public int TripId { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public UserCustom User { get; set; }
         
     }
 }

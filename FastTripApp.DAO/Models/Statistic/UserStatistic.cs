@@ -19,6 +19,6 @@ namespace FastTripApp.DAO.Models.Statistic
         [DisplayName("Location")]
         public LocationsTrips LocationsTrips { get; set; }
         public HistoryTrip LastTrip { get; set; }
-        public User User { get; set; }
+        public UserCustom User { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository
 {
-    public class RepositoryUser : RepositoryGeneric<User>, IRepositoryUser
+    public class RepositoryUser : RepositoryGeneric<UserCustom>, IRepositoryUser
     {
         private readonly UsingIdentityContext _context;
         public RepositoryUser(UsingIdentityContext context):base(context)
@@ -14,7 +14,7 @@ namespace FastTripApp.DAO.Repository
             _context = context;
         }
 
-        public User GetById(string id)
+        public UserCustom GetById(string id)
         {
             return _context.Users.Find(id);
         }

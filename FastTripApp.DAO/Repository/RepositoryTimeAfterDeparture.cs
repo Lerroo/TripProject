@@ -18,7 +18,6 @@ namespace FastTripApp.DAO.Repository
 
         public TimeAfterDeparture getAbandonTime()
         {
-
             return _context.TimeAfterDepartures.Where(a => 
                 a.Start == new DateTime()).First();
         }        

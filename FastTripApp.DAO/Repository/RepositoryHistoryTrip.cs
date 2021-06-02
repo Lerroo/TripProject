@@ -30,9 +30,6 @@ namespace FastTripApp.DAO.Repository
                 .Where(p => p.UserId == id);
         }
 
-        public HistoryTrip GetLatsTrip(string userId)
-        {
-            return GetHistoryByUserId(userId).OrderBy(p=>p.Id).Last();
-        }
+
     }
 }

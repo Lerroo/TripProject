@@ -56,9 +56,9 @@ namespace FastTripApp.Web.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Firstname = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(100)", nullable: true),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -244,10 +244,11 @@ namespace FastTripApp.Web.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descriprion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StaticImageWay = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeBeforeDepartureId = table.Column<int>(type: "int", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: true),
+                    StatusEnum = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ReviewId = table.Column<int>(type: "int", nullable: true),
                     ReviewId1 = table.Column<int>(type: "int", nullable: true)
@@ -289,7 +290,7 @@ namespace FastTripApp.Web.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Start = table.Column<DateTime>(type: "datetime2", nullable: true),
                     End = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TripId = table.Column<int>(type: "int", nullable: false)
+                    TripId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -299,7 +300,7 @@ namespace FastTripApp.Web.Migrations
                         column: x => x.TripId,
                         principalTable: "Trips",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -310,9 +311,10 @@ namespace FastTripApp.Web.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TripId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StaticImageWay = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descriprion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeAfterDepartureId = table.Column<int>(type: "int", nullable: true),
+                    StatusEnum = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -389,7 +391,8 @@ namespace FastTripApp.Web.Migrations
                 name: "IX_TimeAfterDepartures_TripId",
                 table: "TimeAfterDepartures",
                 column: "TripId",
-                unique: true);
+                unique: true,
+                filter: "[TripId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_AddressId",

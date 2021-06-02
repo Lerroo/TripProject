@@ -16,24 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210531115348_first.cs" />
-    <Compile Include="Migrations\20210531115348_first.Designer.cs" />
-    <Compile Include="Migrations\20210531120837_first1.cs" />
-    <Compile Include="Migrations\20210531120837_first1.Designer.cs" />
-    <Compile Include="Migrations\20210531124811_first endstatus.cs" />
-    <Compile Include="Migrations\20210531124811_first endstatus.Designer.cs" />
-    <Compile Include="Migrations\20210531125753_first endstatusdad.cs" />
-    <Compile Include="Migrations\20210531125753_first endstatusdad.Designer.cs" />
-    <Compile Include="Migrations\20210531135359_first endstatusdaddada.cs" />
-    <Compile Include="Migrations\20210531135359_first endstatusdaddada.Designer.cs" />
-    <Compile Include="Migrations\20210601161151_add display name.cs" />
-    <Compile Include="Migrations\20210601161151_add display name.Designer.cs" />
+    <Compile Include="Migrations\20210602162206_first.cs" />
+    <Compile Include="Migrations\20210602162206_first.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Grpc.Core" Version="2.38.0" />
     <PackageReference Include="HangFire" Version="1.7.23" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />

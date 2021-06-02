@@ -1,11 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using FastTripApp.DAO.Models;
+using System.Threading.Tasks;
 
 namespace FastTripApp.BL.Services.Interfaces
 {
     public interface ITripService
     {
-        Task ToHistory(int? id);
-        void Start(int id);
-        void End(int id);
+        Task ToHistory(int? idTrip);
+        void Start(int? idTrip);
+        void End(int? idTrip);
+        void AddNewTrip(Trip trip);
+        void UpdateTrip(Trip trip);
     }
 }

@@ -1,12 +1,10 @@
 ﻿
-using FastTripApp.DAO;
+using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Migrations;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace FastTripApp.Controllers
 {
@@ -14,15 +12,19 @@ namespace FastTripApp.Controllers
     public class HistoryTripController : Controller
     {
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
-        public HistoryTripController(IRepositoryHistoryTrip repositoryHistoryTrip)
+        private readonly IUserService _userService;
+
+        public HistoryTripController(IRepositoryHistoryTrip repositoryHistoryTrip,
+            IUserService userService)
         {
             _repositoryHistoryTrip = repositoryHistoryTrip;
+            _userService = userService;
         }
 
         [Authorize]
         public ActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _userService.GetCurrentUserId();
             IEnumerable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
             return View(historyTrips);
         }

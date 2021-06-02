@@ -1,5 +1,5 @@
 ﻿@using FastTripApp.DAO.Models.Identity
-@inject SignInManager<User> SignInManager
+@inject SignInManager<UserCustom> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

@@ -9,16 +9,19 @@ namespace FastTripApp.Web.Controllers
     public class UserStatisticController : Controller
     {
         private readonly IUserStatisticService _userStatisticService;
+        private readonly IUserService _userService;
 
-        public UserStatisticController(IUserStatisticService userStatisticService)
+        public UserStatisticController(IUserStatisticService userStatisticService,
+            IUserService userService)
         {
             _userStatisticService = userStatisticService;
+            _userService = userService;
         }
 
         // GET: StatisticController
         public ActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _userService.GetCurrentUserId();
             var userTripStatistic = _userStatisticService.GetByUserId(userId);        
    
             return View(userTripStatistic);

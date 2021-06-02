@@ -20,13 +20,13 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly IUnitOfWorkService _unitOfWork;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserCustom> _signInManager;
+        private readonly UserManager<UserCustom> _userManager;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<UserCustom> userManager,
+            SignInManager<UserCustom> signInManager,
             ILogger<RegisterModel> logger,
             IUnitOfWorkService unitOfWork)
         {
@@ -46,7 +46,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Display(Name = "Profile Image")]
-            public string ImagePath { get; set; }
+            public string ProfilePicture { get; set; }
 
             [Required]
             [Display(Name = "Display Name")]
@@ -61,7 +61,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Email except")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -96,22 +96,22 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                string fileName = "";
-                if (file != null)
-                {
-                    _unitOfWork.UploadImage(file);
-                    fileName = file.FileName;
-                }
-                else
-                {
-                    fileName = "defaultProfilePhoto.jpg";
-                }
-
-                var user = new User { UserName = Input.Email, Email = Input.Email, Firstname = Input.FirstName, 
-                    LastName = Input.LastName, PhoneNumber = Input.PhoneNumber, ImagePath = fileName, DisplayName = Input.DisplayName };
+                var user = new UserCustom { UserName = Input.Email, Email = Input.Email, Firstname = Input.FirstName, 
+                    LastName = Input.LastName, PhoneNumber = Input.PhoneNumber, DisplayName = Input.DisplayName};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    if (file != null)
+                    {
+                        _unitOfWork.UploadImage(file, user.Id, "avatars");
+                        user.ImagePath = file.FileName;
+                    }
+                    else
+                    {
+                        user.ImagePath = "defaultProfilePhoto.jpg";
+                    }
+                    await _userManager.UpdateAsync(user);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -13,14 +13,16 @@ namespace FastTripApp.DAO.Models
         public int TripId { get; set; }
         public string Name { get; set; }
 
-        public string Image { get; set; }
+        public string StaticImageWay { get; set; }
+        [NotMapped]
+        public string FullStaticImageWay { get => "/uploads/users/" + UserId + "/static_way/" + StaticImageWay; }
 
         public string Descriprion { get; set; }
 
         public TimeAfterDeparture TimeAfterDeparture { get; set; }
         
         [DisplayName("Status")]
-        public Status StatusEnum { get; set; }
+        public StatusEnum.StatusEnum StatusEnum { get; set; }
         [NotMapped]
         public string Status { get => StatusEnum.GetStringValue(); }
 

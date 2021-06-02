@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using FastTripApp.DAO.Models.Identity
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<UserCustom> SignInManager
+@inject UserManager<UserCustom> UserManager
 
 <ul class="navbar-nav">
     @{if (SignInManager.IsSignedIn(User))
@@ -13,12 +13,12 @@
                 if (myUser.ImagePath != null)
                 {
                     <li class="nav-item d-flex align-items-center">
-                        <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="~/uploads/profile_pic/@myUser.ImagePath">
+                        <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="@myUser.FullImagePath">
                     </li>
                 }
                 <li class="nav-item">
                     <form class="nav-link form-inline" asp-area="Identity" asp-page="/Account/Manage/Index">
-                        <button id="manage" type="submit" class="nav-link btn btn-link text-dark">Hello @myUser.Firstname!</button>
+                        <button id="manage" type="submit" class="nav-link btn btn-link text-dark">Hello @myUser.DisplayName!</button>
                     </form>
                 </li>
             }

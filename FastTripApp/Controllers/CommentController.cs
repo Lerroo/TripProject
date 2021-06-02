@@ -10,16 +10,19 @@ namespace FastTripApp.Controllers
     {
         private readonly IRepositoryComment _repositoryComment;
 
-        private readonly IUtilService _util;
+        private readonly IUtilService _utilService;
+        private readonly IUserService _userService;
 
         public CommentController(
             IRepositoryComment repositoryComment, 
 
-            IUtilService util)
+            IUtilService utilService,
+            IUserService userService)
         {
             _repositoryComment = repositoryComment;
 
-            _util = util;
+            _utilService = utilService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -28,8 +31,8 @@ namespace FastTripApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                comment.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                comment.TimePost = _util.DateTimeNow();
+                comment.UserId = _userService.GetCurrentUserId();
+                comment.TimePost = _utilService.DateTimeNow();
 
                 _repositoryComment.Add(comment);
                 return RedirectToRoute(new { controller = "Review", action = "Index" });

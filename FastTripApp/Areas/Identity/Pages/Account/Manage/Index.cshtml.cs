@@ -16,13 +16,13 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserCustom> _userManager;
+        private readonly SignInManager<UserCustom> _signInManager;
         private readonly IUnitOfWorkService _unitOfWork;
 
         public IndexModel( 
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<UserCustom> userManager,
+            SignInManager<UserCustom> signInManager,
             IUnitOfWorkService unitOfWork)
         {
             _userManager = userManager;
@@ -35,6 +35,8 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
+        public string FullPath { get; set; }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -46,13 +48,14 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
         }
 
-        private async Task LoadAsync(User user)
+        private async Task LoadAsync(UserCustom user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
             ImagePath = user.ImagePath;
+            FullPath = "/uploads/users/" + user.Id + "/avatars/" + ImagePath;
 
             Input = new InputModel
             {
@@ -80,12 +83,6 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            //////fixx
-            ///
-            
-           
-                
-            
 
             if (!ModelState.IsValid)
             {
@@ -104,10 +101,9 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-
             if (file != null)
             {
-                _unitOfWork.UploadImage(file);
+                _unitOfWork.UploadImage(file, user.Id, "avatars");
                 user.ImagePath = file.FileName;
                 await _userManager.UpdateAsync(user);
             }

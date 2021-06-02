@@ -19,26 +19,6 @@ namespace FastTripApp.BL.Services
             _util = util;            
         }
 
-        public TimeAfterDeparture CalculateTime(TimeAfterDeparture timeInfo)
-        {
-            timeInfo.End = _util.DateTimeNow();
-            return timeInfo;
-        }
-
-        public TimeAfterDeparture GetWithStart()
-        {
-            var timeAfterDeparture = new TimeAfterDeparture() { Start = _util.DateTimeNow() };
-
-            _repositoryTimeAfterDeparture.Add(timeAfterDeparture);
-            return timeAfterDeparture;
-        }
-
-        public void SetEndById(int id)
-        {
-            var timeAfterDeparture = _repositoryTimeAfterDeparture.GetById(id);
-            timeAfterDeparture.End = _util.DateTimeNow();
-
-            _repositoryTimeAfterDeparture.Update(timeAfterDeparture);
-        }
+        
     }
 }

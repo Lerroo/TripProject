@@ -30,11 +30,11 @@ namespace FastTripApp.DAO.Repository
             var trip = GetByIdWithInclude(id);
             if (trip.TimeAfterDeparture.Observe.Value.TotalSeconds == 0)
             {
-                trip.StatusEnum = Status.Abandon;
+                trip.StatusEnum = StatusEnum.Abandon;
             }
             else
             {
-                trip.StatusEnum = Status.Success;
+                trip.StatusEnum = StatusEnum.Success;
             }
             _сontext.Update(trip);
         }

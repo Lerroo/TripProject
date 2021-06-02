@@ -10,6 +10,5 @@ namespace FastTripApp.DAO.Repository.Interfaces
     {
         HistoryTrip GetWithInclude(int id);
         IQueryable<HistoryTrip> GetHistoryByUserId(string id);
-        HistoryTrip GetLatsTrip(string userId);
     }
 }

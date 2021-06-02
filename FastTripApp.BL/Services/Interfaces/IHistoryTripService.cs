@@ -11,5 +11,6 @@ namespace FastTripApp.BL.Services.Interfaces
         CountTrips GetCountTrips(string userId);
         LocationsTrips GetLocationsTrips(string userId);
         ObserveTrips GetDurationTrips(string userId);
+        HistoryTrip GetLatsTrip(string userId);
     }
 }

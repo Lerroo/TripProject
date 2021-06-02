@@ -15,23 +15,23 @@
                 <input asp-for="Input.DisplayName" class="form-control" />
                 <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
             </div>
-        </div>
 
-        <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-        </div>
 
-        <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Input.LastName"></label>
                 <input asp-for="Input.LastName" class="form-control" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
+            </div>            
         </div>
+
+        <div class="col">
+            <img src="/uploads/sifer.png" class="img-thumbnail" />
+        </div>        
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -70,9 +70,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label asp-for="Input.ImagePath"></label>
+                <label asp-for="Input.ProfilePicture"></label>
                 <input type="file" class="border-primary"  name="file" />
-                <span asp-validation-for="Input.ImagePath" class="text-danger"></span>
+                <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
             </div>
         </div>
     </div>

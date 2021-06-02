@@ -7,7 +7,7 @@ using System;
 
 namespace FastTripApp.DAO
 {
-    public class UsingIdentityContext : IdentityDbContext<User>
+    public class UsingIdentityContext : IdentityDbContext<UserCustom>
     {
         public UsingIdentityContext(DbContextOptions<UsingIdentityContext> options): base(options)
         {
@@ -18,13 +18,13 @@ namespace FastTripApp.DAO
         public DbSet<Review> Reviews { get; set; }
         public DbSet<TimeAfterDeparture> TimeAfterDepartures { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserCustom> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>()
+            builder.Entity<UserCustom>()
             .ToTable("Users")
             .Property(p => p.Id).HasColumnName("UserId");
 
