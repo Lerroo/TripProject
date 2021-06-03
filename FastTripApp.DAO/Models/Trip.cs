@@ -17,7 +17,7 @@ namespace FastTripApp.DAO.Models
 
         public string StaticImageWay { get; set; }
         [NotMapped]
-        public string FullStaticImageWay { get => "/uploads//users//" + UserId + "//static_way//" + StaticImageWay; }
+        public string FullStaticImageWay { get => "/uploads/users/" + UserId + "/static_way/" + StaticImageWay; }
         [NotMapped]
         public string StaticImageWayUrl { get; set; }
 

@@ -4,6 +4,6 @@ namespace FastTripApp.BL.Services.Interfaces
 {
     public interface IUserStatisticService
     {
-        UserStatistic GetByUserId(string userId);
+        UserStatistic GetByYear(int year, string userId);
     }
 }

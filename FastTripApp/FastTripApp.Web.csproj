@@ -18,6 +18,8 @@
   <ItemGroup>
     <Compile Include="Migrations\20210602162206_first.cs" />
     <Compile Include="Migrations\20210602162206_first.Designer.cs" />
+    <Compile Include="Migrations\20210603152747_delete usless tripId in TimeAfterDeparture model.cs" />
+    <Compile Include="Migrations\20210603152747_delete usless tripId in TimeAfterDeparture model.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 

@@ -21,40 +21,63 @@ namespace FastTripApp.BL.Services
         {
             _repositoryUser = repositoryUser;
             _historyTripService = historyTripService;
-        }
+        }      
 
-        public UserStatistic GetByUserId(string userId)
+        private List<SelectListItem> GetSelectListAllYears(string userId, int selectYear)
         {
             var years = new List<SelectListItem>();
-            foreach (var vi in _historyTripService.GetTripYears(userId).Select((x, i) =>
-                                                        new { Value = x.ToString(), Index = i.ToString() }))
+            foreach (var vi in _historyTripService.GetHistoryTripYears(userId).Select((x) =>
+                                                        new { Value = x.ToString(), Index = x.ToString() }))
             {
-                var newItem = new SelectListItem { Text = vi.Value, Value = vi.Index };
+                SelectListItem newItem;
+                if (vi.Value == selectYear.ToString())
+                {
+                    newItem = new SelectListItem { Text = vi.Value, Value = vi.Index, Selected = true};
+                }
+                else
+                {
+                    newItem = new SelectListItem { Text = vi.Value, Value = vi.Index };
+                }
                 years.Add(newItem);
             }
 
+            return years;
+        }
+
+        private UserStatistic GetDefaultUserStatistic(string userId)
+        {
+            return new UserStatistic()
+            {
+                Years = new List<SelectListItem>(),
+                ObserveTrips = new ObserveTrips(),
+                CountTrips = new CountTrips(),
+                LocationsTrips = new LocationsTrips(),
+                LastTrip = null,
+                User = _repositoryUser.GetById(userId),
+            };
+        }
+
+        public UserStatistic GetByYear(int year, string userId)
+        {
+            List<SelectListItem> years = GetSelectListAllYears(userId, year);
             //history clear
             if (years.Count == 0)
             {
-                return new UserStatistic() {
-                    Years = new List<SelectListItem>(),
-                    ObserveTrips = new ObserveTrips(),
-                    CountTrips = new CountTrips(),
-                    LocationsTrips = new LocationsTrips(),
-                    LastTrip = null,
-                    User = _repositoryUser.GetById(userId),
-                };
+                return GetDefaultUserStatistic(userId);
             }
 
+            var historyTrip = _historyTripService.GetHistoryByYear(year, userId);
             var statistic = new UserStatistic()
             {
+                Year = year,
                 Years = years,
-                ObserveTrips = _historyTripService.GetDurationTrips(userId),
-                CountTrips = _historyTripService.GetCountTrips(userId),
-                LocationsTrips = _historyTripService.GetLocationsTrips(userId),
-                LastTrip = _historyTripService.GetLatsTrip(userId),
+                ObserveTrips = _historyTripService.GetDurationTrips(historyTrip),
+                CountTrips = _historyTripService.GetCountTrips(historyTrip),
+                LocationsTrips = _historyTripService.GetLocationsTrips(historyTrip),
+                LastTrip = _historyTripService.GetLatsTripByYear(year, userId),
                 User = _repositoryUser.GetById(userId),
             };
+
             return statistic;
         }
     }

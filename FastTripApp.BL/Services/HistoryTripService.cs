@@ -12,15 +12,11 @@ namespace FastTripApp.BL.Services
 {
     public class HistoryTripService : IHistoryTripService
     {
-        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
-        private readonly IRepositoryTimeAfterDeparture _repositoryTimeAfterDeparture;
+        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;        
 
-        public HistoryTripService(
-            IRepositoryHistoryTrip repositoryHistoryTrip,
-            IRepositoryTimeAfterDeparture repositoryTimeAfterDeparture)
+        public HistoryTripService(IRepositoryHistoryTrip repositoryHistoryTrip)
         {
-            _repositoryHistoryTrip = repositoryHistoryTrip;
-            _repositoryTimeAfterDeparture = repositoryTimeAfterDeparture;
+            _repositoryHistoryTrip = repositoryHistoryTrip;            
         }
 
         public HistoryTrip ConvertToHistoryTrip(Trip trip)
@@ -39,10 +35,8 @@ namespace FastTripApp.BL.Services
             return historyTrip;
         }
 
-        public CountTrips GetCountTrips(string userId)
-        {
-            IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
-            
+        public CountTrips GetCountTrips(IEnumerable<HistoryTrip> historyTrips)
+        {            
             int CountAll = historyTrips.Count();
             int CountAbandon = historyTrips.Where(p => p.StatusEnum == StatusEnum.Abandon).Count();
             int CountSucces = historyTrips.Where(p => p.StatusEnum == StatusEnum.Success).Count();
@@ -56,10 +50,8 @@ namespace FastTripApp.BL.Services
             return newCountTrips;
         }
 
-        public ObserveTrips GetDurationTrips(string userId)
-        {
-            IEnumerable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
-            
+        public ObserveTrips GetDurationTrips(IEnumerable<HistoryTrip> historyTrips)
+        {            
             var minimumSec = historyTrips.Min(p => p.TimeAfterDeparture.Observe.Value.TotalSeconds);
             TimeSpan? minimum = TimeSpan.FromSeconds(Convert.ToInt32(minimumSec));
 
@@ -78,17 +70,31 @@ namespace FastTripApp.BL.Services
             return newDuration;            
         }
 
-        public HistoryTrip GetLatsTrip(string userId)
+        public IEnumerable<HistoryTrip> GetHistoryByYear(int year, string userId)
+        {
+            IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId)
+                .Where(p=>p.TimeAfterDeparture.End.Value.Year == year);
+
+            return historyTrips;
+        }
+
+        public HistoryTrip GetLatsTripByYear(int year, string userId)
         {
             return _repositoryHistoryTrip.GetHistoryByUserId(userId)
+                .Where(p=>p.TimeAfterDeparture.End.Value.Year == year)
                 .OrderBy(p=>p.TimeAfterDeparture.End)
                 .Last();
         }
 
-        public LocationsTrips GetLocationsTrips(string userId)
+        public LocationsTrips GetLocationsTrips(IEnumerable<HistoryTrip> _historyTrips)
         {
-            IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId)
+            IEnumerable<HistoryTrip> historyTrips = _historyTrips
                 .Where(p=>p.StatusEnum != StatusEnum.Abandon);
+
+            if (historyTrips.FirstOrDefault() == null)
+            {
+                return new LocationsTrips();
+            }
 
             string StartFavoritePlace = historyTrips.GroupBy(id => id.Address.Start)
                 .OrderByDescending(id => id.Count())
@@ -107,7 +113,7 @@ namespace FastTripApp.BL.Services
             return newLocation;
         }
 
-        public IEnumerable<int> GetTripYears(string userId)
+        public IEnumerable<int> GetHistoryTripYears(string userId)
         {
             IEnumerable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetHistoryByUserId(userId);
             var la = historyTrips.ToList().Count;
@@ -117,7 +123,5 @@ namespace FastTripApp.BL.Services
                 .Distinct();
             return years;
         }
-
-
     }
 }

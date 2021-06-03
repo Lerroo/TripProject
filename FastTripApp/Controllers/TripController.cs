@@ -25,7 +25,7 @@ namespace FastTripApp.Controllers
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
 
         private readonly ITripService _tripService;
-        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
+        
         private readonly IUtilService _utilService;
         private readonly IUserService _userService;
 
@@ -36,7 +36,7 @@ namespace FastTripApp.Controllers
             IRepositoryHistoryTrip historyRepository, 
 
             ITripService tripService,
-            ITimeAfterDepartureService timeAfterDepartureService,
+            
             IUtilService utilService,
             IUserService userService,
             IUnitOfWorkService unitOfWorkService,
@@ -46,7 +46,7 @@ namespace FastTripApp.Controllers
             _repositoryHistoryTrip = historyRepository;
 
             _tripService = tripService;
-            _timeAfterDepartureService = timeAfterDepartureService;
+            
             _utilService = utilService;
             _userService = userService;
             _unitOfWorkService = unitOfWorkService;

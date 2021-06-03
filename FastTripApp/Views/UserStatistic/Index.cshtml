@@ -110,7 +110,7 @@
             </div>
             <div class="col d-flex justify-content-end align-items-center">
                 <h2 class="m-3">@Html.DisplayNameFor(model => model.Years)</h2>
-                <select class="form-control col-2" asp-for="Year" asp-items="@userStatistic.Years">
+                <select class="form-control col-2" onchange="filterBySelectedYear(this)" id="select_id" asp-for="Year" asp-items="@userStatistic.Years">
                 </select>
             </div>
         </div>
@@ -176,3 +176,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function filterBySelectedYear(select) {
+        currentYear = select.options[select.selectedIndex].text;
+        alert(currentYear)
+        window.location.href = '/UserStatistic/Index?currentYear=' + currentYear;
+    }
+</script>

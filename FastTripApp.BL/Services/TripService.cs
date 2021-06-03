@@ -12,31 +12,31 @@ namespace FastTripApp.BL.Services
     {
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
-        private readonly IRepositoryTimeAfterDeparture _repositoryTimeAfterDeparture;
+        
 
         private readonly IHistoryTripService _historyTripService;
         private readonly IUtilService _utilService;
         private readonly IUserService _userService;
-        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
+        
 
         public TripService(
             IRepositoryTrip tripRepository,
             IRepositoryHistoryTrip repositoryHistoryTrip,
-            IRepositoryTimeAfterDeparture repositoryTimeAfterDeparture,
+            
 
             IHistoryTripService historyTripService,
             IUserService userService,
-            ITimeAfterDepartureService timeAfterDepartureService,
+            
             IUtilService utilService)
         {
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = repositoryHistoryTrip;
-            _repositoryTimeAfterDeparture = repositoryTimeAfterDeparture;
+            
 
             _historyTripService = historyTripService;
             _utilService = utilService;
             _userService= userService;
-            _timeAfterDepartureService = timeAfterDepartureService;
+            
         }
 
         /// <summary>

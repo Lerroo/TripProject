@@ -18,7 +18,7 @@ namespace FastTripApp.Controllers
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
 
         private readonly ITripService _tripService;
-        private readonly ITimeAfterDepartureService _timeAfterDepartureService;
+        
         private readonly IUtilService _utilService;
         private readonly IUserService _userService;
 
@@ -27,7 +27,7 @@ namespace FastTripApp.Controllers
             IRepositoryReview repositoryReview,
 
             ITripService tripService,
-            ITimeAfterDepartureService timeAfterDepartureService,
+            
             IUtilService utilService,
             IUserService userService)
         {
@@ -35,7 +35,7 @@ namespace FastTripApp.Controllers
             _repositoryHistoryTrip = historyRepository;
 
             _tripService = tripService;
-            _timeAfterDepartureService = timeAfterDepartureService;
+            
             _utilService = utilService;
             _userService = userService;
             _repositoryReview = repositoryReview;

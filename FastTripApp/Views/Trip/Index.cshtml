@@ -101,7 +101,14 @@
         </div>
 
         <div id="image_div">
-            <img id="googleStaticPicture" src="@Url.Content("~"+firstTrip.FullStaticImageWay)" />
+            @{ 
+                var srcLink = "\\uploads\\defaultStaticMap.png";
+                if (firstTrip != null)
+                {
+                    srcLink = Url.Content("~"+firstTrip.FullStaticImageWay);
+                }
+            }
+            <img id="googleStaticPicture" src="@srcLink" />
         </div>
     </div>
 

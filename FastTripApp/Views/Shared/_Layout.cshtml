@@ -27,7 +27,10 @@
                         <a class="nav-link text-dark" asp-controller="HistoryTrip" asp-action="Index">My history runs</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="UserStatistic" asp-action="Index">My statistic</a>
+                        @{
+                            var currentYear = DateTime.Now.Year;
+                            <a class="nav-link text-dark" asp-controller="UserStatistic" asp-route-currentYear="@currentYear" asp-action="Index">My statistic</a>
+                        }
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />

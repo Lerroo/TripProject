@@ -1,6 +1,7 @@
 ﻿using FastTripApp.BL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Claims;
 
 namespace FastTripApp.Web.Controllers
@@ -19,12 +20,15 @@ namespace FastTripApp.Web.Controllers
         }
 
         // GET: StatisticController
-        public ActionResult Index()
+        public ActionResult Index(int currentYear)
         {
             var userId = _userService.GetCurrentUserId();
-            var userTripStatistic = _userStatisticService.GetByUserId(userId);        
+
+            var userTripStatistic = _userStatisticService.GetByYear(currentYear, userId);        
    
             return View(userTripStatistic);
         }
+
+
     }
 }

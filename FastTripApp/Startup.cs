@@ -52,13 +52,11 @@ namespace UsingIdentity
 
             services.AddScoped<IRepositoryTrip, RepositoryTrip>();
             services.AddScoped<IRepositoryHistoryTrip, RepositoryHistoryTrip>();
-            services.AddScoped<IRepositoryTimeAfterDeparture, RepositoryTimeAfterDeparture>();
             services.AddScoped<IRepositoryReview, RepositoryReview>();
             services.AddScoped<IRepositoryComment, RepositoryComment>();
             services.AddScoped<IRepositoryUser, RepositoryUser>();
 
             services.AddScoped<ITripService, TripService>();
-            services.AddScoped<ITimeAfterDepartureService, TimeAfterDepartureService>();
             services.AddScoped<IUtilService, UtilService>();
             services.AddScoped<IHistoryTripService, HistoryTripService>();
             services.AddScoped<IUserStatisticService, UserStatisticService>();
@@ -102,7 +100,7 @@ namespace UsingIdentity
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Review}/{action=Index}");
+                    pattern: "{controller=Trip}/{action=Index}");
             endpoints.MapRazorPages();
             });
         }
