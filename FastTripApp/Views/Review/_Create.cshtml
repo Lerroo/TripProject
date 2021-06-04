@@ -1,0 +1,62 @@
+﻿@model FastTripApp.DAO.Models.Review
+@{
+    var tripId = ViewData["TripId"];
+    var startTime = ViewData["StartTime"];
+}
+
+<form asp-action="Create" asp-controller="Review" method="post">
+    <div class="col border p-3">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Share your impressions</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <input asp-for="TripId" class="d-none" value="@tripId" />
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Appraisal"></label>
+                    </div>
+
+                    <div class="col-8">
+                        <div class="rating-area d-flex justify-content-end flex-row-reverse" onclick="setAppratialStarsRating()">
+                            <input type="radio" id="star-5" name="rating" value="5">
+                            <label for="star-5" title="5 Stars"></label>
+                            <input type="radio" id="star-4" name="rating" value="4">
+                            <label for="star-4" title="4 Stars"></label>
+                            <input type="radio" id="star-3" name="rating" value="3">
+                            <label for="star-3" title="3 Stars"></label>
+                            <input type="radio" id="star-2" name="rating" value="2">
+                            <label for="star-2" title="2 Stars"></label>
+                            <input type="radio" id="star-1" name="rating" value="1">
+                            <label for="star-1" title="1 Stars"></label>
+                        </div>
+                        <span asp-validation-for="Appraisal" class="text-danger"></span>
+                    </div>
+                    <input id="appraisal" asp-for="Appraisal" class="d-none form-control" />
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Description"></label>
+                    </div>
+                    <div class="col-8">
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col row">
+
+                        <div class="col">
+                            <input type="submit" class="btn btn-success w-100" value="Post Review" />
+                        </div>
+                        <div class="col">
+                            <a asp-controller="Trip" asp-action="End" asp-route-id="@tripId" asp-me class="btn btn-danger w-100"><i class="fas fa-sign-out-alt"></i>Skip</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

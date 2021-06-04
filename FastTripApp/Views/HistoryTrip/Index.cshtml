@@ -1,0 +1,93 @@
+﻿
+@model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
+@using FastTripApp.DAO.Models.StatusEnum
+
+@{
+    ViewData["Title"] = "My history trips";
+}
+
+<div class="container p-3 ">
+
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+
+    @if (Model.Count() > 0)
+    {
+        <br /> <br />
+        <h1 class="text-center mb-4">All trips history</h1>
+
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                    </th>
+                    <th style="WIDTH: 180px;">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Start)
+                    </th>
+                    <th style="WIDTH: 125px;">
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Observe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.Start)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.End)
+                    </th>
+                    <th style="width: 100px">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trip in Model)
+                {
+                    var styleLine = "table-success";
+                    var tripStatus = trip.StatusEnum;
+                    if (tripStatus == StatusEnum.Abandon)
+                    {
+                        styleLine = "table-danger";
+                    }
+                <tr class="@styleLine">
+                    @if (tripStatus == StatusEnum.Abandon)
+                    {
+                        <td colspan="3">@trip.Name</td>
+                        <td>@trip.Address.Start</td>
+                        <td>@trip.Address.End</td>
+                        <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
+                    }
+                    else
+                    {
+                        <td>@trip.Name</td>
+                        <td>@trip.TimeAfterDeparture.Start</td>
+                        <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
+                        <td>@trip.Address.Start</td>
+                        <td>@trip.Address.End</td>
+                        <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
+                    }
+
+                </tr>
+                }
+            </tbody>
+        </table> }
+    else
+    {
+        <h1 class="text-center">History is clear. Try book some trip</h1>
+    }
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function getInfo(id) {
+            $.ajaxSetup({ cache: false });
+
+            $.get('HistoryTrip/Details?id=' + id, function (data) {
+
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        }
+    </script>
+}
+

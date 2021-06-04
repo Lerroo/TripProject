@@ -1,0 +1,186 @@
+﻿@model FastTripApp.DAO.Models.Statistic.UserStatistic
+@using FastTripApp.DAO.Models.StatusEnum
+@{
+    var lastTrip = Model.LastTrip;
+    var user = Model.User;
+    var userStatistic = Model;
+}
+
+<div class="container shadow-lg p-3 rounded border-dark text-dark border-5">
+    @{
+        if (lastTrip != null)
+        {
+            <h1 class="p-3">Last trip</h1>
+
+            var style = "danger-trava-bg";
+            if (lastTrip.StatusEnum == StatusEnum.Success)
+            {
+                style = "success-trava-bg";
+            }
+
+            <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded @style">
+
+                <div class="col-6 bg-white p-3">
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="@lastTrip.Name"></label>
+                        </div>
+                        <div class="col">
+                            <input asp-for="@lastTrip.Name" readonly class="form-control" />
+                        </div>
+                    </div>
+
+                    @{if (lastTrip.TimeAfterDeparture.Observe.Value.TotalSeconds != 0)
+                        {
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="@lastTrip.TimeAfterDeparture.Start"></label>
+                                </div>
+                                <div class="col">
+                                    <input asp-for="@lastTrip.TimeAfterDeparture.Start" readonly class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label asp-for="@lastTrip.TimeAfterDeparture.End"></label>
+                                </div>
+                                <div class="col">
+                                    <input asp-for="@lastTrip.TimeAfterDeparture.End" class="form-control" />
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="@lastTrip.Descriprion"></label>
+                        </div>
+                        <div class="col">
+                            <textarea asp-for="@lastTrip.Descriprion" readonly class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="@lastTrip.Address.Start"></label>
+                        </div>
+                        <div class="col">
+                            <textarea cols="2" type="text" class="form-control" readonly placeholder="Start lastTrip" asp-for="@lastTrip.Address.Start"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="@lastTrip.Address.End"></label>
+                        </div>
+                        <div class="col">
+                            <textarea cols="2" type="text" class="form-control" readonly placeholder="End lastTrip" asp-for="@lastTrip.Address.End"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="@lastTrip.Status"></label>
+                        </div>
+                        <div class="col">
+                            <p class="form-control" readonly>@lastTrip.Status</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="image_div">
+                    <img id="googleStaticPicture" src="@lastTrip.FullStaticImageWay" />
+                </div>
+
+            </div>
+        }
+    }
+
+    <div class="form-group col-12">
+        <hr>
+    </div>
+
+    <div class="p-3">
+        <div class="col ml-4 p-3 d-flex">
+            <div class="d-flex align-items-center">
+                <img class="profile-pic img-fluid" src="@user.FullImagePath">
+                <h1 class="m-3">@user.Firstname @user.LastName statistics</h1>
+            </div>
+            <div class="col d-flex justify-content-end align-items-center">
+                <h2 class="m-3">@Html.DisplayNameFor(model => model.Years)</h2>
+                <select class="form-control col-2" onchange="filterBySelectedYear(this)" id="select_id" asp-for="Year" asp-items="@userStatistic.Years">
+                </select>
+            </div>
+        </div>
+
+        <div class="col trava-border">
+            <div class="col d-flex mx-auto justify-content-around">
+                <div class=" col ">
+                    <h3>@Html.DisplayNameFor(model => model.LocationsTrips)</h3>
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td class="col-2"><label asp-for="@userStatistic.LocationsTrips.StartFavorite"></label></td>
+                                <td>@userStatistic.LocationsTrips.StartFavorite</td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="@userStatistic.LocationsTrips.EndFavorite"></label></td>
+                                <td>@userStatistic.LocationsTrips.EndFavorite</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-3">
+                    <h3>@Html.DisplayNameFor(model => model.ObserveTrips)</h3>
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td><label asp-for="@userStatistic.ObserveTrips.Maximum"></label></td>
+                                <td>@userStatistic.ObserveTrips.Maximum</td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="@userStatistic.ObserveTrips.Minimum"></label></td>
+                                <td>@userStatistic.ObserveTrips.Average</td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="@userStatistic.ObserveTrips.Average"></label></td>
+                                <td>@userStatistic.ObserveTrips.Average</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-2">
+                    <h3>@Html.DisplayNameFor(model => model.CountTrips)</h3>
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td><label asp-for="@userStatistic.CountTrips.All"></label></td>
+                                <td>@userStatistic.CountTrips.All</td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="@userStatistic.CountTrips.Abandon"></label></td>
+                                <td>@userStatistic.CountTrips.Abandon</td>
+                            </tr>
+                            <tr>
+                                <td><label asp-for="@userStatistic.CountTrips.Success"></label></td>
+                                <td>@userStatistic.CountTrips.Success</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterBySelectedYear(select) {
+        currentYear = select.options[select.selectedIndex].text;
+        alert(currentYear)
+        window.location.href = '/UserStatistic/Index?currentYear=' + currentYear;
+    }
+</script>
