@@ -5,7 +5,6 @@ namespace FastTripApp.BL.Services.Interfaces
 {
     public interface IUserService
     {
-        UserCustom GetUser();
         string GetCurrentUserId();
         ClaimsPrincipal GetClaims();
     }

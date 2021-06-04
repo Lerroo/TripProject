@@ -4,37 +4,38 @@
 // Write your JavaScript code.
 
 google.maps.event.addDomListener(window, 'load', initMap);
+let currentZoom = 9;
+let currentCenter = new google.maps.LatLng(55.8782557, 37.65372);
 
 function initMap() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     let start = new google.maps.LatLng(55.8782557, 37.65372);
     let mapOptions = {
-        zoom: 9,
-        center: start
+        zoom: currentZoom,
+        center: currentCenter
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    directionsRenderer.setMap(map);
-
-    GenAutocomplete("Address_Start").then(() => calculateAndDisplayRoute(
-        directionsService,
-        directionsRenderer
-    ));
-    GenAutocomplete("Address_End").then(() => calculateAndDisplayRoute(
-        directionsService,
-        directionsRenderer
-    ));
-
+    directionsRenderer.setMap(map);        
 
     const onChangeHandler = function () {
         calculateAndDisplayRoute(directionsService, directionsRenderer);
-
     };
+
+    google.maps.event.addListener(map, "zoom_changed", function () {
+        currentZoom = map.getZoom();
+    })
+    google.maps.event.addListener(map, "center_changed", function () {
+        currentCenter = map.getCenter();
+    })
+
+    GenAutocomplete("Address_Start").then(() => onChangeHandler);
+    GenAutocomplete("Address_End").then(() => onChangeHandler);
 
     document.getElementById("Address_Start").addEventListener("change", onChangeHandler);
     document.getElementById("Address_End").addEventListener("change", onChangeHandler);
-    document.getElementById("TimeBeforeDeparture_ApproximateStart").addEventListener("change", onChangeHandler);
+    document.getElementById("TimeBeforeDeparture_ApproximateStart").addEventListener("change", onChangeHandler);    
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
@@ -56,7 +57,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
             },
             (response, status) => {
                 if (status === "OK") {
-                    directionsRenderer.setDirections(response);
+                    directionsRenderer.setDirections(response);                    
+
                     let seconds = response.routes[0].legs[0].duration.value
                     document.getElementById("TimeBeforeDeparture_Estimated").value = seconds
 
@@ -89,15 +91,16 @@ function GenAutocomplete(elementid) {
             strictBounds: false,
             types: ["establishment"],
         };
-        let autocomplete = new google.maps.places.Autocomplete(input, options);           
+        let autocomplete = new google.maps.places.Autocomplete(input, options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
-            let place = autocomplete.getPlace();
+            let place = autocomplete.getPlace()           
+
             document.getElementById(elementid).value = place.name;
 
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
-            let googleLatLng = JSON.stringify( new google.maps.LatLng(lat, lng))
+            let googleLatLng = JSON.stringify(new google.maps.LatLng(lat, lng))
 
             document.getElementById(elementid+"Coords").value = googleLatLng
             resolve(googleLatLng)
@@ -106,22 +109,14 @@ function GenAutocomplete(elementid) {
 }
 
 function getStaticMap(pathArray) {
+        let markersStartEnd = getStartLabel(pathArray) + getEndLabel(pathArray);
+        let clearPath = preparePath(pathArray);
 
-    let markersStartEnd = getStartLabel(pathArray) + getEndLabel(pathArray);
-    let clearPath = preparePath(pathArray);
-
-    setTimeout(function () {
-        let clearStart = prepareLatLng(map.getCenter())
-        let zoom = map.getZoom()
+        let clearStart = prepareLatLng(currentCenter)
         var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
-            + clearStart + "&zoom=" + zoom + "&size=500x500&maptype=roadmap&path="
-            + clearPath + markersStartEnd + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-        console.log('zoomafter-', zoom)
-        document.getElementById("StaticImageWayUrl").value = URL;
-
-    }, 2000);    
-
-    
+            + clearStart + "&zoom=" + currentZoom + "&size=500x500&maptype=roadmap&path="
+        + clearPath + markersStartEnd + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
+        document.getElementById("StaticImageWayUrl").value = URL;    
 }
 
 function getStartLabel(pathArray) {

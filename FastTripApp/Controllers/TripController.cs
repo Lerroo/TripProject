@@ -21,42 +21,41 @@ namespace FastTripApp.Controllers
     [Authorize]
     public class TripController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
 
-        private readonly ITripService _tripService;
-        
+        private readonly ITripService _tripService;        
         private readonly IUtilService _utilService;
         private readonly IUserService _userService;
-
-        private readonly IUnitOfWorkService _unitOfWorkService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IUnitOfWorkService _unitOfWorkService;        
 
         public TripController(IRepositoryTrip tripRepository, 
             IRepositoryHistoryTrip historyRepository, 
 
-            ITripService tripService,
-            
+            ITripService tripService,            
             IUtilService utilService,
             IUserService userService,
             IUnitOfWorkService unitOfWorkService,
+
             IWebHostEnvironment webHostEnvironment)
         {
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = historyRepository;
 
-            _tripService = tripService;
-            
+            _tripService = tripService;            
             _utilService = utilService;
             _userService = userService;
             _unitOfWorkService = unitOfWorkService;
+
             _webHostEnvironment = webHostEnvironment;
         }
   
         public ActionResult Index()
         {
             var id = _userService.GetCurrentUserId();
-            IEnumerable<Trip> objList = _repositoryTrip.TripsByUserId(id);
+            IEnumerable<Trip> objList = _repositoryTrip.GetWithIncludeByUserId(id);
 
             if (objList.Any())
             {
@@ -69,12 +68,11 @@ namespace FastTripApp.Controllers
                     }
                 }
 
-                //fix
                 var timeDelay =  (trip.TimeBeforeDeparture.ApproximateStart - _utilService.DateTimeNow()).Value;
-                //var idJob = BackgroundJob.Schedule(() => _tripService.ToHistory(trip.Id), timeDelay);
-                //BackgroundJob.ContinueJobWith(
-                //    idJob, () => Response.Redirect(HttpContext.Request.Path));
-                //    
+                var idJob = BackgroundJob.Schedule(() => _tripService.ToHistory(trip.Id), timeDelay);
+                BackgroundJob.ContinueJobWith(
+                    idJob, () => Response.Redirect(HttpContext.Request.Path));
+
                 BackgroundJob.Schedule(() => Response.Redirect(Request.Path), timeDelay);
             }
             return View(objList);
@@ -82,7 +80,7 @@ namespace FastTripApp.Controllers
 
         public ActionResult Details(int id)
         {
-            var trip = _repositoryTrip.GetByIdWithInclude(id);
+            var trip = _repositoryTrip.GetWithIncludeById(id);
             if (trip != null)
                 return PartialView("_Details", trip);
             return NotFound();
@@ -113,7 +111,7 @@ namespace FastTripApp.Controllers
         {
             if (ModelState.IsValid)
             {               
-                _tripService.AddNewTrip(trip);                
+                await _tripService.AddNewTripAsync(trip);                
                 
                 return RedirectToAction("Index");
             }
@@ -126,7 +124,7 @@ namespace FastTripApp.Controllers
             {
                 return NotFound();
             }
-            var trip = _repositoryTrip.GetByIdWithInclude(id);
+            var trip = _repositoryTrip.GetWithIncludeById(id);
             if (trip == null)
             {
                 return NotFound();
@@ -140,7 +138,7 @@ namespace FastTripApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _tripService.UpdateTrip(trip);
+                 await _tripService.UpdateTripAsync(trip);
 
                 return RedirectToAction("Index");
             }

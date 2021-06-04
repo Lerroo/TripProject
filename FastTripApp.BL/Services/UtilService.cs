@@ -7,8 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FastTripApp.BL.Services
-{
-    
+{    
     public class UtilService : IUtilService
     {
         private readonly IUnitOfWorkService _unitOfWorkService;
@@ -18,11 +17,22 @@ namespace FastTripApp.BL.Services
             _unitOfWorkService = unitOfWorkService;
         }
 
+        /// <summary>
+        /// Returns current computer time
+        /// </summary>
+        /// <returns></returns>
         public DateTime DateTimeNow()
         {
             return DateTime.Now;
         }
 
+        /// <summary>
+        /// Asynchronously downloads a picture from {requestUri} to a folder ~/uploads/users/{userId}/{fileName}.
+        /// </summary>
+        /// <param name="requestUri">Link where to download the picture.</param>
+        /// <param name="userId">Id user for which you need to download a picture.</param>
+        /// <param name="fileName">Name folder to download a picture.</param>
+        /// <returns></returns>
         public async Task DownloadAsync(Uri requestUri, string userId, string fileName)
         {
             var path = _unitOfWorkService.PathAndFileName(fileName, userId, "static_way");

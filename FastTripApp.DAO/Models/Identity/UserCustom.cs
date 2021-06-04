@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FastTripApp.DAO.Models.Identity
 {
-    // Add profile data for application users by adding properties to the UsingIdentityUser class
+
     public class UserCustom : IdentityUser
     {
         public string Id { get => base.Id; }

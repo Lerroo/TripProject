@@ -103,7 +103,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
                 {
                     if (file != null)
                     {
-                        _unitOfWork.UploadImage(file, user.Id, "avatars");
+                        _unitOfWork.UploadImage(file, user.Id);
                         user.ImagePath = file.FileName;
                     }
                     else

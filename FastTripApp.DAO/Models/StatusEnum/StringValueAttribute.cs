@@ -4,19 +4,13 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.StatusEnum
 {
+
     public class StringValueAttribute : Attribute
     {
-
-        #region Properties
-
         /// <summary>
         /// Holds the stringvalue for a value in an enum.
         /// </summary>
         public string StringValue { get; protected set; }
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Constructor used to init a StringValue Attribute
@@ -26,8 +20,5 @@ namespace FastTripApp.DAO.Models.StatusEnum
         {
             this.StringValue = value;
         }
-
-        #endregion
-
     }
 }

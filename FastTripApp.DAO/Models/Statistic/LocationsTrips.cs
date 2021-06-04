@@ -3,6 +3,9 @@
 
     public class LocationsTrips
     {
+        /// <summary>
+        /// All proporties contain "Try to book and you will find out"
+        /// </summary>
         public LocationsTrips()
         {
             StartFavorite = "Try to book and you will find out";

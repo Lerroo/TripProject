@@ -17,26 +17,50 @@ namespace FastTripApp.DAO.Repository
             _dbSet = _сontext.Set<T>();
         }
 
-        public IEnumerable<T> Get()
+        /// Method to get a list of data from the repository.
+        /// </summary>
+        /// <returns>
+        /// Returns all entities with a specified type from the repository.
+        /// </returns>
+        public IEnumerable<T> GetAll()
         {
             return _dbSet.AsNoTracking().ToList();
         }
 
+        /// <summary>
+        /// Method to get one entity from the repository.
+        /// </summary>
+        /// <param name="id">
+        /// Special identifier for an entity in the repository.
+        /// </param>
+        /// <returns>
+        /// Returns entity with a specified type by ID from the repository.
+        /// </returns>
         public T GetById(int? id)
         {
             return _dbSet.Find(id);
         }
 
+        /// <summary>
+        /// Method to add a new entity with a specified type in the repository.
+        /// </summary>
+        /// <param name="item">
+        /// Object of a specific type.
+        /// </param>
         public void Add(T item)
         {
             _dbSet.AddAsync(item);
             _сontext.SaveChanges();
         }
 
-        public void Delete(int? id)
+        /// <summary>
+        /// Method for remove an entity of a particular type in the repository.
+        /// </summary>
+        /// <param name="item">
+        /// The required entity object from the repository.
+        /// </param>
+        public void Delete(T item)
         {
-            var item = _dbSet.Find(id);
-
             if (_сontext.Entry(item).State == EntityState.Detached)
             {
                 _dbSet.Attach(item);
@@ -46,6 +70,12 @@ namespace FastTripApp.DAO.Repository
             _сontext.SaveChanges();
         }
 
+        /// <summary>
+        /// Method for making changes to an existing entity of a specific type in the repository.
+        /// </summary>
+        /// <param name="item">
+        /// The required entity object from the repository.
+        /// </param>
         public void Update(T item)
         {
             if (_сontext.Entry(item).State == EntityState.Detached)

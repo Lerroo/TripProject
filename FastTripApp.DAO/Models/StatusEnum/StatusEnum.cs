@@ -5,6 +5,9 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.StatusEnum
 {
+    /// <summary>
+    /// Contain Possible trip end statuses
+    /// </summary>
     public enum StatusEnum : int
     {
         [StringValue("Abandon")]

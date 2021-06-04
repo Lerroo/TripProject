@@ -14,31 +14,19 @@ namespace FastTripApp.Controllers
     public class ReviewController : Controller
     {
         private readonly IRepositoryReview _repositoryReview;
-        private readonly IRepositoryTrip _repositoryTrip;
-        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
-
-        private readonly ITripService _tripService;
         
         private readonly IUtilService _utilService;
         private readonly IUserService _userService;
 
-        public ReviewController(IRepositoryTrip tripRepository,
-            IRepositoryHistoryTrip historyRepository,
-            IRepositoryReview repositoryReview,
-
-            ITripService tripService,
+        public ReviewController(IRepositoryReview repositoryReview,
             
             IUtilService utilService,
             IUserService userService)
         {
-            _repositoryTrip = tripRepository;
-            _repositoryHistoryTrip = historyRepository;
+            _repositoryReview = repositoryReview;
 
-            _tripService = tripService;
-            
             _utilService = utilService;
             _userService = userService;
-            _repositoryReview = repositoryReview;
         }
 
         // GET: ReviewController

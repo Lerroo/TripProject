@@ -14,20 +14,22 @@ namespace FastTripApp.BL.Services
 {
     public class UnitOfWorkService : IUnitOfWorkService
     {
-        private IHostingEnvironment _hostingEnvironment;
-
-        public UnitOfWorkService(IHostingEnvironment hostingEnvironment)
-        {
-            _hostingEnvironment = hostingEnvironment;
-        }
-
-        public async void UploadImage(IFormFile file, string userId, string folder)
+        /// <summary>
+        /// Method of upload an image from a form to a server.
+        /// </summary>
+        /// <param name="file">
+        /// Image file to upload to server.
+        /// </param>
+        /// <param name="userId">
+        /// Upload avatar to user by userId.
+        /// </param>
+        public async void UploadImage(IFormFile file, string userId)
         {
             long totalBytes = file.Length;
             string fileName = file.FileName.Trim('"');
             fileName = EnsureFileName(fileName);
             byte[] buffer = new byte[16 * 1024];
-            using (FileStream output = File.Create(PathAndFileName(fileName, userId, folder)))
+            using (FileStream output = File.Create(PathAndFileName(fileName, userId, "avatars")))
             {
                 using (Stream input = file.OpenReadStream())
                 {
@@ -41,6 +43,11 @@ namespace FastTripApp.BL.Services
             }
         }
 
+        /// <summary>
+        /// Method to get file name and type without full path.
+        /// </summary>
+        /// <param name="fileName">Path with file name.</param>
+        /// <returns>File name and type without full path.</returns>
         private string EnsureFileName(string fileName)
         {
             if (fileName.Contains("\\"))
@@ -48,8 +55,17 @@ namespace FastTripApp.BL.Services
                 fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
             }
             return fileName;
-        }        
+        }
 
+        /// <summary>
+        /// Method to get clear path and checking the existence of a path to save a file.
+        /// </summary>
+        /// <param name="fileName">
+        /// Name and type file
+        /// </param>
+        /// <param name="userId">Upload file to user by userId.</param>
+        /// <param name="folder">Name of the folder where to upload the file</param>
+        /// <returns>Clear path to upload</returns>
         public string PathAndFileName(string fileName, string userId, string folder)
         {
             string path = Path.Combine("wwwroot\\uploads\\users\\", userId, folder);

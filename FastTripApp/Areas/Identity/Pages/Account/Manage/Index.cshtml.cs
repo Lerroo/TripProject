@@ -103,7 +103,7 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
 
             if (file != null)
             {
-                _unitOfWork.UploadImage(file, user.Id, "avatars");
+                _unitOfWork.UploadImage(file, user.Id);
                 user.ImagePath = file.FileName;
                 await _userManager.UpdateAsync(user);
             }

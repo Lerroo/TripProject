@@ -29,6 +29,5 @@ namespace FastTripApp.Web.Controllers
             return View(userTripStatistic);
         }
 
-
     }
 }

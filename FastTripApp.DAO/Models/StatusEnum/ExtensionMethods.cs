@@ -7,6 +7,11 @@ namespace FastTripApp.DAO.Models.StatusEnum
 {
     static class ExtensionMethods
     {
+        /// <summary>
+        /// Return string value for enum
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>Return string value defined in attribute enum value</returns>
         public static string GetStringValue(this Enum value)
         {
             Type type = value.GetType();

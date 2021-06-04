@@ -10,34 +10,29 @@ namespace FastTripApp.BL.Services
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _accessor;
-        private UserManager<UserCustom> _userManager;
 
-        public UserService(IHttpContextAccessor accessor,
-            UserManager<UserCustom> userManager)
+        public UserService(IHttpContextAccessor accessor)
         {
             _accessor = accessor;
-            _userManager = userManager;
         }
 
-        public UserCustom GetUser()
-        {
-            return _userManager.GetUserAsync(ClaimsPrincipal.Current).Result;
-        }
-
+        /// <summary>
+        /// Methot to get ClaimsPrincipal object from HttpContext.
+        /// </summary>
+        /// <returns>Return ClaimsPrincipal object for current login user.</returns>
         public ClaimsPrincipal GetClaims()
         {
             return _accessor?.HttpContext?.User as ClaimsPrincipal;
         }
 
+        /// <summary>
+        /// Method for getting the string value of id current login user.
+        /// </summary>
+        /// <returns>String value of id current login user.</returns>
         public string GetCurrentUserId()
         {
             var userId = GetClaims().Claims.ElementAt(0).Value;
             return userId;
-        }
-
-        public string GetUserPath(string id)
-        {
-            return "/uploads/users/" + id;
         }
     }
 }

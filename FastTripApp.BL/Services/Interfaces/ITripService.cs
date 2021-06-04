@@ -8,7 +8,7 @@ namespace FastTripApp.BL.Services.Interfaces
         Task ToHistory(int? idTrip);
         void Start(int? idTrip);
         void End(int? idTrip);
-        void AddNewTrip(Trip trip);
-        void UpdateTrip(Trip trip);
+        Task AddNewTripAsync(Trip trip);
+        Task UpdateTripAsync(Trip trip);
     }
 }

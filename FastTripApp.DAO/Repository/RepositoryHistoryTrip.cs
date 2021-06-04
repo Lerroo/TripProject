@@ -9,27 +9,40 @@ namespace FastTripApp.DAO.Repository
     {
         private readonly UsingIdentityContext _context;
 
-        public RepositoryHistoryTrip(UsingIdentityContext context) :base(context)
+        public RepositoryHistoryTrip(UsingIdentityContext context) : base(context)
         {
             _context = context;
         }
 
-        public HistoryTrip GetWithInclude(int id)
+        /// <summary>
+        /// Method to get list of all HistoryTrip objects with includes from the repository.
+        /// </summary>
+        /// <returns>Returns list of HistoryTrip objects with includes from the repository.</returns>
+        public IQueryable<HistoryTrip> GetAllWithInclude()
         {
             return _context.HistoryTrips
                 .Include(p => p.Address)
-                .Include(p => p.TimeAfterDeparture)
-                .FirstOrDefault(p => p.Id == id);
+                .Include(p => p.TimeAfterDeparture);
         }
 
-        public IQueryable<HistoryTrip> GetHistoryByUserId(string id)
+        /// <summary>
+        /// Method to get one HistoryTrip object with includes from the repository.
+        /// </summary>
+        /// <param name="id">Special unique identifier for HistoryTrip in the repository.</param>
+        /// <returns>Returns trip object with includes by id from the repository.</returns>
+        public HistoryTrip GetWithIncludeById(int id)
         {
-            return _context.HistoryTrips
-                .Include(p => p.Address)
-                .Include(p => p.TimeAfterDeparture)
-                .Where(p => p.UserId == id);
+            return GetAllWithInclude().FirstOrDefault(p => p.Id == id);
         }
 
-
+        /// <summary>
+        /// Method to get list of HistoryTrip objects with includes from the repository.
+        /// </summary>
+        /// <param name="userId">The list will contain only trips from the user by id</param>
+        /// <returns>Returns list of HistoryTrip objects with includes by userId from the repository.</returns>
+        public IQueryable<HistoryTrip> GetByUserId(string userId)
+        {
+            return GetAllWithInclude().Where(p => p.UserId == userId);
+        }
     }
 }

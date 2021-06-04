@@ -7,7 +7,7 @@ namespace FastTripApp.DAO.Models
     public class TimeAfterDeparture
     {
         /// <summary>
-        /// Set Start and End time =  DateTime.Now;
+        /// Set Start and End time = DateTime.Now;
         /// </summary>
         public TimeAfterDeparture()
         {

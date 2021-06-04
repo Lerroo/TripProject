@@ -48,8 +48,6 @@
 
   <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml" />
-    <None Include="wwwroot\js\jquery-1.9.1.min.js" />
-    <None Include="wwwroot\js\jquery-ui.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
@@ -76,12 +74,6 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
-    <None Include="wwwroot\webfonts\fa-brands-400.svg" />
-    <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
-    <None Include="wwwroot\webfonts\fa-regular-400.svg" />
-    <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
-    <None Include="wwwroot\webfonts\fa-solid-900.svg" />
-    <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
   </ItemGroup>
 
   <ItemGroup>
