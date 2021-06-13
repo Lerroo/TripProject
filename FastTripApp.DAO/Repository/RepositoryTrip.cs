@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Models.StatusEnum;
+using FastTripApp.DAO.Models.Enums;
 using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

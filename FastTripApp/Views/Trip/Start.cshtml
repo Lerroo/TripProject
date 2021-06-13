@@ -3,9 +3,8 @@
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog bg-white">
         <div class="modal-content">
-            @Html.Partial("../Review/_Create",
-            new FastTripApp.DAO.Models.Review()
-        )
+            @await Html.PartialAsync("../Review/_Create", new FastTripApp.DAO.Models.Review());
+
         </div>        
     </div>
 </div>

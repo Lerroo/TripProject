@@ -21,9 +21,14 @@ namespace FastTripApp.BL.Services
         /// Returns current computer time
         /// </summary>
         /// <returns></returns>
-        public DateTime DateTimeNow()
+        public DateTime GetDateTimeNow()
         {
             return DateTime.Now;
+        }
+
+        public string GetGuid()
+        {
+            return Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -33,14 +38,16 @@ namespace FastTripApp.BL.Services
         /// <param name="userId">Id user for which you need to download a picture.</param>
         /// <param name="fileName">Name folder to download a picture.</param>
         /// <returns></returns>
-        public async Task DownloadAsync(Uri requestUri, string userId, string fileName)
+        public async Task DownloadUriContentAsync(Uri requestUri, string userId, string fileName)
         {
             var path = _unitOfWorkService.PathAndFileName(fileName, userId, "static_way");
+
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Get, requestUri))
             using (
-                Stream contentStream = await (await client.SendAsync(request)).Content.ReadAsStreamAsync(),
-                stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 3145728, true))
+                Stream contentStream = 
+                    await (await client.SendAsync(request)).Content.ReadAsStreamAsync(),
+                    stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 3145728, true))
             {
                 await contentStream.CopyToAsync(stream);
             }

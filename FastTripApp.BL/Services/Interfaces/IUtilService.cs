@@ -5,7 +5,8 @@ namespace FastTripApp.BL.Services.Interfaces
 {
     public interface IUtilService
     {
-        DateTime DateTimeNow();
-        Task DownloadAsync(Uri requestUri, string userId, string fileName);
+        DateTime GetDateTimeNow();
+        string GetGuid();
+        Task DownloadUriContentAsync(Uri requestUri, string userId, string fileName);
     }
 }

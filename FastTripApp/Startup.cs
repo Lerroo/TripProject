@@ -19,6 +19,10 @@ using FastTripApp.DAO.Repository.Interfaces;
 using FastTripApp.DAO.Repository;
 using FastTripApp.BL.Services;
 using FastTripApp.BL.Services.Interfaces;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+using System.IO;
+using FastTripApp.BL.Services.Util;
 
 namespace UsingIdentity
 {
@@ -60,9 +64,16 @@ namespace UsingIdentity
             services.AddScoped<IUtilService, UtilService>();
             services.AddScoped<IHistoryTripService, HistoryTripService>();
             services.AddScoped<IUserStatisticService, UserStatisticService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddTransient<IUserService, UserService>();
 
             services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+
+
+            string filePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\libwkhtmltox.dll";
+            CustomAssemblyLoadContext context = new CustomAssemblyLoadContext();
+            context.LoadUnmanagedLibrary(filePath);
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();

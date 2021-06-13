@@ -10,7 +10,7 @@ namespace FastTripApp.DAO.Models.Identity
 
     public class UserCustom : IdentityUser
     {
-        public string Id { get => base.Id; }
+        public string UserId { get; set; }
         [DisplayName("User name")]
         public string DisplayName { get; set; }
         [PersonalData]
@@ -21,9 +21,15 @@ namespace FastTripApp.DAO.Models.Identity
         public string LastName { get; set; }
         public List<Review> Reviews { get; set; }
         [DisplayName("Profile photo")]
-        public string ImagePath { get; set; }
+        public string ProfilePhoto { get; set; }
 
         [NotMapped]
-        public string FullImagePath { get => "/uploads/users/" + Id + "/avatars/" + ImagePath; }
+        public string FullImagePath { get {
+                if (ProfilePhoto != "defaultProfilePhoto.png")
+                {
+                   return "/uploads/users/" + Id + "/avatars/" + ProfilePhoto;
+                }
+                return "/uploads/defaultProfilePhoto.png";
+            } }
     }
 }

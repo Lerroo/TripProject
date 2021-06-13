@@ -10,7 +10,7 @@
             var myUser = await UserManager.GetUserAsync(User);
             if (myUser  != null)
             {
-                if (myUser.ImagePath != null)
+                if (myUser.ProfilePhoto != null)
                 {
                     <li class="nav-item d-flex align-items-center">
                         <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="@myUser.FullImagePath">

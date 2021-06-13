@@ -32,7 +32,7 @@ namespace FastTripApp.Controllers
             if (ModelState.IsValid)
             {
                 comment.UserId = _userService.GetCurrentUserId();
-                comment.TimePost = _utilService.DateTimeNow();
+                comment.TimePost = _utilService.GetDateTimeNow();
 
                 _repositoryComment.Add(comment);
                 return RedirectToRoute(new { controller = "Review", action = "Index" });

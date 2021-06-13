@@ -1,20 +1,21 @@
-﻿using FastTripApp.DAO.Models;
+﻿using DinkToPdf;
+using DinkToPdf.Contracts;
+using FastTripApp.BL.Services.Interfaces;
+using FastTripApp.DAO.Models;
+using FastTripApp.DAO.Models.Reports;
 using FastTripApp.DAO.Repository.Interfaces;
 using Hangfire;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using Hangfire.Storage;
-using FastTripApp.BL.Services.Interfaces;
-using System.Net;
-using Microsoft.AspNetCore.Http;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System;
-using System.IO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FastTripApp.Controllers
 {
@@ -26,32 +27,37 @@ namespace FastTripApp.Controllers
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
 
-        private readonly ITripService _tripService;        
+        private readonly ITripService _tripService;
         private readonly IUtilService _utilService;
         private readonly IUserService _userService;
-        private readonly IUnitOfWorkService _unitOfWorkService;        
+        private readonly IUnitOfWorkService _unitOfWorkService;
+        private readonly IReportService _reportService;
 
-        public TripController(IRepositoryTrip tripRepository, 
-            IRepositoryHistoryTrip historyRepository, 
+        public TripController(IRepositoryTrip tripRepository,
+            IRepositoryHistoryTrip historyRepository,
 
-            ITripService tripService,            
+            ITripService tripService,
             IUtilService utilService,
             IUserService userService,
             IUnitOfWorkService unitOfWorkService,
+            IReportService reportService,
 
             IWebHostEnvironment webHostEnvironment)
         {
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = historyRepository;
 
-            _tripService = tripService;            
+            _tripService = tripService;
             _utilService = utilService;
             _userService = userService;
             _unitOfWorkService = unitOfWorkService;
+            _reportService = reportService;
 
-            _webHostEnvironment = webHostEnvironment;
+            _webHostEnvironment = webHostEnvironment;            
         }
-  
+
+
+
         public ActionResult Index()
         {
             var id = _userService.GetCurrentUserId();
@@ -68,7 +74,7 @@ namespace FastTripApp.Controllers
                     }
                 }
 
-                var timeDelay =  (trip.TimeBeforeDeparture.ApproximateStart - _utilService.DateTimeNow()).Value;
+                var timeDelay = (trip.TimeBeforeDeparture.ApproximateStart - _utilService.GetDateTimeNow()).Value;
                 var idJob = BackgroundJob.Schedule(() => _tripService.ToHistory(trip.Id), timeDelay);
                 BackgroundJob.ContinueJobWith(
                     idJob, () => Response.Redirect(HttpContext.Request.Path));
@@ -84,6 +90,25 @@ namespace FastTripApp.Controllers
             if (trip != null)
                 return PartialView("_Details", trip);
             return NotFound();
+        }
+
+        public static string RenderPartialToString(string controlName, object viewData)
+        {
+            ViewPage viewPage = new ViewPage() { ViewContext = new ViewContext() };
+
+            viewPage.ViewData = new ViewDataDictionary(viewData);
+            viewPage.Controls.Add(viewPage.LoadControl(controlName));
+
+            StringBuilder sb = new StringBuilder();
+            using (StringWriter sw = new StringWriter(sb))
+            {
+                using (HtmlTextWriter tw = new HtmlTextWriter(sw))
+                {
+                    viewPage.RenderControl(tw);
+                }
+            }
+
+            return sb.ToString();
         }
 
         public ActionResult Start(int id)
@@ -110,9 +135,12 @@ namespace FastTripApp.Controllers
         public async Task<ActionResult> Create(Trip trip)
         {
             if (ModelState.IsValid)
-            {               
-                await _tripService.AddNewTripAsync(trip);                
-                
+            {
+                await _tripService.AddNewTripAsync(trip);
+
+                CustomPdf file = _reportService.GeneratePdfReport(trip);
+                await _unitOfWorkService.DownloadOnServerAsync(file.FileBytes, trip.UserId, "Reports", file.FileName);                
+
                 return RedirectToAction("Index");
             }
             return View(trip);
@@ -138,7 +166,7 @@ namespace FastTripApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                 await _tripService.UpdateTripAsync(trip);
+                await _tripService.UpdateTripAsync(trip);
 
                 return RedirectToAction("Index");
             }

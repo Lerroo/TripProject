@@ -58,7 +58,7 @@ namespace FastTripApp.Controllers
             if (ModelState.IsValid)
             {
                 review.UserId = _userService.GetCurrentUserId();
-                review.TimePost = _utilService.DateTimeNow();
+                review.TimePost = _utilService.GetDateTimeNow();
 
                 _repositoryReview.Add(review);
                 return RedirectToRoute(new { controller = "Trip", action = "End", id = review.TripId });

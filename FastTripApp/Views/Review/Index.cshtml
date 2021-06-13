@@ -81,10 +81,12 @@
                         </div>
 
                         <div id="@collapseId" class="bg-light pt-3 collapse" data-parent="#myGroup">
-                            @Html.Partial("../Comment/_Create",
-                                new FastTripApp.DAO.Models.Comment(),
-                                new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
+                            @await Html.PartialAsync("../Comment/_Create",
+                               new FastTripApp.DAO.Models.Comment(),
+                               new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
                             )
+
+
                         </div>
 
                         <div id="@collapseCommentId" class="bg-light p-2 collapse" data-parent="#myGroup">

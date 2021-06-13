@@ -25,8 +25,7 @@ namespace FastTripApp.DAO
             base.OnModelCreating(builder);
 
             builder.Entity<UserCustom>()
-            .ToTable("Users")
-            .Property(p => p.Id).HasColumnName("UserId");
+            .ToTable("Users");
 
             builder.Entity<IdentityRole>()
                 .ToTable("Roles");

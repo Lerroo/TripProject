@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FastTripApp.DAO.Models.StatusEnum;
+using FastTripApp.DAO.Models.Enums;
 
 namespace FastTripApp.BL.Services
 {

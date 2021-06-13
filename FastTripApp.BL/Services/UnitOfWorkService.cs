@@ -1,14 +1,8 @@
 ﻿
 using FastTripApp.BL.Services.Interfaces;
-using FastTripApp.DAO.Models.Identity;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Web.Providers.Entities;
+using System.Threading.Tasks;
 
 namespace FastTripApp.BL.Services
 {
@@ -23,12 +17,16 @@ namespace FastTripApp.BL.Services
         /// <param name="userId">
         /// Upload avatar to user by userId.
         /// </param>
-        public async void UploadImage(IFormFile file, string userId)
+        public async Task UploadImageAsync(IFormFile file, string userId)
         {
-            long totalBytes = file.Length;
             string fileName = file.FileName.Trim('"');
             fileName = EnsureFileName(fileName);
-            byte[] buffer = new byte[16 * 1024];
+            await DownloadOnServerAsync(file, userId, fileName);
+        }
+
+        private async Task DownloadOnServerAsync(IFormFile file, string userId, string fileName)
+        {
+            var buffer = new byte[30 * 1024];
             using (FileStream output = File.Create(PathAndFileName(fileName, userId, "avatars")))
             {
                 using (Stream input = file.OpenReadStream())
@@ -37,7 +35,22 @@ namespace FastTripApp.BL.Services
                     while ((readBytes = input.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         await output.WriteAsync(buffer, 0, readBytes);
-                        totalBytes += readBytes;
+                    }
+                }
+            }
+        }
+
+        public async Task DownloadOnServerAsync(byte[] file, string userId, string folderUrl, string fileName)
+        {
+            var buffer = new byte[30 * 1024];
+            using (FileStream output = File.Create(PathAndFileName(fileName, userId, folderUrl)))
+            {
+                using (Stream input = new MemoryStream(file))
+                {
+                    int readBytes;
+                    while ((readBytes = input.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await output.WriteAsync(buffer, 0, readBytes);
                     }
                 }
             }

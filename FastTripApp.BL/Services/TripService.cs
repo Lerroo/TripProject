@@ -3,7 +3,7 @@ using FastTripApp.BL.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Net.Http;
 using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Models.StatusEnum;
+using FastTripApp.DAO.Models.Enums;
 using System;
 
 namespace FastTripApp.BL.Services
@@ -124,7 +124,7 @@ namespace FastTripApp.BL.Services
             }
             else
             {
-                trip.TimeAfterDeparture.End = _utilService.DateTimeNow();
+                trip.TimeAfterDeparture.End = _utilService.GetDateTimeNow();
             }            
 
             return trip.TimeAfterDeparture;
@@ -143,7 +143,7 @@ namespace FastTripApp.BL.Services
         {
             trip.TimeAfterDeparture = new TimeAfterDeparture()
             {
-                Start = _utilService.DateTimeNow()
+                Start = _utilService.GetDateTimeNow()
             };                
 
             return trip.TimeAfterDeparture;
@@ -160,10 +160,15 @@ namespace FastTripApp.BL.Services
         public async Task AddNewTripAsync(Trip trip)
         {
             trip.UserId = _userService.GetCurrentUserId();
-            trip.StaticImageWay = $@"{Guid.NewGuid()}.png";
-            _repositoryTrip.Add(trip);
+            trip.StaticImageWay = GenerateImageFileName();
+            await DownloadStaticImageWayAsync(trip);
 
-            await DownloadStaticImageWayAsync(trip);            
+            _repositoryTrip.Add(trip);
+        }
+
+        private string GenerateImageFileName()
+        {
+            return $@"{_utilService.GetGuid()}.png";
         }
 
         /// <summary>
@@ -174,8 +179,9 @@ namespace FastTripApp.BL.Services
         /// </param>
         /// <returns></returns>
         private async Task DownloadStaticImageWayAsync(Trip trip) 
-        { 
-            await _utilService.DownloadAsync(new Uri(trip.StaticImageWayUrl), trip.UserId, trip.StaticImageWay);
+        {
+            var uri = new Uri(trip.StaticImageWayUrl);
+            await _utilService.DownloadUriContentAsync(uri, trip.UserId, trip.StaticImageWay);
         }
 
         /// <summary>

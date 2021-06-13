@@ -7,9 +7,8 @@
     <div class="row">
         <div class="col">
             <form asp-action="Edit" method="post">
-
                 <input asp-for="Id" class="d-none" />
-                @Html.Partial("_FormBody", Model)
+                @await Html.PartialAsync("_FormBody", Model);
 
                 <div class="row d-flex justify-content-end">
                     <div class="col-8 offset-4 row">

@@ -29,7 +29,7 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _unitOfWork = unitOfWork;
         }
-        public string ImagePath { get; set; }
+        public string Image { get; set; }
         public string Username { get; set; }
 
         [TempData]
@@ -54,8 +54,15 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-            ImagePath = user.ImagePath;
-            FullPath = "/uploads/users/" + user.Id + "/avatars/" + ImagePath;
+            Image = user.ProfilePhoto;
+            if (Image != "defaultProfilePhoto.png")
+            {
+                FullPath = "/uploads/users/" + user.Id + "/avatars/" + Image;
+            }
+            else
+            {
+                FullPath = "/uploads/defaultProfilePhoto.png";
+            }          
 
             Input = new InputModel
             {
@@ -70,7 +77,7 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            ImagePath = user.ImagePath;
+            Image = user.ProfilePhoto;
             await LoadAsync(user);
             return Page();
         }
@@ -103,8 +110,8 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
 
             if (file != null)
             {
-                _unitOfWork.UploadImage(file, user.Id);
-                user.ImagePath = file.FileName;
+                _unitOfWork.UploadImageAsync(file, user.Id);
+                user.ProfilePhoto = file.FileName;
                 await _userManager.UpdateAsync(user);
             }
 

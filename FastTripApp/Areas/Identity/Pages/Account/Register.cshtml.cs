@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Display(Name = "Profile Image")]
-            public string ProfilePicture { get; set; }
+            public string ProfilePhoto { get; set; }
 
             [Required]
             [Display(Name = "Display Name")]
@@ -96,22 +97,30 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new UserCustom { UserName = Input.Email, Email = Input.Email, Firstname = Input.FirstName, 
-                    LastName = Input.LastName, PhoneNumber = Input.PhoneNumber, DisplayName = Input.DisplayName};
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+                var useridGuid = Guid.NewGuid().ToString();
+                if (file != null)
                 {
-                    if (file != null)
-                    {
-                        _unitOfWork.UploadImage(file, user.Id);
-                        user.ImagePath = file.FileName;
-                    }
-                    else
-                    {
-                        user.ImagePath = "defaultProfilePhoto.jpg";
-                    }
-                    await _userManager.UpdateAsync(user);
+                    _unitOfWork.UploadImageAsync(file, useridGuid);
+                    Input.ProfilePhoto = file.FileName;
+                }
+                else
+                {
+                    Input.ProfilePhoto = "defaultProfilePhoto.png";
+                }
+                var user = new UserCustom { 
+                    Id = useridGuid,  
+                    UserName = Input.Email, 
+                    Email = Input.Email, 
+                    Firstname = Input.FirstName, 
+                    LastName = Input.LastName, 
+                    PhoneNumber = Input.PhoneNumber, 
+                    DisplayName = Input.DisplayName,
+                    ProfilePhoto = Input.ProfilePhoto
+                };
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
+                if (result.Succeeded)
+                {                    
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

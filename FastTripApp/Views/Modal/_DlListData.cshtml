@@ -1,0 +1,21 @@
+﻿@model FastTripApp.DAO.Models.Trip;
+
+<dl class="dl-horizontal">
+    <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+    <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Descriprion)</dt>
+    <dd>@Html.DisplayFor(model => model.Descriprion)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.TimeBeforeDeparture.ApproximateStart)</dt>
+    <dd>@Html.DisplayFor(model => model.TimeBeforeDeparture.ApproximateStart)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.TimeBeforeDeparture.EstimatedView)</dt>
+    <dd>@Html.DisplayFor(model => model.TimeBeforeDeparture.EstimatedView)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Address.Start)</dt>
+    <dd>@Html.DisplayFor(model => model.Address.Start)</dd>
+
+    <dt>@Html.DisplayNameFor(model => model.Address.End)</dt>
+    <dd>@Html.DisplayFor(model => model.Address.End)</dd>
+</dl>

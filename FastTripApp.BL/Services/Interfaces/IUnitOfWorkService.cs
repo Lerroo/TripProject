@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace FastTripApp.BL.Services.Interfaces
 {
     public interface IUnitOfWorkService
     {
-        void UploadImage(IFormFile file, string userId);
+        Task UploadImageAsync(IFormFile file, string userId);
         string PathAndFileName(string fileName, string userId, string folder);
+        Task DownloadOnServerAsync(byte[] file, string userId, string folderUrl, string fileName);
     }
 }

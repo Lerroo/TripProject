@@ -10,7 +10,7 @@ let currentCenter = new google.maps.LatLng(55.8782557, 37.65372);
 function initMap() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
-    let start = new google.maps.LatLng(55.8782557, 37.65372);
+
     let mapOptions = {
         zoom: currentZoom,
         center: currentCenter
@@ -74,12 +74,11 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 
 function GenAutocomplete(elementid) {
     return new Promise((resolve, reject) => {
-        const center = { lat: 50.064192, lng: -130.605469 };
         const defaultBounds = {
-            north: center.lat + 0.1,
-            south: center.lat - 0.1,
-            east: center.lng + 0.1,
-            west: center.lng - 0.1,
+            north: currentCenter.lat() + 0.1,
+            south: currentCenter.lat() - 0.1,
+            east: currentCenter.lng() + 0.1,
+            west: currentCenter.lng() - 0.1,
         };
 
         const input = document.getElementById(elementid);
@@ -87,7 +86,7 @@ function GenAutocomplete(elementid) {
             bounds: defaultBounds,
             componentRestrictions: { country: "ru" },
             fields: ["address_components", "geometry", "icon", "name"],
-            origin: center,
+            origin: currentCenter,
             strictBounds: false,
             types: ["establishment"],
         };
@@ -112,6 +111,8 @@ function getStaticMap(pathArray) {
         let markersStartEnd = getStartLabel(pathArray) + getEndLabel(pathArray);
         let clearPath = preparePath(pathArray);
 
+        console.log("currentCenter" + currentCenter);
+        console.log("currentZoom" + currentZoom);
         let clearStart = prepareLatLng(currentCenter)
         var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
             + clearStart + "&zoom=" + currentZoom + "&size=500x500&maptype=roadmap&path="
