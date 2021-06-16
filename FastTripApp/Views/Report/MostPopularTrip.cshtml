@@ -1,0 +1,47 @@
+﻿@model FastTripApp.DAO.Models.Reports.MostPopularTrip
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment _webHostEnvironment
+
+
+@{
+    Layout = "/Views/Report/_DefaultPdf.cshtml";
+}
+
+@{
+    if (Model != null)
+    {
+        <h1 class="text-center"> Most popular trip</h1>
+
+
+
+            <div class="col-5">
+                <dl class="dl-horizontal">
+
+                    <dt>@Html.DisplayNameFor(model => model.Way.Start)</dt>
+                    <dd>@Html.DisplayFor(model => model.Way.Start)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Way.End)</dt>
+                    <dd>@Html.DisplayFor(model => model.Way.End)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Count)</dt>
+                    <dd>@Html.DisplayFor(model => model.Count)</dd>
+                </dl>
+
+            </div>
+            <div class="col-4">
+                @{
+                    Model.Way.StaticImage = "1+" + Model.Way.StaticImage;
+                    var srcLink = _webHostEnvironment.WebRootPath + Model.Way.FullStaticImagePath;
+                }
+                <img src="@srcLink" alt="Alternate Text" />
+            </div>
+     
+
+
+    }
+    else
+    {
+        <h1 class="text-center"> Most popular trip is null</h1>
+    }
+}
+
+

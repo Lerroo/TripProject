@@ -64,19 +64,19 @@
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@lastTrip.Address.Start"></label>
+                            <label asp-for="@lastTrip.Way.Start"></label>
                         </div>
                         <div class="col">
-                            <textarea cols="2" type="text" class="form-control" readonly placeholder="Start lastTrip" asp-for="@lastTrip.Address.Start"></textarea>
+                            <textarea cols="2" type="text" class="form-control" readonly placeholder="Start lastTrip" asp-for="@lastTrip.Way.Start"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="@lastTrip.Address.End"></label>
+                            <label asp-for="@lastTrip.Way.End"></label>
                         </div>
                         <div class="col">
-                            <textarea cols="2" type="text" class="form-control" readonly placeholder="End lastTrip" asp-for="@lastTrip.Address.End"></textarea>
+                            <textarea cols="2" type="text" class="form-control" readonly placeholder="End lastTrip" asp-for="@lastTrip.Way.End"></textarea>
                         </div>
                     </div>
 
@@ -91,7 +91,7 @@
 
                 </div>
                 <div id="image_div">
-                    <img id="googleStaticPicture" src="@lastTrip.FullStaticImageWay" />
+                    <img id="googleStaticPicture" src="@lastTrip.Way.FullStaticImagePath" />
                 </div>
 
             </div>

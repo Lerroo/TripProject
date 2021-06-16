@@ -40,7 +40,7 @@ namespace FastTripApp.BL.Services
         /// <returns></returns>
         public async Task DownloadUriContentAsync(Uri requestUri, string userId, string fileName)
         {
-            var path = _unitOfWorkService.PathAndFileName(fileName, userId, "static_way");
+            var path = _unitOfWorkService.PathAndFileName(fileName, "way_static_images");
 
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Get, requestUri))

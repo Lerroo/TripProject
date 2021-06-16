@@ -1,0 +1,29 @@
+﻿<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/fontawesome-all.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <h1>Fast report</h1>
+            </div>
+        </nav>
+    </header>
+    <div class='row table-bordered p-3 ml-3 mr-3'>
+        <div class='col bg-white p-3'>
+            @RenderBody()
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - FastTripApp
+        </div>
+    </footer>
+
+
+</body>
+</html>

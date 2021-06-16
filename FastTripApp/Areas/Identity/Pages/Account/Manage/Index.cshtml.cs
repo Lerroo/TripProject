@@ -110,7 +110,7 @@ namespace FastTripApp.Areas.Identity.Pages.Account.Manage
 
             if (file != null)
             {
-                _unitOfWork.UploadImageAsync(file, user.Id);
+                await _unitOfWork.UploadImageAsync(file, user.Id);
                 user.ProfilePhoto = file.FileName;
                 await _userManager.UpdateAsync(user);
             }

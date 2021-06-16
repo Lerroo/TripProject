@@ -14,9 +14,10 @@ namespace FastTripApp.DAO
         }
 
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<TimeBeforeDeparture> TimeBeforeDeparture { get; set; }
+        public DbSet<Way> Addresses { get; set; }
         public DbSet<HistoryTrip> HistoryTrips { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<TimeAfterDeparture> TimeAfterDepartures { get; set; }
+        public DbSet<Review> Reviews { get; set; }       
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserCustom> Users { get; set; }
 

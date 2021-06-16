@@ -30,17 +30,17 @@ function initMap() {
         currentCenter = map.getCenter();
     })
 
-    GenAutocomplete("Address_Start").then(() => onChangeHandler);
-    GenAutocomplete("Address_End").then(() => onChangeHandler);
+    GenAutocomplete("Way_Start").then(() => onChangeHandler);
+    GenAutocomplete("Way_End").then(() => onChangeHandler);
 
-    document.getElementById("Address_Start").addEventListener("change", onChangeHandler);
-    document.getElementById("Address_End").addEventListener("change", onChangeHandler);
+    document.getElementById("Way_Start").addEventListener("change", onChangeHandler);
+    document.getElementById("Way_End").addEventListener("change", onChangeHandler);
     document.getElementById("TimeBeforeDeparture_ApproximateStart").addEventListener("change", onChangeHandler);    
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    let startCoords = document.getElementById("Address_StartCoords").value;
-    let endCoords = document.getElementById("Address_EndCoords").value;
+    let startCoords = document.getElementById("Way_StartCoords").value;
+    let endCoords = document.getElementById("Way_EndCoords").value;
     let approximateStart = document.getElementById("TimeBeforeDeparture_ApproximateStart").value;
 
     if (startCoords != "" && endCoords != "" && approximateStart != "") {
@@ -95,8 +95,6 @@ function GenAutocomplete(elementid) {
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             let place = autocomplete.getPlace()           
 
-            document.getElementById(elementid).value = place.name;
-
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
             let googleLatLng = JSON.stringify(new google.maps.LatLng(lat, lng))
@@ -117,7 +115,7 @@ function getStaticMap(pathArray) {
         var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
             + clearStart + "&zoom=" + currentZoom + "&size=500x500&maptype=roadmap&path="
         + clearPath + markersStartEnd + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-        document.getElementById("StaticImageWayUrl").value = URL;    
+    document.getElementById("Way_StaticImageUrl").value = URL;
 }
 
 function getStartLabel(pathArray) {

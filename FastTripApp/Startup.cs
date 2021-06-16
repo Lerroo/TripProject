@@ -52,13 +52,15 @@ namespace UsingIdentity
             }).AddEntityFrameworkStores<UsingIdentityContext>()
                 .AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Identity/Account/Login");
-            
+
+            services.AddHttpContextAccessor();
 
             services.AddScoped<IRepositoryTrip, RepositoryTrip>();
             services.AddScoped<IRepositoryHistoryTrip, RepositoryHistoryTrip>();
             services.AddScoped<IRepositoryReview, RepositoryReview>();
             services.AddScoped<IRepositoryComment, RepositoryComment>();
             services.AddScoped<IRepositoryUser, RepositoryUser>();
+            services.AddScoped<IRepositoryWay, RepositoryWay>();
 
             services.AddScoped<ITripService, TripService>();
             services.AddScoped<IUtilService, UtilService>();
@@ -66,6 +68,7 @@ namespace UsingIdentity
             services.AddScoped<IUserStatisticService, UserStatisticService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IViewRenderService, ViewRenderService>();
 
             services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
 
@@ -75,8 +78,7 @@ namespace UsingIdentity
             context.LoadUnmanagedLibrary(filePath);
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddHttpContextAccessor();
+            
 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("UsingIdentityContextConnection")));
             services.AddHangfireServer();
@@ -114,6 +116,8 @@ namespace UsingIdentity
                     pattern: "{controller=Trip}/{action=Index}");
             endpoints.MapRazorPages();
             });
+
+
         }
     }
 }

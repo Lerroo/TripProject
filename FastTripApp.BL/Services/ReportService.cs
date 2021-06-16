@@ -1,88 +1,73 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
-using FastTripApp.BL.Extensions;
 using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Models.Pdf;
+
 using FastTripApp.DAO.Models.Reports;
-using FastTripApp.DAO.Models.Reports.StylePdf;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using FastTripApp.DAO.Models.Reports.Pdf;
+using FastTripApp.DAO.Models.Reports.Pdf.Default;
 using System.IO;
-using System.Text;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FastTripApp.BL.Services
 {
-    public class ReportService : Controller, IReportService
+    public class ReportService : IReportService
     {
         private readonly IConverter _converter;
         private readonly IUtilService _utilService;
+        private readonly IViewRenderService _viewRenderService;
+
         public ReportService(IConverter converter,
-            IUtilService utilService)
+
+            IUtilService utilService,
+            IViewRenderService viewRenderService)
         {
             _converter = converter;
             _utilService = utilService;
-        }
-       
-        public GeneralTemplate GeneralTemplate()
-        {
-            return new GeneralTemplate();
+
+            _viewRenderService = viewRenderService;
         }
 
-        public CustomPdf GeneratePdfReport(Trip trip)
+        public async Task<CustomPdf> GetPdfReportAsync<T>(T model, string viewPathRender)
         {
-            var html = GetDetailsTrip(trip);
-            HtmlToPdfDocument htmlToPdfDocument = new HtmlToPdfDocument()
-            {
-                GlobalSettings = new DefaultGlobalSettings(),
-                Objects = { new DefaultObjectSettings() { HtmlContent = html} },
-            };
+            var htmlData = await GetHtmlContentAsync(model, viewPathRender);
+            var htmlToPdfDocument = GetHtmlToPdfDocument(htmlData);
 
             var customPdf = new CustomPdf()
             {
-                FileName = GetPfdFileName(trip.Name),
+                FileName = GetPfdFileName(),
                 FileBytes = _converter.Convert(htmlToPdfDocument)
             };
             return customPdf;
         }
 
-        private string GetPfdFileName(string tripName)
+
+
+        public async Task<string> GetHtmlContentAsync<T>(T model, string viewPathRender)
         {
-            var time = _utilService.GetDateTimeNow();
-            var fileName = $"{time:d}_{tripName}.pdf";
- 
+            if (model == null)
+            {
+                return "Default null content report";
+            }
+
+            return await _viewRenderService.RenderToStringAsync(viewPathRender, model);
+        }
+
+        private HtmlToPdfDocument GetHtmlToPdfDocument(string htmlContent)
+        {
+            return new DefaultPdf(htmlContent);
+        }
+
+        private string GetPfdFileName()
+        {
+            var date = _utilService.GetDateTimeNow();
+            var time = $"{date:hh}-{date:mm}-{date:ss}";
+            var fileName = $"{date:d} {time}.pdf";
+
             return fileName;
         }
 
-        protected string RenderViewToString<T>(string viewPath, T model)
-        {
-            ViewData.Model = model;
-            using (var writer = new StringWriter())
-            {
-                var view = new WebFormView(ControllerContext, viewPath);
-                var vdd = new ViewDataDictionary<T>(model);
-                var viewCxt = new ViewContext(ControllerContext, view, vdd,
-                                            new TempDataDictionary(), writer);
-                viewCxt.View.Render(viewCxt, writer);
-                return writer.ToString();
-            }
-        }
 
-        private string GetDetailsTrip(Trip trip)
-        {
-            var sb = new StringBuilder();
-            var a = Controllers.RenderViewToStringAsync();
-            sb.Append(@"<html>
-                        <head>
-                           This is the header of this document.
-                       </head>
-                        <body>
-                            <div class='header'><h1>This is the generated PDF report!!!</h1></div>"
-                            
-                           @" </body>
-                        </ html > ");
-            return sb.ToString();
-        }
     }
 }

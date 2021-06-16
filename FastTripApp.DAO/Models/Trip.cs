@@ -15,16 +15,12 @@ namespace FastTripApp.DAO.Models
         [Required]
         public string Descriprion { get; set; }
 
-        public string StaticImageWay { get; set; }
-        [NotMapped]
-        public string FullStaticImageWay { get => "/uploads/users/" + UserId + "/static_way/" + StaticImageWay; }
-        [NotMapped]
-        public string StaticImageWayUrl { get; set; }
-
         public TimeBeforeDeparture TimeBeforeDeparture { get; set; }
         public TimeAfterDeparture TimeAfterDeparture { get; set; }
 
-        public Address Address { get; set; }
+        public int WayId { get; set; }
+        [ForeignKey("WayId")]
+        public Way Way { get; set; }
 
         [DisplayName("Status")]
         public StatusEnum StatusEnum { get; set; }

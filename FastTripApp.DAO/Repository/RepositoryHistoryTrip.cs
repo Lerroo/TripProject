@@ -14,6 +14,7 @@ namespace FastTripApp.DAO.Repository
             _context = context;
         }
 
+
         /// <summary>
         /// Method to get list of all HistoryTrip objects with includes from the repository.
         /// </summary>
@@ -21,7 +22,7 @@ namespace FastTripApp.DAO.Repository
         public IQueryable<HistoryTrip> GetAllWithInclude()
         {
             return _context.HistoryTrips
-                .Include(p => p.Address)
+                .Include(p => p.Way)
                 .Include(p => p.TimeAfterDeparture);
         }
 

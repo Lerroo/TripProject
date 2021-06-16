@@ -23,11 +23,11 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Trip objects with includes from the repository.
         /// </returns>
-        public IQueryable<Trip> GetAllWithInclude()
+        private IQueryable<Trip> GetAllWithInclude()
         {
             return _сontext.Trips
                .Include(p => p.User)
-               .Include(i => i.Address)
+               .Include(i => i.Way)
                .Include(i => i.TimeBeforeDeparture)
                .Include(i => i.TimeAfterDeparture);
         }
@@ -55,7 +55,7 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Trip objects with includes by userId from the repository.
         /// </returns>
-        public IQueryable<Trip> GetWithIncludeByUserId(string userId)
+        public IQueryable<Trip> GetAllWithIncludeByUserId(string userId)
         {
             return GetAllWithInclude().Where(p => p.UserId == userId);
         }

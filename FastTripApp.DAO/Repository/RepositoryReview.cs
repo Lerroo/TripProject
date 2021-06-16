@@ -23,7 +23,7 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Review objects with includes from the repository.
         /// </returns>
-        public IQueryable<Review> GetWithInclude()
+        public IQueryable<Review> GetAllWithInclude()
         {
             return _сontext.Reviews
                 .Include(p => p.Comments)
@@ -42,7 +42,8 @@ namespace FastTripApp.DAO.Repository
         /// </returns>
         public Review GetWithIncludeById(int reviewId)
         {
-            return GetWithInclude().FirstOrDefault(p => p.ReviewId == reviewId);
+            return GetAllWithInclude()
+                .FirstOrDefault(p => p.ReviewId == reviewId);
         }
     }
 }

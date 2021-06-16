@@ -5,7 +5,7 @@
 }
 @model FastTripApp.DAO.Models.Trip;
 
-<input hidden asp-for="StaticImageWayUrl" />
+
 
 
 <input asp-for="UserId" class="d-none" />
@@ -44,24 +44,26 @@
 
 <div class="form-group row">
     <div class="col-3">
-        <label asp-for="Address.Start"></label>
+        <label asp-for="Way.Start"></label>
     </div>
     <div class="col">
-        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Address.Start"></textarea>
-        <span asp-validation-for="Address.Start" class="text-danger"></span>
-        <input type="text" class="form-control d-none" asp-for="Address.StartCoords">
+        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Way.Start"></textarea>
+        <span asp-validation-for="Way.Start" class="text-danger"></span>
+        <input type="text" class="form-control d-none" asp-for="Way.StartCoords">
     </div>
 </div>
 
 <div class="form-group row">
     <div class="col-3">
-        <label asp-for="Address.End"></label>
+        <label asp-for="Way.End"></label>
     </div>
     <div class="col">
-        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Address.End"></textarea>
-        <span asp-validation-for="Address.End" class="text-danger"></span>
-        <input type="text" class="form-control d-none" asp-for="Address.EndCoords">
+        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Way.End"></textarea>
+        <span asp-validation-for="Way.End" class="text-danger"></span>
+        <input type="text" class="form-control d-none" asp-for="Way.EndCoords">
     </div>
 </div>
+
+<input hidden asp-for="Way.StaticImageUrl" />
 
 

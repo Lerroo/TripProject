@@ -6,7 +6,7 @@ namespace FastTripApp.BL.Services.Interfaces
     public interface IUnitOfWorkService
     {
         Task UploadImageAsync(IFormFile file, string userId);
-        string PathAndFileName(string fileName, string userId, string folder);
+        string PathAndFileName(string fileName, string foldersPath);
         Task DownloadOnServerAsync(byte[] file, string userId, string folderUrl, string fileName);
     }
 }

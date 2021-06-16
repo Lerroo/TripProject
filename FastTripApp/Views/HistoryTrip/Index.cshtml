@@ -30,10 +30,10 @@
                         @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Observe)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.Start)
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Way.Start)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address.End)
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Way.End)
                     </th>
                     <th style="width: 100px">
                     </th>
@@ -52,8 +52,8 @@
                     @if (tripStatus == StatusEnum.Abandon)
                     {
                         <td colspan="3">@trip.Name</td>
-                        <td>@trip.Address.Start</td>
-                        <td>@trip.Address.End</td>
+                        <td>@trip.Way.Start</td>
+                        <td>@trip.Way.End</td>
                         <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
                     }
                     else
@@ -61,8 +61,8 @@
                         <td>@trip.Name</td>
                         <td>@trip.TimeAfterDeparture.Start</td>
                         <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
-                        <td>@trip.Address.Start</td>
-                        <td>@trip.Address.End</td>
+                        <td>@trip.Way.Start</td>
+                        <td>@trip.Way.End</td>
                         <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
                     }
 

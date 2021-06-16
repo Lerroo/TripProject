@@ -27,7 +27,8 @@ namespace FastTripApp.BL.Services
         private async Task DownloadOnServerAsync(IFormFile file, string userId, string fileName)
         {
             var buffer = new byte[30 * 1024];
-            using (FileStream output = File.Create(PathAndFileName(fileName, userId, "avatars")))
+            var foldersPath = Path.Combine("users", userId, "avatars");
+            using (FileStream output = File.Create(PathAndFileName(fileName, foldersPath)))
             {
                 using (Stream input = file.OpenReadStream())
                 {
@@ -43,7 +44,8 @@ namespace FastTripApp.BL.Services
         public async Task DownloadOnServerAsync(byte[] file, string userId, string folderUrl, string fileName)
         {
             var buffer = new byte[30 * 1024];
-            using (FileStream output = File.Create(PathAndFileName(fileName, userId, folderUrl)))
+            var foldersPath = Path.Combine("users", userId, "avatars");
+            using (FileStream output = File.Create(PathAndFileName(fileName, foldersPath)))
             {
                 using (Stream input = new MemoryStream(file))
                 {
@@ -79,9 +81,9 @@ namespace FastTripApp.BL.Services
         /// <param name="userId">Upload file to user by userId.</param>
         /// <param name="folder">Name of the folder where to upload the file</param>
         /// <returns>Clear path to upload</returns>
-        public string PathAndFileName(string fileName, string userId, string folder)
+        public string PathAndFileName(string fileName, string foldersPath)
         {
-            string path = Path.Combine("wwwroot\\uploads\\users\\", userId, folder);
+            string path = Path.Combine("wwwroot\\uploads\\", foldersPath);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

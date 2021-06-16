@@ -8,8 +8,7 @@ namespace FastTripApp.DAO.Repository.Interfaces
 {
     public interface IRepositoryTrip : IRepository<Trip>
     {
-        IQueryable<Trip> GetAllWithInclude();
         Trip GetWithIncludeById(int? id);
-        IQueryable<Trip> GetWithIncludeByUserId(string id);
+        IQueryable<Trip> GetAllWithIncludeByUserId(string id);
     }
 }

@@ -5,13 +5,16 @@ using System.Net.Http;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Models.Enums;
 using System;
+using FastTripApp.DAO.Models.Reports;
+using System.Linq;
 
 namespace FastTripApp.BL.Services
 {
     public class TripService : ITripService
     {
         private readonly IRepositoryTrip _repositoryTrip;
-        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;        
+        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
+        private readonly IRepositoryWay _repositoryAddress;
 
         private readonly IHistoryTripService _historyTripService;
         private readonly IUtilService _utilService;
@@ -19,7 +22,8 @@ namespace FastTripApp.BL.Services
 
         public TripService(
             IRepositoryTrip tripRepository,
-            IRepositoryHistoryTrip repositoryHistoryTrip,            
+            IRepositoryHistoryTrip repositoryHistoryTrip,
+            IRepositoryWay repositoryAddress,
 
             IHistoryTripService historyTripService,
             IUserService userService,
@@ -30,7 +34,8 @@ namespace FastTripApp.BL.Services
 
             _historyTripService = historyTripService;
             _utilService = utilService;
-            _userService= userService;            
+            _userService = userService;
+            _repositoryAddress = repositoryAddress;
         }
 
         /// <summary>
@@ -45,7 +50,7 @@ namespace FastTripApp.BL.Services
         public Task ToHistory(int? idTrip)
         {
             var trip = _repositoryTrip.GetWithIncludeById(idTrip);
-            var historyTrip = _historyTripService.ConvertToHistoryTrip(trip);            
+            var historyTrip = _historyTripService.ConvertToHistoryTrip(trip);
             _repositoryHistoryTrip.Add(historyTrip);
 
             _repositoryTrip.Delete(trip);
@@ -160,28 +165,35 @@ namespace FastTripApp.BL.Services
         public async Task AddNewTripAsync(Trip trip)
         {
             trip.UserId = _userService.GetCurrentUserId();
-            trip.StaticImageWay = GenerateImageFileName();
+            trip.Way.StaticImage = GenerateImageFileName();
             await DownloadStaticImageWayAsync(trip);
 
+            var address = _repositoryAddress.GetAddressId(trip.Way);
+
+            //fix
+            address.StaticImageUrl = "";
+            if (address != null)
+            {
+                trip.Way = address;
+            }
+            
             _repositoryTrip.Add(trip);
-        }
-
-        private string GenerateImageFileName()
+        }       
+         
+        public MostPopularTrip GetMostPopularTrip(string userId)
         {
-            return $@"{_utilService.GetGuid()}.png";
-        }
-
-        /// <summary>
-        /// Road photo is loaded asynchronously for the trip
-        /// </summary>
-        /// <param name="trip">
-        /// information to download the image is taken from trip object
-        /// </param>
-        /// <returns></returns>
-        private async Task DownloadStaticImageWayAsync(Trip trip) 
-        {
-            var uri = new Uri(trip.StaticImageWayUrl);
-            await _utilService.DownloadUriContentAsync(uri, trip.UserId, trip.StaticImageWay);
+            var listTrips = _repositoryTrip.GetAllWithIncludeByUserId(userId);
+            var orderByCount = listTrips.ToList()
+                .GroupBy(p => p.Way)
+                .OrderByDescending(p => p.Count())
+                .Select(p => new { Way = p.Key, Count = p.Count(),})
+                .First();
+            var tripMostPopular = new MostPopularTrip
+            {
+                Way = orderByCount.Way,
+                Count = orderByCount.Count
+            };
+            return tripMostPopular;
         }
 
         /// <summary>
@@ -193,10 +205,28 @@ namespace FastTripApp.BL.Services
         /// <returns></returns>
         public async Task UpdateTripAsync(Trip trip)
         {
-            trip.StaticImageWay = $@"{Guid.NewGuid()}.png";
+            trip.Way.StaticImage = $@"{Guid.NewGuid()}.png";
             _repositoryTrip.Update(trip);
 
             await DownloadStaticImageWayAsync(trip);            
+        }
+
+        /// <summary>
+        /// Road photo is loaded asynchronously for the trip
+        /// </summary>
+        /// <param name="trip">
+        /// information to download the image is taken from trip object
+        /// </param>
+        /// <returns></returns>
+        private async Task DownloadStaticImageWayAsync(Trip trip)
+        {
+            var uri = new Uri(trip.Way.StaticImageUrl);
+            await _utilService.DownloadUriContentAsync(uri, trip.UserId, trip.Way.StaticImage);
+        }
+
+        private string GenerateImageFileName()
+        {
+            return $@"{_utilService.GetGuid()}.png";
         }
     }
 }

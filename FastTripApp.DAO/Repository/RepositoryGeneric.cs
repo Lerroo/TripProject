@@ -22,9 +22,9 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns all entities with a specified type from the repository.
         /// </returns>
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return _dbSet.AsNoTracking().ToList();
+            return _dbSet.AsNoTracking();
         }
 
         /// <summary>

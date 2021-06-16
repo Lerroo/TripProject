@@ -19,32 +19,6 @@ namespace FastTripApp.Web.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("FastTripApp.DAO.Models.Address", b =>
-                {
-                    b.Property<int>("AddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("End")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EndCoords")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Start")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StartCoords")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AddressId");
-
-                    b.ToTable("Address");
-                });
-
             modelBuilder.Entity("FastTripApp.DAO.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -81,16 +55,10 @@ namespace FastTripApp.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descriprion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StaticImageWay")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StatusEnum")
@@ -105,11 +73,14 @@ namespace FastTripApp.Web.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("WayAddressId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.HasIndex("TimeAfterDepartureId");
+
+                    b.HasIndex("WayAddressId");
 
                     b.ToTable("HistoryTrips");
                 });
@@ -239,7 +210,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeAfterDepartures");
+                    b.ToTable("TimeAfterDeparture");
                 });
 
             modelBuilder.Entity("FastTripApp.DAO.Models.TimeBeforeDeparture", b =>
@@ -267,9 +238,6 @@ namespace FastTripApp.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descriprion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -284,9 +252,6 @@ namespace FastTripApp.Web.Migrations
                     b.Property<int?>("ReviewId1")
                         .HasColumnType("int");
 
-                    b.Property<string>("StaticImageWay")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("StatusEnum")
                         .HasColumnType("int");
 
@@ -299,9 +264,10 @@ namespace FastTripApp.Web.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("WayId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("AddressId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ReviewId1");
 
@@ -311,7 +277,38 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("WayId");
+
                     b.ToTable("Trips");
+                });
+
+            modelBuilder.Entity("FastTripApp.DAO.Models.Way", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("End")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EndCoords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Start")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StartCoords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaticImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -464,17 +461,17 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("FastTripApp.DAO.Models.HistoryTrip", b =>
                 {
-                    b.HasOne("FastTripApp.DAO.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("FastTripApp.DAO.Models.TimeAfterDeparture", "TimeAfterDeparture")
                         .WithMany()
                         .HasForeignKey("TimeAfterDepartureId");
 
-                    b.Navigation("Address");
+                    b.HasOne("FastTripApp.DAO.Models.Way", "Way")
+                        .WithMany()
+                        .HasForeignKey("WayAddressId");
 
                     b.Navigation("TimeAfterDeparture");
+
+                    b.Navigation("Way");
                 });
 
             modelBuilder.Entity("FastTripApp.DAO.Models.Review", b =>
@@ -488,10 +485,6 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("FastTripApp.DAO.Models.Trip", b =>
                 {
-                    b.HasOne("FastTripApp.DAO.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("FastTripApp.DAO.Models.Review", "Review")
                         .WithMany()
                         .HasForeignKey("ReviewId1");
@@ -508,7 +501,11 @@ namespace FastTripApp.Web.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Address");
+                    b.HasOne("FastTripApp.DAO.Models.Way", "Way")
+                        .WithMany()
+                        .HasForeignKey("WayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Review");
 
@@ -517,6 +514,8 @@ namespace FastTripApp.Web.Migrations
                     b.Navigation("TimeBeforeDeparture");
 
                     b.Navigation("User");
+
+                    b.Navigation("Way");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

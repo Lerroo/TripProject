@@ -7,12 +7,16 @@
   <ItemGroup>
     <Compile Remove="Data\**" />
     <Compile Remove="Migrations\**" />
+    <Compile Remove="wwwroot\dlls\**" />
     <Content Remove="Data\**" />
     <Content Remove="Migrations\**" />
+    <Content Remove="wwwroot\dlls\**" />
     <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Migrations\**" />
+    <EmbeddedResource Remove="wwwroot\dlls\**" />
     <None Remove="Data\**" />
     <None Remove="Migrations\**" />
+    <None Remove="wwwroot\dlls\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210613193700_first.cs" />
-    <Compile Include="Migrations\20210613193700_first.Designer.cs" />
+    <Compile Include="Migrations\20210615131225_first.cs" />
+    <Compile Include="Migrations\20210615131225_first.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 
@@ -37,7 +41,6 @@
     <PackageReference Include="HangFire" Version="1.7.23" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
@@ -53,6 +56,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.6" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.11.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="RotativaCore" Version="3.0.0" />
+    <PackageReference Include="Select.HtmlToPdf.NetCore" Version="21.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -94,7 +99,6 @@
     <Folder Include="wwwroot\uploads\users\c616e534-3496-4a01-81bf-90e3815355e2\reports\" />
     <Folder Include="wwwroot\uploads\users\d0d7b37a-7d1e-41e6-a00e-e77ff452478a\reports\" />
     <Folder Include="wwwroot\uploads\users\e868e171-1abd-4844-b19f-7d569d92b4b3\reports\" />
-    <Folder Include="wwwroot\dlls\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
