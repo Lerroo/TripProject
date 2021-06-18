@@ -1,5 +1,6 @@
 ﻿
 using FastTripApp.DAO.Models.Enums;
+using FastTripApp.DAO.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

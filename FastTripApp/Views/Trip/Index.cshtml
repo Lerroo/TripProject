@@ -20,12 +20,7 @@
         <div class="col text-right pt-3  pb-3 mr-3">
             <a asp-controller="Trip" asp-action="Create" class="btn btn-primary text-light">Create new trip</a>
         </div>
-        <div class="col text-right pt-3  pb-3 mr-3">
-            <a asp-controller="Trip" asp-action="TripMostPopularReportTemplate" class="btn btn-primary text-light">Show template trip</a>
-        </div>
-        <div class="col text-right pt-3  pb-3 mr-3">
-            <a asp-controller="Trip" asp-action="TripMostPopularPdf" class="btn btn-primary text-light">Create most popular trip report</a>
-        </div>
+
     </div>
 
     <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded">
@@ -107,7 +102,7 @@
         </div>
 
         <div id="image_div">
-            @{ 
+            @{
                 var srcLink = "\\uploads\\defaultStaticMap.png";
                 if (firstTrip != null)
                 {
@@ -120,6 +115,18 @@
 
     @if (Model.Count() > 0)
     {
+
+        <div class="row">
+            <div class="col text-right pt-3  pb-3 mr-3">
+                <a asp-controller="Trip" asp-action="TripMostPopularReportTemplate" class="btn btn-primary text-light">Show template trip</a>
+            </div>
+            <div class="col text-right pt-3  pb-3 mr-3">
+                <a asp-controller="Trip" asp-action="TripMostPopularPdf" class="btn btn-primary text-light">Create most popular trip report</a>
+            </div>
+            <div class="col text-right pt-3  pb-3 mr-3">
+                <a asp-controller="Trip" asp-action="FindNearstPlaces" class="btn btn-primary text-light">Find nearest trip</a>
+            </div>
+        </div>
         <br /> <br />
         <h1 class="text-center">My booked trips</h1>
         <table class="table table-bordered table-striped">

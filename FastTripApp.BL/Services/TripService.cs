@@ -7,6 +7,8 @@ using FastTripApp.DAO.Models.Enums;
 using System;
 using FastTripApp.DAO.Models.Reports;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace FastTripApp.BL.Services
 {
@@ -14,7 +16,9 @@ namespace FastTripApp.BL.Services
     {
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
-        private readonly IRepositoryWay _repositoryAddress;
+        private readonly IRepositoryWay _repositoryWay;
+        private readonly IRepositoryCoords _repositoryCoords;
+        private readonly IRepositoryPlace _repositoryPlace;
 
         private readonly IHistoryTripService _historyTripService;
         private readonly IUtilService _utilService;
@@ -23,19 +27,24 @@ namespace FastTripApp.BL.Services
         public TripService(
             IRepositoryTrip tripRepository,
             IRepositoryHistoryTrip repositoryHistoryTrip,
-            IRepositoryWay repositoryAddress,
+            IRepositoryWay repositoryWay,
+            IRepositoryCoords repositoryCoords,
+            IRepositoryPlace repositoryPlace,
 
             IHistoryTripService historyTripService,
             IUserService userService,
             IUtilService utilService)
         {
             _repositoryTrip = tripRepository;
-            _repositoryHistoryTrip = repositoryHistoryTrip;            
+            _repositoryHistoryTrip = repositoryHistoryTrip;
+            _repositoryCoords = repositoryCoords;
+            _repositoryWay = repositoryWay;
+            _repositoryPlace = repositoryPlace;
 
             _historyTripService = historyTripService;
             _utilService = utilService;
             _userService = userService;
-            _repositoryAddress = repositoryAddress;
+            
         }
 
         /// <summary>
@@ -168,10 +177,8 @@ namespace FastTripApp.BL.Services
             trip.Way.StaticImage = GenerateImageFileName();
             await DownloadStaticImageWayAsync(trip);
 
-            var address = _repositoryAddress.GetAddressId(trip.Way);
-
-            //fix
-            address.StaticImageUrl = "";
+            var address = _repositoryWay.GetAddressId(trip.Way);
+          
             if (address != null)
             {
                 trip.Way = address;
@@ -194,6 +201,45 @@ namespace FastTripApp.BL.Services
                 Count = orderByCount.Count
             };
             return tripMostPopular;
+        }
+
+        public IEnumerable<Place> GetNearstPlaces(NearestPlace centerPlace)
+        {
+            var allPlace = _repositoryPlace.GetAllWithInclude();
+            var nearstPlaces = new List<Place>();
+            foreach (var place in allPlace)
+            {
+                var dist = Distance(centerPlace.CenterCoords, place.Coords);
+                if (dist < centerPlace.RadiusDistance)
+                {
+                    nearstPlaces.Add(place);
+                }
+            }
+
+            return nearstPlaces;
+        }
+
+        public double Distance(Coords center, Coords pos2)
+        {
+            const double R = 6378.1;
+
+            //Deltas
+            double dLat = ToRadian(pos2.Lat - center.Lat);
+            double dLng = ToRadian(pos2.Lng - center.Lng);
+
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Cos(ToRadian(center.Lat)) * Math.Cos(ToRadian(pos2.Lat)) * Math.Sin(dLng / 2) * Math.Sin(dLng / 2);
+            double c = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
+
+            double d = R * c;
+            return d;
+        }
+
+        /// <summary>
+        /// Convert to Radians.
+        /// </summary>
+        private double ToRadian(double val)
+        {
+            return (Math.PI / 180) * val;
         }
 
         /// <summary>
@@ -227,6 +273,16 @@ namespace FastTripApp.BL.Services
         private string GenerateImageFileName()
         {
             return $@"{_utilService.GetGuid()}.png";
+        }
+
+        public IEnumerable<Trip> GetNearstTrip()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Coords> GetNearstCoords(Coords coordsCenter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
+﻿
 google.maps.event.addDomListener(window, 'load', initMap);
 let currentZoom = 9;
 let currentCenter = new google.maps.LatLng(55.8782557, 37.65372);
@@ -39,15 +35,23 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    let startCoords = document.getElementById("Way_StartCoords").value;
-    let endCoords = document.getElementById("Way_EndCoords").value;
+    let startLat = document.getElementById("Way_Start_Place_Lat").value;
+    let startLng = document.getElementById("Way_Start_Place_Lng").value;
+    console.log(startLng + ":" + startLat);
+    let startCoords = new google.maps.LatLng(startLat, startLng);
+
+    let endLat = document.getElementById("Way_End_Place_Lat").value;
+    let endLng = document.getElementById("Way_End_Place_Lng").value;
+    let endCoords = new google.maps.LatLng(endLat, endLng);
+    console.log(endCoords+":"+startCoords);
+    
     let approximateStart = document.getElementById("TimeBeforeDeparture_ApproximateStart").value;
 
     if (startCoords != "" && endCoords != "" && approximateStart != "") {
         directionsService.route(
             {
-                origin: JSON.parse(startCoords),
-                destination: JSON.parse(endCoords),
+                origin: startCoords,
+                destination: endCoords,
                 travelMode: google.maps.TravelMode.DRIVING,
                 drivingOptions: {
                     departureTime: new Date(approximateStart),
@@ -97,10 +101,10 @@ function GenAutocomplete(elementid) {
 
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
-            let googleLatLng = JSON.stringify(new google.maps.LatLng(lat, lng))
 
-            document.getElementById(elementid+"Coords").value = googleLatLng
-            resolve(googleLatLng)
+            document.getElementById(elementid + "Place_Lat").value = lat
+            document.getElementById(elementid + "Place_Lng").value = lng
+            resolve()
         });
     })
 }

@@ -15,8 +15,10 @@ namespace FastTripApp.DAO.Models
             Start = currentTime;
             End = currentTime;
         }
+
         [Key]
         public int Id { get; set; }
+
         [DisplayName("Actual start time")]
         public DateTime? Start { get; set; }
 

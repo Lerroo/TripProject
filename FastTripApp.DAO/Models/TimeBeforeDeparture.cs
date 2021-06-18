@@ -18,6 +18,7 @@ namespace FastTripApp.DAO.Models
         public DateTime? ApproximateStart { get; set; }
 
         public long Estimated { get; set; }
+
         [DisplayName("Estimated time")]
         [DisplayFormat(DataFormatString = "{0:%d}d {0:%h}h {0:%m}m", ApplyFormatInEditMode = true)]
         [NotMapped]

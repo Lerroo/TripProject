@@ -6,9 +6,8 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository.Interfaces
 {
-    public interface IRepositoryWay : IRepository<Way>
+    public interface IRepositoryPlace : IRepository<Place>
     {
-        IQueryable<Way> GetAllWithInclude();
-        Way GetAddressId(Way address);
+        IQueryable<Place> GetAllWithInclude();
     }
 }

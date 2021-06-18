@@ -154,11 +154,11 @@ namespace FastTripApp.BL.Services
                 return new LocationsTrips();
             }
 
-            string StartFavoritePlace = historyTrips.GroupBy(id => id.Way.Start)
+            string StartFavoritePlace = historyTrips.GroupBy(id => id.Way.Start.Name)
                 .OrderByDescending(id => id.Count())
                 .Select(p => p.Key)
                 .First();
-            string EndFavoritePlace = historyTrips.GroupBy(id => id.Way.End)
+            string EndFavoritePlace = historyTrips.GroupBy(id => id.Way.End.Name)
                 .OrderByDescending(id => id.Count())
                 .Select(p => p.Key)
                 .First();

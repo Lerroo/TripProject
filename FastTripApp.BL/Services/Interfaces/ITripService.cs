@@ -1,5 +1,6 @@
 ﻿using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Models.Reports;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FastTripApp.BL.Services.Interfaces
@@ -12,5 +13,6 @@ namespace FastTripApp.BL.Services.Interfaces
         Task AddNewTripAsync(Trip trip);
         Task UpdateTripAsync(Trip trip);
         MostPopularTrip GetMostPopularTrip(string id);
+        IEnumerable<Place> GetNearstPlaces(NearestPlace centerPlace);
     }
 }

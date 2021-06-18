@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace FastTripApp.Controllers
 
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
+        private readonly IRepositoryCoords _repositoryCoords;
 
         private readonly ITripService _tripService;
         private readonly IUtilService _utilService;
@@ -33,8 +35,9 @@ namespace FastTripApp.Controllers
 
         public TripController(IRepositoryTrip tripRepository,
             IRepositoryHistoryTrip historyRepository,
+            IRepositoryCoords repositoryCoords,
 
-            ITripService tripService,
+        ITripService tripService,
             IUtilService utilService,
             IUserService userService,
             IUnitOfWorkService unitOfWorkService,
@@ -45,6 +48,7 @@ namespace FastTripApp.Controllers
         {
             _repositoryTrip = tripRepository;
             _repositoryHistoryTrip = historyRepository;
+            _repositoryCoords = repositoryCoords;
 
             _tripService = tripService;
             _utilService = utilService;
@@ -124,6 +128,20 @@ namespace FastTripApp.Controllers
             return View(trip);
         }
 
+        public ActionResult FindNearstPlaces()
+        {
+            var nearestTrip = new NearestPlace()
+            {
+                CenterCoords = new Coords(),
+                RadiusDistance = 20
+            };
+
+            var nearstPlaces = _tripService.GetNearstPlaces(nearestTrip);
+            nearestTrip.Places = nearstPlaces;
+
+            return View("../Report/NearstPlaces", nearestTrip);
+        }
+
         public ActionResult TripMostPopularReportTemplate()
         {
             var userId = _userService.GetCurrentUserId();
@@ -131,11 +149,8 @@ namespace FastTripApp.Controllers
             return View("../Report/MostPopularTrip", mostPopularTrip);
         }
 
-
-
         public async Task<ActionResult> TripMostPopularPdf()
         {
-
             var userId = _userService.GetCurrentUserId();
             var mostPopularTrip = _tripService.GetMostPopularTrip(userId);
             CustomPdf file = await _reportService.GetPdfReportAsync(mostPopularTrip, "../Report/MostPopularTrip");

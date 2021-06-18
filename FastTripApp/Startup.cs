@@ -23,6 +23,7 @@ using DinkToPdf.Contracts;
 using DinkToPdf;
 using System.IO;
 using FastTripApp.BL.Services.Util;
+using System.Globalization;
 
 namespace UsingIdentity
 {
@@ -61,24 +62,23 @@ namespace UsingIdentity
             services.AddScoped<IRepositoryComment, RepositoryComment>();
             services.AddScoped<IRepositoryUser, RepositoryUser>();
             services.AddScoped<IRepositoryWay, RepositoryWay>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IRepositoryCoords, RepositoryCoords>();
+            services.AddScoped<IRepositoryPlace, RepositoryPlace>();
 
             services.AddScoped<ITripService, TripService>();
             services.AddScoped<IUtilService, UtilService>();
             services.AddScoped<IHistoryTripService, HistoryTripService>();
-            services.AddScoped<IUserStatisticService, UserStatisticService>();
-            services.AddScoped<IReportService, ReportService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUserStatisticService, UserStatisticService>();            
+            services.AddTransient<IUserService, UserService>();            
+
             services.AddTransient<IViewRenderService, ViewRenderService>();
-
             services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
-
 
             string filePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\libwkhtmltox.dll";
             CustomAssemblyLoadContext context = new CustomAssemblyLoadContext();
             context.LoadUnmanagedLibrary(filePath);
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
-
-            
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));            
 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("UsingIdentityContextConnection")));
             services.AddHangfireServer();
@@ -93,6 +93,11 @@ namespace UsingIdentity
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                var cultureInfo = new CultureInfo("en-US");
+                cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+                CultureInfo.DefaultThreadCurrentCulture = cultureInfo; 
+                CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
             }
             else
             {

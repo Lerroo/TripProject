@@ -49,7 +49,8 @@
     <div class="col">
         <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Way.Start"></textarea>
         <span asp-validation-for="Way.Start" class="text-danger"></span>
-        <input type="text" class="form-control d-none" asp-for="Way.StartCoords">
+        <input class="form-control d-none" asp-for="Way.Start.Coords.Lat">
+        <input class="form-control d-none" asp-for="Way.Start.Coords.Lng">
     </div>
 </div>
 
@@ -60,7 +61,8 @@
     <div class="col">
         <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Way.End"></textarea>
         <span asp-validation-for="Way.End" class="text-danger"></span>
-        <input type="text" class="form-control d-none" asp-for="Way.EndCoords">
+        <input class="form-control d-none" asp-for="Way.End.Coords.Lat">
+        <input class="form-control d-none" asp-for="Way.End.Coords.Lng">
     </div>
 </div>
 
