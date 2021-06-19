@@ -7,5 +7,6 @@ namespace FastTripApp.BL.Services.Interfaces
     {
         string GetCurrentUserId();
         ClaimsPrincipal GetClaims();
+        UserCustom GetCurrentUser();
     }
 }

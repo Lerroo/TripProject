@@ -5,7 +5,7 @@
 @inject UserManager<UserCustom> UserManager
 
 <ul class="navbar-nav">
-    @{if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(User))
         {
             var myUser = await UserManager.GetUserAsync(User);
             if (myUser  != null)
@@ -39,5 +39,4 @@
                 <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </li>
         }
-    }
 </ul>

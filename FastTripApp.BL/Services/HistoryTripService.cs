@@ -7,18 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FastTripApp.DAO.Models.Enums;
+using FastTripApp.DAO.Models.Trip;
 
 namespace FastTripApp.BL.Services
 {
     public class HistoryTripService : IHistoryTripService
     {
-        private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;        
-
-        public HistoryTripService(IRepositoryHistoryTrip repositoryHistoryTrip)
-        {
-            _repositoryHistoryTrip = repositoryHistoryTrip;            
-        }
-
         /// <summary>
         /// Method to get HistoryTrip object from trip object.
         /// </summary>
@@ -28,7 +22,7 @@ namespace FastTripApp.BL.Services
         /// <returns>
         /// Return HistoryTrip object from trip data.
         /// </returns>
-        public HistoryTrip ConvertToHistoryTrip(Trip trip)
+        public HistoryTrip ConvertToHistoryTrip(DefaultTrip trip)
         {
             var historyTrip = new HistoryTrip
             {

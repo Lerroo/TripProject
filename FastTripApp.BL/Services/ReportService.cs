@@ -8,7 +8,6 @@ using FastTripApp.DAO.Models.Reports.Pdf;
 using FastTripApp.DAO.Models.Reports.Pdf.Default;
 using System.IO;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace FastTripApp.BL.Services
 {

@@ -3,10 +3,12 @@ using FastTripApp.DAO.Models.Enums;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FastTripApp.DAO.Models.Trip.Way;
+using FastTripApp.DAO.Models.Review;
 
-namespace FastTripApp.DAO.Models
+namespace FastTripApp.DAO.Models.Trip
 {
-    public class Trip
+    public class DefaultTrip
     {
         [Key]
         public int Id { get; set; }
@@ -20,7 +22,7 @@ namespace FastTripApp.DAO.Models
 
         public int WayId { get; set; }
         [ForeignKey("WayId")]
-        public Way Way { get; set; }
+        public DefaultWay Way { get; set; }
 
         [DisplayName("Status")]
         public StatusEnum StatusEnum { get; set; }
@@ -32,7 +34,7 @@ namespace FastTripApp.DAO.Models
 
         #nullable enable
         public int? ReviewId { get; set; }        
-        public Review? Review { get; set; }
+        public DefaultReview? Review { get; set; }
         #nullable disable
     }
 }

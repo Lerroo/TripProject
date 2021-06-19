@@ -11,8 +11,8 @@ namespace FastTripApp.BL.Services.Interfaces
         IQueryable<int> GetHistoryTripYears(string userId);
         CountTrips GetCountTrips(IQueryable<HistoryTrip> historyTrips);
         LocationsTrips GetLocationsTrips(IQueryable<HistoryTrip> historyTrips);
-        ObserveTrips GetDurationTrips(IQueryable<HistoryTrip> historyTrips);
+        ObserveTrips GetDurationTrips(IEnumerable<HistoryTrip> historyTrips);
         HistoryTrip GetLatsTripByYear(int year, string userId);
-        IQueryable<HistoryTrip> GetHistoryByYear(int year, string userId);
+        IQueryable<HistoryTrip> GetAllHistoryByYear(int year, string userId);
     }
 }

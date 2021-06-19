@@ -20,12 +20,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\coffe\.nuget\packages\select.htmltopdf.netcore\21.1.0\contentFiles\any\any\Select.Html.dep" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="libwkhtmltox.dll" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210618150405_first.cs" />
-    <Compile Include="Migrations\20210618150405_first.Designer.cs" />
+    <Compile Include="Migrations\20210619200454_first.cs" />
+    <Compile Include="Migrations\20210619200454_first.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 

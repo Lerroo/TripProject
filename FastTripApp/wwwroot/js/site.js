@@ -29,19 +29,19 @@ function initMap() {
     GenAutocomplete("Way_Start").then(() => onChangeHandler);
     GenAutocomplete("Way_End").then(() => onChangeHandler);
 
-    document.getElementById("Way_Start").addEventListener("change", onChangeHandler);
-    document.getElementById("Way_End").addEventListener("change", onChangeHandler);
+    document.getElementById("Way_Start_Name").addEventListener("change", onChangeHandler);
+    document.getElementById("Way_End_Name").addEventListener("change", onChangeHandler);
     document.getElementById("TimeBeforeDeparture_ApproximateStart").addEventListener("change", onChangeHandler);    
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    let startLat = document.getElementById("Way_Start_Place_Lat").value;
-    let startLng = document.getElementById("Way_Start_Place_Lng").value;
+    let startLat = document.getElementById("Way_Start_Coords_Lat").value;
+    let startLng = document.getElementById("Way_Start_Coords_Lng").value;
     console.log(startLng + ":" + startLat);
     let startCoords = new google.maps.LatLng(startLat, startLng);
 
-    let endLat = document.getElementById("Way_End_Place_Lat").value;
-    let endLng = document.getElementById("Way_End_Place_Lng").value;
+    let endLat = document.getElementById("Way_End_Coords_Lat").value;
+    let endLng = document.getElementById("Way_End_Coords_Lng").value;
     let endCoords = new google.maps.LatLng(endLat, endLng);
     console.log(endCoords+":"+startCoords);
     
@@ -85,7 +85,7 @@ function GenAutocomplete(elementid) {
             west: currentCenter.lng() - 0.1,
         };
 
-        const input = document.getElementById(elementid);
+        const input = document.getElementById(elementid + "_Name");
         const options = {
             bounds: defaultBounds,
             componentRestrictions: { country: "ru" },
@@ -94,16 +94,18 @@ function GenAutocomplete(elementid) {
             strictBounds: false,
             types: ["establishment"],
         };
+        
+        
         let autocomplete = new google.maps.places.Autocomplete(input, options);
-
+        console.log("dsad1" + document.getElementById(elementid + "_Name").value);
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             let place = autocomplete.getPlace()           
-
+            console.log("dsad2" + document.getElementById(elementid + "_Name").value);
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
 
-            document.getElementById(elementid + "Place_Lat").value = lat
-            document.getElementById(elementid + "Place_Lng").value = lng
+            document.getElementById(elementid + "_Coords_Lat").value = lat
+            document.getElementById(elementid + "_Coords_Lng").value = lng
             resolve()
         });
     })

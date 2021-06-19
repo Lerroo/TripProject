@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FastTripApp.DAO.Models.Review;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +20,7 @@ namespace FastTripApp.DAO.Models.Identity
         [PersonalData]
         [Column(TypeName = "nvarchar(100)")]
         public string LastName { get; set; }
-        public List<Review> Reviews { get; set; }
+        public List<DefaultReview> Reviews { get; set; }
         [DisplayName("Profile photo")]
         public string ProfilePhoto { get; set; }
 

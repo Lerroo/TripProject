@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace FastTripApp.DAO.Models
+namespace FastTripApp.DAO.Models.Trip
 {
     public class TimeAfterDeparture
     {

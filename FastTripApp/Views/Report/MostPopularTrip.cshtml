@@ -1,77 +1,67 @@
 ﻿@model FastTripApp.DAO.Models.Reports.MostPopularTrip
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment _webHostEnvironment
 
-
 @{
     Layout = "/Views/Report/_DefaultPdf.cshtml";
 }
 
-@{
-    if (Model != null)
-    {
-        <h1 class="text-center"> Most popular trip</h1>
+@if (Model != null)
+{
+    <h1 class="text-center"> Most popular trip</h1>
 
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Way.Start)
-                    </th>
-                    <th style="WIDTH: 180px;">
-                        @Html.DisplayNameFor(model => model.Way.End)
-                    </th>
-                    <th style="WIDTH: 125px;">
-                        @Html.DisplayNameFor(model => model.Count)
-                    </th>
-                    <th style="width: 100px">
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Model.Way.Start</td>
-                    <td>@Model.Way.End</td>
-                    <td>@Model.Count</td>
-                    </tr>
-            </tbody>
-        </table>
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Way.Start)
+                </th>
+                <th style="WIDTH: 180px;">
+                    @Html.DisplayNameFor(model => model.Way.End)
+                </th>
+                <th style="WIDTH: 125px;">
+                    @Html.DisplayNameFor(model => model.Count)
+                </th>
+                <th style="width: 100px">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Way.Start</td>
+                <td>@Model.Way.End</td>
+                <td>@Model.Count</td>
+            </tr>
+        </tbody>
+    </table>
 
-            <div class="row">
-                <div class="col">
-                    <dl class="dl-horizontal">
+    <div class="row">
+        <div class="col">
+            <dl class="dl-horizontal">
 
-                        <dt>@Html.DisplayNameFor(model => model.Way.Start)</dt>
-                        <dd>@Html.DisplayFor(model => model.Way.Start)</dd>
+                <dt>@Html.DisplayNameFor(model => model.Way.Start)</dt>
+                <dd>@Html.DisplayFor(model => model.Way.Start)</dd>
 
-                        <dt>@Html.DisplayNameFor(model => model.Way.End)</dt>
-                        <dd>@Html.DisplayFor(model => model.Way.End)</dd>
+                <dt>@Html.DisplayNameFor(model => model.Way.End)</dt>
+                <dd>@Html.DisplayFor(model => model.Way.End)</dd>
 
-                        <dt>@Html.DisplayNameFor(model => model.Count)</dt>
-                        <dd>@Html.DisplayFor(model => model.Count)</dd>
-                    </dl>
-                </div>
-                <div class="col">
-                    @{
-                        var srcLink = "";
+                <dt>@Html.DisplayNameFor(model => model.Count)</dt>
+                <dd>@Html.DisplayFor(model => model.Count)</dd>
+            </dl>
+        </div>
+        <div class="col">
+            @{
+                var srcLink = "";
 
-                        Model.Way.StaticImage = "1+" + Model.Way.StaticImage;
-                        srcLink = _webHostEnvironment.WebRootPath + Model.Way.FullStaticImagePath;
+                Model.Way.StaticImage = "1+" + Model.Way.StaticImage;
+                srcLink = _webHostEnvironment.WebRootPath + Model.Way.FullStaticImagePath;
 
-                        //srcLink = Url.Content(Model.Way.FullStaticImagePath);
-
-                    }
-                    <img src="@srcLink" alt="Alternate Text" />
-                </div>
-            </div>
-
-
-
+                //srcLink = Url.Content(Model.Way.FullStaticImagePath);
             }
-            else
-            {
-            <h1 class="text-center"> Most popular trip is null</h1>
-            }
-            }
-     
-
-
+            <img src="@srcLink" alt="Alternate Text" />
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center"> Most popular trip is null</h1>
+}

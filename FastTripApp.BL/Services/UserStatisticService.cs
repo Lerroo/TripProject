@@ -1,13 +1,12 @@
-﻿using FastTripApp.DAO.Models.Statistic;
+﻿using FastTripApp.BL.Services.Interfaces;
+using FastTripApp.DAO.Models;
+using FastTripApp.DAO.Models.Statistic;
+using FastTripApp.DAO.Models.Trip;
 using FastTripApp.DAO.Repository.Interfaces;
-using FastTripApp.BL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FastTripApp.DAO.Models;
-using FastTripApp.DAO.Models.Identity;
-using FastTripApp.DAO.Models.Enums;
-using System;
 
 namespace FastTripApp.BL.Services
 {
@@ -17,17 +16,20 @@ namespace FastTripApp.BL.Services
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
 
         private readonly IHistoryTripService _historyTripService;
+        private readonly IUtilService _utilService;
 
         public UserStatisticService(
             IRepositoryUser repositoryUser,
             IRepositoryHistoryTrip repositoryHistoryTrip,
 
-            IHistoryTripService historyTripService)
+            IHistoryTripService historyTripService,
+             IUtilService utilService)
         {
             _repositoryUser = repositoryUser;
             _repositoryHistoryTrip = repositoryHistoryTrip;
 
             _historyTripService = historyTripService;
+            _utilService = utilService;
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace FastTripApp.BL.Services
                 return GetDefaultUserStatistic(userId);
             }
 
-            var historyTrip = GetHistoryByYear(year, userId);
+            var historyTrip = GetAllHistoryByYear(year, userId);
             var statistic = new UserStatistic()
             {
                 Year = year,
@@ -115,7 +117,7 @@ namespace FastTripApp.BL.Services
         /// <returns>
         /// Return ObserveTrips object with statistic info based on list from HistoryTrip repository. 
         /// </returns>
-        public ObserveTrips GetDurationTrips(IQueryable<HistoryTrip> historyTrips)
+        public ObserveTrips GetDurationTrips(IEnumerable<HistoryTrip> historyTrips)
         {
             var minimumSec = historyTrips.Min(p => p.TimeAfterDeparture.Observe.Value.TotalSeconds);
             TimeSpan? minimum = TimeSpan.FromSeconds(Convert.ToInt32(minimumSec));
@@ -183,7 +185,7 @@ namespace FastTripApp.BL.Services
         /// <returns>
         /// Return list of HistoryTrip based on year and user id.
         /// </returns>
-        public IQueryable<HistoryTrip> GetHistoryByYear(int year, string userId)
+        public IQueryable<HistoryTrip> GetAllHistoryByYear(int year, string userId)
         {
             IQueryable<HistoryTrip> historyTrips = _repositoryHistoryTrip.GetByUserId(userId)
                 .Where(p => p.TimeAfterDeparture.End.Value.Year == year);
@@ -238,9 +240,16 @@ namespace FastTripApp.BL.Services
         /// <returns>Returns UserStatistic object with user by id.</returns>
         private UserStatistic GetDefaultUserStatistic(string userId)
         {
+            var currentYear = _utilService.GetDateTimeNow().Year.ToString();
+
             return new UserStatistic()
-            {
-                Years = new List<SelectListItem>(),
+            {                
+                Years = new List<SelectListItem>() { 
+                    new SelectListItem { 
+                        Text = currentYear, 
+                        Value = currentYear 
+                    }
+                },
                 ObserveTrips = new ObserveTrips(),
                 CountTrips = new CountTrips(),
                 LocationsTrips = new LocationsTrips(),

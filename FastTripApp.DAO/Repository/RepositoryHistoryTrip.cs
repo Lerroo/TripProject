@@ -22,7 +22,8 @@ namespace FastTripApp.DAO.Repository
         public IQueryable<HistoryTrip> GetAllWithInclude()
         {
             return _context.HistoryTrips
-                .Include(p => p.Way)
+                .Include(p => p.Way.Start)
+                .Include(p => p.Way.End)
                 .Include(p => p.TimeAfterDeparture);
         }
 
@@ -33,7 +34,8 @@ namespace FastTripApp.DAO.Repository
         /// <returns>Returns trip object with includes by id from the repository.</returns>
         public HistoryTrip GetWithIncludeById(int id)
         {
-            return GetAllWithInclude().FirstOrDefault(p => p.Id == id);
+            return GetAllWithInclude()
+                .FirstOrDefault(p => p.Id == id);
         }
 
         /// <summary>
@@ -43,7 +45,8 @@ namespace FastTripApp.DAO.Repository
         /// <returns>Returns list of HistoryTrip objects with includes by userId from the repository.</returns>
         public IQueryable<HistoryTrip> GetByUserId(string userId)
         {
-            return GetAllWithInclude().Where(p => p.UserId == userId);
+            return GetAllWithInclude()
+                .Where(p => p.UserId == userId);
         }
     }
 }

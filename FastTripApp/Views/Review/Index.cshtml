@@ -1,123 +1,115 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model List<FastTripApp.DAO.Models.Review>
-
-
+﻿@using FastTripApp.DAO.Models.Review;
+@model List<DefaultReview>
 
 <div class="container mt-5">
     <h2 class="text-center">The latest reviews from our clients</h2>
     <div class="d-flex justify-content-center row">
         <div class="col-md-8">
-            @{
-                foreach (var review in Model)
-                {
-                    <div class="d-flex flex-column comment-section card card-body bg-light mb-3" id="myGroup">
-                        <div class="bg-white p-2 rounded-top">
+            @foreach (var review in Model)
+            {
+                <div class="d-flex flex-column comment-section card card-body bg-light mb-3" id="myGroup">
+                    <div class="bg-white p-2 rounded-top">
 
-                            <div class="d-flex flex-row user-info">
-                                @{
-                                    var reviewUser = review.User;
-                                }
-                                <img class="profile-pic" src="@reviewUser.FullImagePath" width="40">
-
-                                <div class="d-flex flex-column justify-content-start ml-2">
-                                    <span class="d-block font-weight-bold name">@reviewUser.Firstname @reviewUser.LastName</span>
-                                    <span class="date text-black-50">@review.TimePost</span>
-                                </div>
-                                <div class="rating-area rating-area-review  align-items-end d-flex justify-content-end flex-row-reverse" name="divReview">
-                                    <input type="radio" id="star-5" class="rating" disabled value="5">
-                                    <label for="star-5" title="5 Stars"></label>
-                                    <input type="radio" id="star-4" class="rating" disabled value="4">
-                                    <label for="star-4" title="4 Stars" d></label>
-                                    <input type="radio" id="star-3" class="rating" disabled value="3">
-                                    <label for="star-3" title="3 Stars"></label>
-                                    <input type="radio" id="star-2" class="rating" disabled value="2">
-                                    <label for="star-2" title="2 Stars"></label>
-                                    <input type="radio" id="star-1" class="rating" disabled value="1">
-                                    <label for="star-1" title="1 Stars"></label>
-                                    <input asp-for="@review.Appraisal" hidden class="reviewAppraisal" />
-                                </div>
-                            </div>
-
-                            <div class="mt-2">
-                                <p class="comment-text">@review.Description</p>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="row bg-white">
-
-                                <div class="bg-white p-2">
-                                    <div class="d-flex flex-row fs-12">
-                                        @{
-                                            string collapseId = "collapse-" + review.ReviewId;
-                                        }
-                                        <div class="btn btn-info btn-circle text-uppercase ml-2 cursor action-collapse"
-                                             data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1"
-                                             href="#@collapseId">
-                                            <span class="ml-1">Write comment</span>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="bg-white p-2 ">
-                                    <div class="d-flex flex-row fs-12">
-                                        @{
-                                            string collapseCommentId = "comment-" + review.ReviewId;
-                                            string collapseCommentListId = "commentList-" + review.ReviewId;
-                                        }
-                                        <div class="btn btn-warning btn-circle text-uppercase cursor action-collapse"
-                                             data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1"
-                                             href="#@collapseCommentId">
-                                            <span lass="ml-1">Comments</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="@collapseId" class="bg-light pt-3 collapse" data-parent="#myGroup">
-                            @await Html.PartialAsync("../Comment/_Create",
-                               new FastTripApp.DAO.Models.Comment(),
-                               new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
-                            )
-
-
-                        </div>
-
-                        <div id="@collapseCommentId" class="bg-light p-2 collapse" data-parent="#myGroup">
-                            @{ if (review.Comments.Count == 0)
-                                {
-                                    <p>Comments absent. Write the first comment</p>
-                                }
-                                else
-                                {
-                                    foreach (var comment in review.Comments)
-                                    {
-                                        var commentUser = comment.User;
-
-                                        <div class="bg-white p-2 m-2 rounded">
-                                            <div class="d-flex flex-row user-info">
-                                                <img class="profile-pic" src="@commentUser.FullImagePath" width="40">
-                                                <div class="d-flex flex-column justify-content-start ml-2">
-                                                    <span class="d-block font-weight-bold name">@commentUser.Firstname @commentUser.LastName</span>
-                                                    <span class="date text-black-50">@comment.TimePost</span>
-                                                </div>
-                                            </div>
-                                            <div class="mt-2">
-                                                <p class="comment-text">@comment.Description</p>
-                                            </div>
-                                        </div>
-                                    }
-                                }
+                        <div class="d-flex flex-row user-info">
+                            @{
+                                var reviewUser = review.User;
                             }
+                            <img class="profile-pic" src="@reviewUser.FullImagePath" width="40">
+
+                            <div class="d-flex flex-column justify-content-start ml-2">
+                                <span class="d-block font-weight-bold name">@reviewUser.Firstname @reviewUser.LastName</span>
+                                <span class="date text-black-50">@review.TimePost</span>
+                            </div>
+                            <div class="rating-area rating-area-review  align-items-end d-flex justify-content-end flex-row-reverse" name="divReview">
+                                <input type="radio" id="star-5" class="rating" disabled value="5">
+                                <label for="star-5" title="5 Stars"></label>
+                                <input type="radio" id="star-4" class="rating" disabled value="4">
+                                <label for="star-4" title="4 Stars" d></label>
+                                <input type="radio" id="star-3" class="rating" disabled value="3">
+                                <label for="star-3" title="3 Stars"></label>
+                                <input type="radio" id="star-2" class="rating" disabled value="2">
+                                <label for="star-2" title="2 Stars"></label>
+                                <input type="radio" id="star-1" class="rating" disabled value="1">
+                                <label for="star-1" title="1 Stars"></label>
+                                <input asp-for="@review.Appraisal" hidden class="reviewAppraisal" />
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <p class="comment-text">@review.Description</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col">
+                        <div class="row bg-white">
+
+                            <div class="bg-white p-2">
+                                <div class="d-flex flex-row fs-12">
+                                    @{
+                                        string collapseId = "collapse-" + review.ReviewId;
+                                    }
+                                    <div class="btn btn-info btn-circle text-uppercase ml-2 cursor action-collapse"
+                                         data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1"
+                                         href="#@collapseId">
+                                        <span class="ml-1">Write comment</span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-2 ">
+                                <div class="d-flex flex-row fs-12">
+                                    @{
+                                        string collapseCommentId = "comment-" + review.ReviewId;
+                                        string collapseCommentListId = "commentList-" + review.ReviewId;
+                                    }
+                                    <div class="btn btn-warning btn-circle text-uppercase cursor action-collapse"
+                                         data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1"
+                                         href="#@collapseCommentId">
+                                        <span lass="ml-1">Comments</span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                }
+
+                    <div id="@collapseId" class="bg-light pt-3 collapse" data-parent="#myGroup">
+                        @await Html.PartialAsync("../Comment/_Create",
+                           new Comment(),
+                           new ViewDataDictionary(this.ViewData) { { "ReviewId", review.ReviewId } }
+                        )
+                    </div>
+
+                    <div id="@collapseCommentId" class="bg-light p-2 collapse" data-parent="#myGroup">
+                        @if (review.Comments.Count == 0)
+                        {
+                            <p>Comments absent. Write the first comment</p>
+                        }
+                        else
+                        {
+                            foreach (var comment in review.Comments)
+                            {
+                                var commentUser = comment.User;
+
+                                <div class="bg-white p-2 m-2 rounded">
+                                    <div class="d-flex flex-row user-info">
+                                        <img class="profile-pic" src="@commentUser.FullImagePath" width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2">
+                                            <span class="d-block font-weight-bold name">@commentUser.Firstname @commentUser.LastName</span>
+                                            <span class="date text-black-50">@comment.TimePost</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text">@comment.Description</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                </div>
             }
         </div>
     </div>

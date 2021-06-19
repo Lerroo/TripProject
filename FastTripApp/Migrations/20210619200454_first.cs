@@ -249,6 +249,7 @@ namespace FastTripApp.Web.Migrations
                     AddressId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartId = table.Column<int>(type: "int", nullable: true),
+                    EndPlaceId = table.Column<int>(type: "int", nullable: false),
                     EndId = table.Column<int>(type: "int", nullable: true),
                     StaticImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -341,15 +342,14 @@ namespace FastTripApp.Web.Migrations
                     WayId = table.Column<int>(type: "int", nullable: false),
                     StatusEnum = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReviewId = table.Column<int>(type: "int", nullable: true),
-                    ReviewId1 = table.Column<int>(type: "int", nullable: true)
+                    ReviewId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trips_Reviews_ReviewId1",
-                        column: x => x.ReviewId1,
+                        name: "FK_Trips_Reviews_ReviewId",
+                        column: x => x.ReviewId,
                         principalTable: "Reviews",
                         principalColumn: "ReviewId",
                         onDelete: ReferentialAction.Restrict);
@@ -437,9 +437,9 @@ namespace FastTripApp.Web.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_ReviewId1",
+                name: "IX_Trips_ReviewId",
                 table: "Trips",
-                column: "ReviewId1");
+                column: "ReviewId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_TimeAfterDepartureId",

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FastTripApp.DAO.Repository.Interfaces;
 using FastTripApp.BL.Services.Interfaces;
+using FastTripApp.DAO.Models.Review;
 
 namespace FastTripApp.Controllers
 {

@@ -9,6 +9,8 @@ using FastTripApp.DAO.Models.Reports;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using FastTripApp.DAO.Models.Trip.Way;
+using FastTripApp.DAO.Models.Trip;
 
 namespace FastTripApp.BL.Services
 {
@@ -106,7 +108,7 @@ namespace FastTripApp.BL.Services
         /// <returns>
         /// Returns trip status based on trip.TimeAfterDeparture.Observe.
         /// </returns>
-        private StatusEnum GetStatus(Trip trip)
+        private StatusEnum GetStatus(DefaultTrip trip)
         {            
             if (trip.TimeAfterDeparture.Observe.Value.TotalSeconds == 0)
             {
@@ -129,7 +131,7 @@ namespace FastTripApp.BL.Services
         /// <returns>
         /// Return TimeAfterDeparture object contain info about end trip.
         /// </returns>
-        private TimeAfterDeparture GetTimeAfterDepartureEnd(Trip trip)
+        private TimeAfterDeparture GetTimeAfterDepartureEnd(DefaultTrip trip)
         {
             //trip is abandon
             if (trip.TimeAfterDeparture == null)
@@ -153,7 +155,7 @@ namespace FastTripApp.BL.Services
         /// <returns>
         /// Return TimeAfterDeparture object contain info about start trip.
         /// </returns>
-        public TimeAfterDeparture GetTimeAfterDepartureStart(Trip trip)
+        public TimeAfterDeparture GetTimeAfterDepartureStart(DefaultTrip trip)
         {
             trip.TimeAfterDeparture = new TimeAfterDeparture()
             {
@@ -171,13 +173,15 @@ namespace FastTripApp.BL.Services
         /// </param> 
         /// <returns>
         /// </returns>
-        public async Task AddNewTripAsync(Trip trip)
+        public async Task AddNewTripAsync(DefaultTrip trip)
         {
-            trip.UserId = _userService.GetCurrentUserId();
+            trip.User = _userService.GetCurrentUser();
+            //trip.UserId = trip.User.Id;
             trip.Way.StaticImage = GenerateImageFileName();
             await DownloadStaticImageWayAsync(trip);
 
-            var address = _repositoryWay.GetAddressId(trip.Way);
+            //fix
+            var address = _repositoryWay.GetWayById(trip.Way);
           
             if (address != null)
             {
@@ -249,7 +253,7 @@ namespace FastTripApp.BL.Services
         /// Update trip object in Trip repository
         /// </param>
         /// <returns></returns>
-        public async Task UpdateTripAsync(Trip trip)
+        public async Task UpdateTripAsync(DefaultTrip trip)
         {
             trip.Way.StaticImage = $@"{Guid.NewGuid()}.png";
             _repositoryTrip.Update(trip);
@@ -264,7 +268,7 @@ namespace FastTripApp.BL.Services
         /// information to download the image is taken from trip object
         /// </param>
         /// <returns></returns>
-        private async Task DownloadStaticImageWayAsync(Trip trip)
+        private async Task DownloadStaticImageWayAsync(DefaultTrip trip)
         {
             var uri = new Uri(trip.Way.StaticImageUrl);
             await _utilService.DownloadUriContentAsync(uri, trip.UserId, trip.Way.StaticImage);
@@ -275,7 +279,7 @@ namespace FastTripApp.BL.Services
             return $@"{_utilService.GetGuid()}.png";
         }
 
-        public IEnumerable<Trip> GetNearstTrip()
+        public IEnumerable<DefaultTrip> GetNearstTrip()
         {
             throw new NotImplementedException();
         }

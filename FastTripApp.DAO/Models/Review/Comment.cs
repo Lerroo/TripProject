@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FastTripApp.DAO.Models
+namespace FastTripApp.DAO.Models.Review
 {
     public class Comment
     {
@@ -19,6 +19,6 @@ namespace FastTripApp.DAO.Models
 
         public int ReviewId { get; set; }
         [ForeignKey("ReviewId")]
-        public Review Review { get; set; }
+        public DefaultReview Review { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastTripApp.DAO.Models.Trip.Way;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

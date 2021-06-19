@@ -93,14 +93,14 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(IFormFile file, string returnUrl = null)
         {
 
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var useridGuid = Guid.NewGuid().ToString();
                 if (file != null)
                 {
-                    _unitOfWork.UploadImageAsync(file, useridGuid);
+                    await _unitOfWork.UploadImageAsync(file, useridGuid);
                     Input.ProfilePhoto = file.FileName;
                 }
                 else
@@ -124,11 +124,10 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                     }
                     else
                     {

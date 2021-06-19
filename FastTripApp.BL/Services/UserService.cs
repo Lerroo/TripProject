@@ -1,5 +1,6 @@
 ﻿using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models.Identity;
+using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -10,9 +11,12 @@ namespace FastTripApp.BL.Services
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _accessor;
+        private readonly IRepositoryUser _repositoryUser;
 
-        public UserService(IHttpContextAccessor accessor)
+        public UserService(IRepositoryUser repositoryUser,
+            IHttpContextAccessor accessor)
         {
+            _repositoryUser = repositoryUser;
             _accessor = accessor;
         }
 
@@ -25,6 +29,12 @@ namespace FastTripApp.BL.Services
             return _accessor?.HttpContext?.User as ClaimsPrincipal;
         }
 
+        public UserCustom GetCurrentUser()
+        {
+            var id = GetCurrentUserId();
+            return _repositoryUser.GetById(id);
+        }
+
         /// <summary>
         /// Method for getting the string value of id current login user.
         /// </summary>
@@ -34,5 +44,7 @@ namespace FastTripApp.BL.Services
             var userId = GetClaims().Claims.ElementAt(0).Value;
             return userId;
         }
+
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Models.Reports;
+using FastTripApp.DAO.Models.Trip;
+using FastTripApp.DAO.Models.Trip.Way;
 using FastTripApp.DAO.Repository.Interfaces;
 using Hangfire;
 using Hangfire.Storage;
@@ -65,17 +67,17 @@ namespace FastTripApp.Controllers
         public ActionResult Index()
         {
             var id = _userService.GetCurrentUserId();
-            IEnumerable<Trip> objList = _repositoryTrip.GetAllWithIncludeByUserId(id);
+            IEnumerable<DefaultTrip> objList = _repositoryTrip.GetAllWithIncludeByUserId(id);
 
             if (objList.Any())
             {
                 var trip = objList.First();
-                using (var connection = JobStorage.Current.GetConnection())
+
+                using var connection = JobStorage.Current.GetConnection();
+
+                foreach (var recurringJob in connection.GetRecurringJobs())
                 {
-                    foreach (var recurringJob in connection.GetRecurringJobs())
-                    {
-                        RecurringJob.RemoveIfExists(recurringJob.Id);
-                    }
+                    RecurringJob.RemoveIfExists(recurringJob.Id);
                 }
 
                 //var timeDelay = (trip.TimeBeforeDeparture.ApproximateStart - _utilService.GetDateTimeNow()).Value;
@@ -117,7 +119,7 @@ namespace FastTripApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Trip trip)
+        public async Task<ActionResult> Create(DefaultTrip trip)
         {
             if (ModelState.IsValid)
             {
@@ -174,7 +176,7 @@ namespace FastTripApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Trip trip)
+        public async Task<ActionResult> Edit(DefaultTrip trip)
         {
             if (ModelState.IsValid)
             {

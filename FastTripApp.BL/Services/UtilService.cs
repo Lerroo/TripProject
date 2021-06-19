@@ -42,15 +42,13 @@ namespace FastTripApp.BL.Services
         {
             var path = _unitOfWorkService.PathAndFileName(fileName, "way_static_images");
 
-            using (var client = new HttpClient())
-            using (var request = new HttpRequestMessage(HttpMethod.Get, requestUri))
-            using (
-                Stream contentStream = 
+            using var client = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+            using Stream contentStream =
                     await (await client.SendAsync(request)).Content.ReadAsStreamAsync(),
-                    stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 3145728, true))
-            {
-                await contentStream.CopyToAsync(stream);
-            }
+                    stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 3145728, true);
+            await contentStream.CopyToAsync(stream);
         }
     }
 }

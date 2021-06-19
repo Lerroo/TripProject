@@ -1,9 +1,7 @@
-﻿@model FastTripApp.DAO.Models.TimeAfterDeparture
-
-<div id="modDialog" class="modal fade">
+﻿<div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog bg-white">
         <div class="modal-content">
-            @await Html.PartialAsync("../Review/_Create", new FastTripApp.DAO.Models.Review());
+            @await Html.PartialAsync("../Review/_Create", new FastTripApp.DAO.Models.Trip.DefaultTrip());
 
         </div>        
     </div>

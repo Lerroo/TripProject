@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace FastTripApp.DAO.Models
+namespace FastTripApp.DAO.Models.Trip.Way
 {
     public class Coords
     {

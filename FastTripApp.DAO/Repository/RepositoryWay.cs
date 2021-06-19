@@ -1,4 +1,5 @@
 ﻿using FastTripApp.DAO.Models;
+using FastTripApp.DAO.Models.Trip.Way;
 using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository
 {   
-    public class RepositoryWay : RepositoryGeneric<Way>, IRepositoryWay
+    public class RepositoryWay : RepositoryGeneric<DefaultWay>, IRepositoryWay
     {
         private readonly UsingIdentityContext _context;
 
@@ -23,14 +24,16 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Trip objects with includes from the repository.
         /// </returns>
-        public IQueryable<Way> GetAllWithInclude()
+        public IQueryable<DefaultWay> GetAllWithInclude()
         {
             return _context.Ways
                 .Include(p => p.End)
-                .Include(p => p.Start);
+                .ThenInclude(p => p.Coords)
+                .Include(p => p.Start)
+                .ThenInclude(p => p.Coords);
         }
 
-        public Way GetAddressId(Way address)
+        public DefaultWay GetWayById(DefaultWay address)
         {
             var addressId = GetAllWithInclude()
                 .Where(p => p.Start.Name == address.Start.Name && p.End.Name == address.End.Name)

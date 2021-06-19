@@ -1,10 +1,12 @@
 ﻿@model FastTripApp.DAO.Models.HistoryTrip
 
 <div class="modal-content">
+
     <div class="modal-header">
         <h4>Detailed information about the trip</h4>
         <button class="close" data-dismiss="modal" area-hidden="true">X</button>
     </div>
+
     <div class="modal-body">
         <dl class="dl-horizontal">
             <dt>@Html.DisplayNameFor(model => model.Name)</dt>
@@ -13,18 +15,16 @@
             <dt>@Html.DisplayNameFor(model => model.Descriprion)</dt>
             <dd>@Html.DisplayFor(model => model.Descriprion)</dd>
 
-            @{
-                if (Model.TimeAfterDeparture.Observe.Value.TotalSeconds != 0)
-                {
-                    <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.Start)</dt>
-                    <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.Start)</dd>
+            @if (Model.TimeAfterDeparture.Observe.Value.TotalSeconds != 0)
+            {
+                <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.Start)</dt>
+                <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.Start)</dd>
 
-                    <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.End)</dt>
-                    <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.End)</dd>
+                <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.End)</dt>
+                <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.End)</dd>
 
-                    <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.Observe)</dt>
-                    <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.Observe)</dd>
-                }
+                <dt>@Html.DisplayNameFor(model => model.TimeAfterDeparture.Observe)</dt>
+                <dd>@Html.DisplayFor(model => model.TimeAfterDeparture.Observe)</dd>
             }
 
             <dt>@Html.DisplayNameFor(model => model.Status)</dt>
@@ -35,7 +35,7 @@
 
             <dt>@Html.DisplayNameFor(model => model.Way.End)</dt>
             <dd>@Html.DisplayFor(model => model.Way.End)</dd>
-
         </dl>
+
     </div>
 </div>

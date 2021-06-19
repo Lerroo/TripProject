@@ -28,16 +28,14 @@ namespace FastTripApp.BL.Services
         {
             var buffer = new byte[30 * 1024];
             var foldersPath = Path.Combine("users", userId, "avatars");
-            using (FileStream output = File.Create(PathAndFileName(fileName, foldersPath)))
+
+            using FileStream output = File.Create(PathAndFileName(fileName, foldersPath));
+            using Stream input = file.OpenReadStream();
+
+            int readBytes;
+            while ((readBytes = input.Read(buffer, 0, buffer.Length)) > 0)
             {
-                using (Stream input = file.OpenReadStream())
-                {
-                    int readBytes;
-                    while ((readBytes = input.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        await output.WriteAsync(buffer, 0, readBytes);
-                    }
-                }
+                await output.WriteAsync(buffer, 0, readBytes);
             }
         }
 
@@ -67,7 +65,7 @@ namespace FastTripApp.BL.Services
         {
             if (fileName.Contains("\\"))
             {
-                fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
+                fileName = fileName[(fileName.LastIndexOf("\\") + 1)..];
             }
             return fileName;
         }

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FastTripApp.DAO.Models
+namespace FastTripApp.DAO.Models.Review
 {
-    public class Review 
+    public class DefaultReview 
     {
         [Key]
         public int ReviewId { get; set; }

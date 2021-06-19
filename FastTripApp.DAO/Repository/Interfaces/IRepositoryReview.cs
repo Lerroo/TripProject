@@ -1,4 +1,5 @@
 ﻿using FastTripApp.DAO.Models;
+using FastTripApp.DAO.Models.Review;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository.Interfaces
 {
-    public interface IRepositoryReview : IRepository<Review>
+    public interface IRepositoryReview : IRepository<DefaultReview>
     {
-        IQueryable<Review> GetAllWithInclude();
-        Review GetWithIncludeById(int id);
+        IQueryable<DefaultReview> GetAllWithInclude();
+        DefaultReview GetWithIncludeById(int id);
     }
 }

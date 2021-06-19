@@ -1,12 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model FastTripApp.DAO.Models.Trip;
-
-
-
+﻿@model FastTripApp.DAO.Models.Trip.DefaultTrip
 
 <input asp-for="UserId" class="d-none" />
 
@@ -47,11 +39,11 @@
         <label asp-for="Way.Start"></label>
     </div>
     <div class="col">
-        <textarea cols="2" type="text" class="form-control" placeholder="Start trip" asp-for="Way.Start"></textarea>
+        <textarea cols="2" type="text" class="form-control" placeholder="Start place" asp-for="Way.Start.Name"></textarea>
         <span asp-validation-for="Way.Start" class="text-danger"></span>
-        <input class="form-control d-none" asp-for="Way.Start.Coords.Lat">
-        <input class="form-control d-none" asp-for="Way.Start.Coords.Lng">
     </div>
+    <input class="form-control d-none" asp-for="Way.Start.Coords.Lat">
+    <input class="form-control d-none" asp-for="Way.Start.Coords.Lng">
 </div>
 
 <div class="form-group row">
@@ -59,13 +51,11 @@
         <label asp-for="Way.End"></label>
     </div>
     <div class="col">
-        <textarea cols="2" type="text" class="form-control" placeholder="End trip" asp-for="Way.End"></textarea>
+        <textarea cols="2" type="text" class="form-control" placeholder="End place" asp-for="Way.End.Name"></textarea>
         <span asp-validation-for="Way.End" class="text-danger"></span>
-        <input class="form-control d-none" asp-for="Way.End.Coords.Lat">
-        <input class="form-control d-none" asp-for="Way.End.Coords.Lng">
     </div>
+    <input class="form-control d-none" asp-for="Way.End.Coords.Lat">
+    <input class="form-control d-none" asp-for="Way.End.Coords.Lng">
 </div>
 
 <input hidden asp-for="Way.StaticImageUrl" />
-
-

@@ -1,9 +1,9 @@
-﻿
-@model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
-@using FastTripApp.DAO.Models.Enums
+﻿@model IEnumerable<FastTripApp.DAO.Models.HistoryTrip>
+@using FastTripApp.DAO.Models.Trip
 
 @{
     ViewData["Title"] = "My history trips";
+    var firstHistoryTrip = Model.FirstOrDefault();
 }
 
 <div class="container p-3 ">
@@ -21,19 +21,19 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                        <label asp-for="@firstHistoryTrip.Name"></label>
                     </th>
                     <th style="WIDTH: 180px;">
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Start)
+                        <label asp-for="@firstHistoryTrip.TimeAfterDeparture.Start"></label>
                     </th>
                     <th style="WIDTH: 125px;">
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().TimeAfterDeparture.Observe)
+                        <label asp-for="@firstHistoryTrip.TimeAfterDeparture.Observe"></label>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Way.Start)
+                        <label asp-for="@firstHistoryTrip.Way.Start"></label>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Way.End)
+                        <label asp-for="@firstHistoryTrip.Way.End"></label>
                     </th>
                     <th style="width: 100px">
                     </th>
@@ -48,28 +48,28 @@
                     {
                         styleLine = "table-danger";
                     }
-                <tr class="@styleLine">
-                    @if (tripStatus == StatusEnum.Abandon)
-                    {
-                        <td colspan="3">@trip.Name</td>
-                        <td>@trip.Way.Start</td>
-                        <td>@trip.Way.End</td>
-                        <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
-                    }
-                    else
-                    {
-                        <td>@trip.Name</td>
-                        <td>@trip.TimeAfterDeparture.Start</td>
-                        <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
-                        <td>@trip.Way.Start</td>
-                        <td>@trip.Way.End</td>
-                        <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
-                    }
-
-                </tr>
+                    <tr class="@styleLine">
+                        @if (tripStatus == StatusEnum.Abandon)
+                        {
+                            <td colspan="3">@trip.Name</td>
+                            <td>@trip.Way.Start.Name</td>
+                            <td>@trip.Way.End.Name</td>
+                            <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
+                        }
+                        else
+                        {
+                            <td>@trip.Name</td>
+                            <td>@trip.TimeAfterDeparture.Start</td>
+                            <td>@Html.DisplayFor(modelItem => trip.TimeAfterDeparture.Observe)</td>
+                            <td>@trip.Way.Start.Name</td>
+                            <td>@trip.Way.End.Name</td>
+                            <td><a class="btn btn-info" onclick="getInfo(@trip.Id)">Details</a></td>
+                        }
+                    </tr>
                 }
             </tbody>
-        </table> }
+        </table>
+    }
     else
     {
         <h1 class="text-center">History is clear. Try book some trip</h1>

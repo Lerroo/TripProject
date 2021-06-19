@@ -1,4 +1,4 @@
-﻿using FastTripApp.DAO.Models;
+﻿using FastTripApp.DAO.Models.Review;
 using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace FastTripApp.DAO.Repository
 {
-    public class RepositoryReview : RepositoryGeneric<Review>, IRepositoryReview
+    public class RepositoryReview : RepositoryGeneric<DefaultReview>, IRepositoryReview
     {
         private readonly UsingIdentityContext _сontext;
 
@@ -23,7 +23,7 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Review objects with includes from the repository.
         /// </returns>
-        public IQueryable<Review> GetAllWithInclude()
+        public IQueryable<DefaultReview> GetAllWithInclude()
         {
             return _сontext.Reviews
                 .Include(p => p.Comments)
@@ -40,7 +40,7 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns Review object with includes by id from the repository.
         /// </returns>
-        public Review GetWithIncludeById(int reviewId)
+        public DefaultReview GetWithIncludeById(int reviewId)
         {
             return GetAllWithInclude()
                 .FirstOrDefault(p => p.ReviewId == reviewId);

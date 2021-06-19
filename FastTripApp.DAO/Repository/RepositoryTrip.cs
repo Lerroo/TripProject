@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Models.Enums;
+using FastTripApp.DAO.Models.Trip;
 using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastTripApp.DAO.Repository
 {
-    public class RepositoryTrip : RepositoryGeneric<Trip>, IRepositoryTrip
+    public class RepositoryTrip : RepositoryGeneric<DefaultTrip>, IRepositoryTrip
     {
         private readonly UsingIdentityContext _сontext;
 
@@ -23,11 +24,12 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Trip objects with includes from the repository.
         /// </returns>
-        private IQueryable<Trip> GetAllWithInclude()
+        private IQueryable<DefaultTrip> GetAllWithInclude()
         {
             return _сontext.Trips
                .Include(p => p.User)
-               .Include(i => i.Way)
+               .Include(i => i.Way.Start)
+               .Include(i => i.Way.End)
                .Include(i => i.TimeBeforeDeparture)
                .Include(i => i.TimeAfterDeparture);
         }
@@ -41,9 +43,10 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns Trip object with includes by id from the repository.
         /// </returns>
-        public Trip GetWithIncludeById(int? id)
+        public DefaultTrip GetWithIncludeById(int? id)
         {
-            return GetAllWithInclude().FirstOrDefault(x => x.Id == id);
+            return GetAllWithInclude()
+                .FirstOrDefault(x => x.Id == id);
         }
 
         /// <summary>
@@ -55,9 +58,10 @@ namespace FastTripApp.DAO.Repository
         /// <returns>
         /// Returns list of Trip objects with includes by userId from the repository.
         /// </returns>
-        public IQueryable<Trip> GetAllWithIncludeByUserId(string userId)
+        public IQueryable<DefaultTrip> GetAllWithIncludeByUserId(string userId)
         {
-            return GetAllWithInclude().Where(p => p.UserId == userId);
+            return GetAllWithInclude()
+                .Where(p => p.UserId == userId);
         }
     }
 }

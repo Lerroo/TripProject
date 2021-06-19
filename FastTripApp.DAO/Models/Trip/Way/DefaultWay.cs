@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FastTripApp.DAO.Models
+namespace FastTripApp.DAO.Models.Trip.Way
 {
-    public class Way
+    public class DefaultWay
     {
         [Key]
         public int AddressId { get; set; }
@@ -13,6 +13,7 @@ namespace FastTripApp.DAO.Models
         [DisplayName("Address Start")]
         public Place Start { get; set; }
 
+        public int EndPlaceId { get; set; }
         [Required]
         [DisplayName("Address End")]
         public Place End { get; set; }

@@ -1,5 +1,6 @@
 ﻿using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
+using FastTripApp.DAO.Models.Review;
 using FastTripApp.DAO.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +33,7 @@ namespace FastTripApp.Controllers
         // GET: ReviewController
         public ActionResult Index()
         {
-            List<Review> objList = _repositoryReview.GetAllWithInclude().ToList();
+            List<DefaultReview> objList = _repositoryReview.GetAllWithInclude().ToList();
             return View(objList);
         }
 
@@ -53,7 +54,7 @@ namespace FastTripApp.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Review review)
+        public ActionResult Create(DefaultReview review)
         {
             if (ModelState.IsValid)
             {

@@ -1,8 +1,9 @@
-﻿@model IEnumerable<FastTripApp.DAO.Models.Trip>
+﻿@using FastTripApp.DAO.Models.Trip
+@model IEnumerable<DefaultTrip>
 
 @{
     ViewData["Title"] = "My trips";
-    FastTripApp.DAO.Models.Trip firstTrip = Model.FirstOrDefault();  
+    var firstTrip = Model.FirstOrDefault();  
 }
 
 <div id="modDialog" class="modal fade">
@@ -25,8 +26,8 @@
 
     <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded">
         <div class="col-6 bg-white p-3">
-            @{
-                if (Model.Count() > 0)
+         
+                @if (Model.Count() > 0)
                 {
                     <div class="form-group row">
                         <div class="col-3">
@@ -98,7 +99,6 @@
                 {
                     <p> No trips exists. Create some new trip.</p>
                 }
-            }
         </div>
 
         <div id="image_div">
@@ -155,8 +155,8 @@
                     <tr>
                         <td>@trip.Name</td>
                         <td>@trip.TimeBeforeDeparture.ApproximateStart</td>
-                        <td>@trip.Way.Start</td>
-                        <td>@trip.Way.End</td>
+                        <td>@trip.Way.Start.Name</td>
+                        <td>@trip.Way.End.Name</td>
                         <td class="text-center">
                             <a class="btn btn-info text-white" onclick="getInfo(@trip.Id)">
                                 Details
@@ -171,6 +171,7 @@
         </table>
     }
 </div>
+
 @section scripts
 {
     <script type="text/javascript">
