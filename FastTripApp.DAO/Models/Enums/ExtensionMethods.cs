@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.Enums
 {
-    static class ExtensionMethods
+    public static class ExtensionMethods
     {
         /// <summary>
         /// Return string value for enum

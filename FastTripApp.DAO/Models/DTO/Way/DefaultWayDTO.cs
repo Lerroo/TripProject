@@ -1,11 +1,14 @@
-﻿using FastTripApp.DAO.Models.Trip.DTO.Way;
+﻿using FastTripApp.DAO.Models.Trip.Way;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace FastTripApp.DAO.Models.Trip.Way
+namespace FastTripApp.DAO.Models.DTO.Way
 {
-    public class DefaultWay
+    public class DefaultWayDTO
     {
         [Key]
         public int WayId { get; set; }
@@ -21,7 +24,5 @@ namespace FastTripApp.DAO.Models.Trip.Way
         public string StaticImage { get; set; }
         [NotMapped]
         public string FullStaticImagePath { get => "\\uploads\\way_static_images\\" + StaticImage; }
-
-        public string ImageUrl { get; set; }
     }
 }

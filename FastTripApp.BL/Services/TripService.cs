@@ -24,7 +24,8 @@ namespace FastTripApp.BL.Services
 
         private readonly IHistoryTripService _historyTripService;
         private readonly IUtilService _utilService;
-        private readonly IUserService _userService;        
+        private readonly IUserService _userService;
+        private readonly IWayService _wayService;
 
         public TripService(
             IRepositoryTrip tripRepository,
@@ -34,6 +35,7 @@ namespace FastTripApp.BL.Services
             IRepositoryPlace repositoryPlace,
 
             IHistoryTripService historyTripService,
+            IWayService wayService,
             IUserService userService,
             IUtilService utilService)
         {
@@ -46,7 +48,7 @@ namespace FastTripApp.BL.Services
             _historyTripService = historyTripService;
             _utilService = utilService;
             _userService = userService;
-            
+            _wayService = wayService;
         }
 
         /// <summary>
@@ -173,33 +175,30 @@ namespace FastTripApp.BL.Services
         /// </param> 
         /// <returns>
         /// </returns>
-        public async Task AddNewTripAsync(DefaultTrip trip)
+        public async void AddNewTripAsync(DefaultTrip trip, Uri uri)
         {
             trip.User = _userService.GetCurrentUser();
-            //trip.UserId = trip.User.Id;
-            trip.Way.StaticImage = GenerateImageFileName();
-            await DownloadStaticImageWayAsync(trip);
-
-            //fix
-            var address = _repositoryWay.GetWayById(trip.Way);
-          
-            if (address != null)
-            {
-                trip.Way = address;
-            }
             
+            trip.Way = _wayService.FindWay(trip.Way) ?? trip.Way;          
+
+            if (trip.Way.WayId == 0)
+            {
+                trip.Way.StaticImage = GenerateImageFileName();
+                await _utilService.DownloadUriContentAsync(uri, trip.UserId, trip.Way.StaticImage);
+            }            
+
             _repositoryTrip.Add(trip);
         }       
          
-        public MostPopularTrip GetMostPopularTrip(string userId)
+        public FindMostPopularTrip GetMostPopularTrip(string userId)
         {
             var listTrips = _repositoryTrip.GetAllWithIncludeByUserId(userId);
             var orderByCount = listTrips.ToList()
                 .GroupBy(p => p.Way)
                 .OrderByDescending(p => p.Count())
                 .Select(p => new { Way = p.Key, Count = p.Count(),})
-                .First();
-            var tripMostPopular = new MostPopularTrip
+                .FirstOrDefault();
+            var tripMostPopular = new FindMostPopularTrip
             {
                 Way = orderByCount.Way,
                 Count = orderByCount.Count
@@ -207,16 +206,21 @@ namespace FastTripApp.BL.Services
             return tripMostPopular;
         }
 
-        public IEnumerable<Place> GetNearstPlaces(NearestPlace centerPlace)
+        public IEnumerable<NearestPlaces> GetNearstPlaces(Coords centerCoords, double radiusDistance)
         {
             var allPlace = _repositoryPlace.GetAllWithInclude();
-            var nearstPlaces = new List<Place>();
+            var nearstPlaces = new List<NearestPlaces>();
             foreach (var place in allPlace)
             {
-                var dist = Distance(centerPlace.CenterCoords, place.Coords);
-                if (dist < centerPlace.RadiusDistance)
+                var distance = Distance(centerCoords, place.Coords);
+                if (distance < radiusDistance)
                 {
-                    nearstPlaces.Add(place);
+                    NearestPlaces nearestPlaces = new NearestPlaces()
+                    {
+                        Place = place,
+                        Distance = distance
+                    };
+                    nearstPlaces.Add(nearestPlaces);
                 }
             }
 
@@ -225,13 +229,13 @@ namespace FastTripApp.BL.Services
 
         public double Distance(Coords center, Coords pos2)
         {
-            const double R = 6378.1;
+            const double R = 6378.1; //radius of earth in km
 
-            //Deltas
             double dLat = ToRadian(pos2.Lat - center.Lat);
             double dLng = ToRadian(pos2.Lng - center.Lng);
 
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Cos(ToRadian(center.Lat)) * Math.Cos(ToRadian(pos2.Lat)) * Math.Sin(dLng / 2) * Math.Sin(dLng / 2);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + 
+                Math.Cos(ToRadian(center.Lat)) * Math.Cos(ToRadian(pos2.Lat)) * Math.Sin(dLng / 2) * Math.Sin(dLng / 2);
             double c = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
 
             double d = R * c;
@@ -253,24 +257,11 @@ namespace FastTripApp.BL.Services
         /// Update trip object in Trip repository
         /// </param>
         /// <returns></returns>
-        public async Task UpdateTripAsync(DefaultTrip trip)
+        public async void UpdateTripAsync(DefaultTrip trip, Uri uri)
         {
             trip.Way.StaticImage = $@"{Guid.NewGuid()}.png";
             _repositoryTrip.Update(trip);
 
-            await DownloadStaticImageWayAsync(trip);            
-        }
-
-        /// <summary>
-        /// Road photo is loaded asynchronously for the trip
-        /// </summary>
-        /// <param name="trip">
-        /// information to download the image is taken from trip object
-        /// </param>
-        /// <returns></returns>
-        private async Task DownloadStaticImageWayAsync(DefaultTrip trip)
-        {
-            var uri = new Uri(trip.Way.StaticImageUrl);
             await _utilService.DownloadUriContentAsync(uri, trip.UserId, trip.Way.StaticImage);
         }
 
@@ -280,11 +271,6 @@ namespace FastTripApp.BL.Services
         }
 
         public IEnumerable<DefaultTrip> GetNearstTrip()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Coords> GetNearstCoords(Coords coordsCenter)
         {
             throw new NotImplementedException();
         }

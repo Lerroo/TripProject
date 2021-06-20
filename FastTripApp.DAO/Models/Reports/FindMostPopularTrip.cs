@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FastTripApp.DAO.Models.Reports
 {
-    public class MostPopularTrip
+    public class FindMostPopularTrip
     {
         public DefaultWay Way { get; set; }
         [DisplayName("Number of orders at the moment")]

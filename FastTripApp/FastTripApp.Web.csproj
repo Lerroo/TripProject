@@ -28,8 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Migrations\20210619200454_first.cs" />
-    <Compile Include="Migrations\20210619200454_first.Designer.cs" />
+    <Compile Include="Migrations\20210620104724_first.cs" />
+    <Compile Include="Migrations\20210620104724_first.Designer.cs" />
+    <Compile Include="Migrations\20210620215646_dsadawd.cs" />
+    <Compile Include="Migrations\20210620215646_dsadawd.Designer.cs" />
     <Compile Include="Migrations\UsingIdentityContextModelSnapshot.cs" />
   </ItemGroup>
 
@@ -41,6 +43,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="HangFire" Version="1.7.23" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />

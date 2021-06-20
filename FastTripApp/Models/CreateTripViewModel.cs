@@ -1,16 +1,19 @@
 ﻿using FastTripApp.DAO.Models.Identity;
+using FastTripApp.DAO.Models.Review;
 using FastTripApp.DAO.Models.Enums;
+using FastTripApp.DAO.Models.Trip;
+using FastTripApp.DAO.Models.Trip.DTO.Way;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FastTripApp.DAO.Models.Trip.Way;
-using FastTripApp.DAO.Models.Review;
-using FastTripApp.DAO.Models.Trip.DTO;
-using System;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace FastTripApp.DAO.Models.Trip
+namespace FastTripApp.Web.Models
 {
-    public class DefaultTrip
+    public class CreateTripViewModel
     {
         [Key]
         public int Id { get; set; }
@@ -24,7 +27,7 @@ namespace FastTripApp.DAO.Models.Trip
 
         public int WayId { get; set; }
         [ForeignKey("WayId")]
-        public DefaultWay Way { get; set; }
+        public DefaultWayWithUrlDTO Way { get; set; }
 
         [DisplayName("Status")]
         public StatusEnum StatusEnum { get; set; }
@@ -34,12 +37,9 @@ namespace FastTripApp.DAO.Models.Trip
         public string UserId { get; set; }
         public UserCustom User { get; set; }
 
-        #nullable enable
-        public int? ReviewId { get; set; }        
+#nullable enable
+        public int? ReviewId { get; set; }
         public DefaultReview? Review { get; set; }
-        #nullable disable
-
-
-
+#nullable disable
     }
 }

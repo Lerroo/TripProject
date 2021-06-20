@@ -24,6 +24,7 @@ using DinkToPdf;
 using System.IO;
 using FastTripApp.BL.Services.Util;
 using System.Globalization;
+using AutoMapper;
 
 namespace UsingIdentity
 {
@@ -68,9 +69,11 @@ namespace UsingIdentity
 
             services.AddScoped<ITripService, TripService>();
             services.AddScoped<IUtilService, UtilService>();
+            services.AddScoped<IWayService, WayService>();
             services.AddScoped<IHistoryTripService, HistoryTripService>();
             services.AddScoped<IUserStatisticService, UserStatisticService>();            
-            services.AddTransient<IUserService, UserService>();            
+            services.AddTransient<IUserService, UserService>();
+            
 
             services.AddTransient<IViewRenderService, ViewRenderService>();
             services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
@@ -78,7 +81,9 @@ namespace UsingIdentity
             string filePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\libwkhtmltox.dll";
             CustomAssemblyLoadContext context = new CustomAssemblyLoadContext();
             context.LoadUnmanagedLibrary(filePath);
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));            
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("UsingIdentityContextConnection")));
             services.AddHangfireServer();

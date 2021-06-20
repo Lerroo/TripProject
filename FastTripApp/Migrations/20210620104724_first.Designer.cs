@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastTripApp.Web.Migrations
 {
     [DbContext(typeof(UsingIdentityContext))]
-    [Migration("20210619200454_first")]
+    [Migration("20210620104724_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,14 +46,14 @@ namespace FastTripApp.Web.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WayAddressId")
+                    b.Property<int?>("WayId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TimeAfterDepartureId");
 
-                    b.HasIndex("WayAddressId");
+                    b.HasIndex("WayId");
 
                     b.ToTable("HistoryTrips");
                 });
@@ -301,15 +301,12 @@ namespace FastTripApp.Web.Migrations
 
             modelBuilder.Entity("FastTripApp.DAO.Models.Trip.Way.DefaultWay", b =>
                 {
-                    b.Property<int>("AddressId")
+                    b.Property<int>("WayId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("EndId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EndPlaceId")
                         .HasColumnType("int");
 
                     b.Property<int?>("StartId")
@@ -318,7 +315,7 @@ namespace FastTripApp.Web.Migrations
                     b.Property<string>("StaticImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AddressId");
+                    b.HasKey("WayId");
 
                     b.HasIndex("EndId");
 
@@ -338,11 +335,15 @@ namespace FastTripApp.Web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CoordsId");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Places");
                 });
@@ -486,7 +487,7 @@ namespace FastTripApp.Web.Migrations
 
                     b.HasOne("FastTripApp.DAO.Models.Trip.Way.DefaultWay", "Way")
                         .WithMany()
-                        .HasForeignKey("WayAddressId");
+                        .HasForeignKey("WayId");
 
                     b.Navigation("TimeAfterDeparture");
 

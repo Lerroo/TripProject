@@ -121,7 +121,7 @@ function getStaticMap(pathArray) {
         var URL = "https://maps.googleapis.com/maps/api/staticmap?center="
             + clearStart + "&zoom=" + currentZoom + "&size=500x500&maptype=roadmap&path="
         + clearPath + markersStartEnd + "&key=AIzaSyCNKiFs0wWYTV2FyzAWJdg9cJ8AfdlbIRI";
-    document.getElementById("Way_StaticImageUrl").value = URL;
+    document.getElementById("Way_ImageUrl").value = URL;
 }
 
 function getStartLabel(pathArray) {

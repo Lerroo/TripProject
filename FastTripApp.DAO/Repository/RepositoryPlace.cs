@@ -23,5 +23,13 @@ namespace FastTripApp.DAO.Repository
             return _context.Places
                 .Include(p => p.Coords);
         }
+
+        public Place FindByName(string name)
+        {
+            var placeExist = GetAllWithInclude()
+                .FirstOrDefault(p => p.Name == name);
+                
+            return placeExist;
+        }
     }
 }

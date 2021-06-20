@@ -1,8 +1,66 @@
-﻿@model FastTripApp.DAO.Models.Reports.NearestPlace
-@{ 
+﻿@model FastTripApp.DAO.Models.Reports.FindNearestPlaces
+@{
     Layout = "/Views/Report/_DefaultPdf.cshtml";
-    
+    var allNearstPlaces = Model.NearestPlaces;
+    var firstNearstPlaces = allNearstPlaces.FirstOrDefault();
 }
 
-<input asp-for="CenterCoords"/>
+@if (allNearstPlaces.Any())
+{
+    <h1 class="text-center">Nearst places from current position</h1>
+    <div class="form-group">
+        <label asp-for="CenterCoords"></label>
+        <input asp-for="CenterCoords.Lat" />
+        <input asp-for="CenterCoords.Lng" />
+
+        <label asp-for="SearchRadius"></label>
+        <input asp-for="SearchRadius" />
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <label asp-for="@firstNearstPlaces.Place.Name"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@firstNearstPlaces.Place.Coords"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@firstNearstPlaces.Distance"></label>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var place in allNearstPlaces)
+                {
+                    <tr>
+                        <td>
+                            @place.Place.Name
+                        </td>
+                        <td>
+                            @place.Place.Coords
+                        </td>
+                        <td>
+                            @place.Distance
+                        </td>
+
+                    </tr>
+
+                }
+            </tbody>
+
+        </table>
+
+
+
+    </div>
+
+
+}
+else
+{
+<h1 class="text-center">There are no trips in the queue at the moment. Wait for someone to book a trip.</h1>
+}
+
 

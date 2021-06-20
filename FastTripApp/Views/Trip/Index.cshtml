@@ -26,79 +26,79 @@
 
     <div class="row table-bordered p-3 ml-3 mr-3 d-flex justify-content-center justify-content-around rounded">
         <div class="col-6 bg-white p-3">
-         
-                @if (Model.Count() > 0)
-                {
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@firstTrip.Name"></label>
-                        </div>
-                        <div class="col">
-                            <input asp-for="@firstTrip.Name" readonly class="form-control" />
-                        </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart"></label>
-                        </div>
-                        <div class="col">
-                            <input asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart" readonly class="form-control" />
-                        </div>
+            @if (Model.Count() > 0)
+            {
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="@firstTrip.Name"></label>
                     </div>
+                    <div class="col">
+                        <input asp-for="@firstTrip.Name" readonly class="form-control" />
+                    </div>
+                </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView"></label>
-                        </div>
-                        <div class="col">
-                            <input asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView" readonly class="form-control" />
-                        </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart"></label>
                     </div>
+                    <div class="col">
+                        <input asp-for="@firstTrip.TimeBeforeDeparture.ApproximateStart" readonly class="form-control" />
+                    </div>
+                </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@firstTrip.Descriprion"></label>
-                        </div>
-                        <div class="col">
-                            <textarea asp-for="@firstTrip.Descriprion" readonly class="form-control" rows="3"></textarea>
-                        </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView"></label>
                     </div>
+                    <div class="col">
+                        <input asp-for="@firstTrip.TimeBeforeDeparture.EstimatedView" readonly class="form-control" />
+                    </div>
+                </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@firstTrip.Way.Start"></label>
-                        </div>
-                        <div class="col">
-                            <textarea cols="2" type="text" class="form-control" placeholder="Start trip" readonly asp-for="@firstTrip.Way.Start"></textarea>
-                        </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="@firstTrip.Descriprion"></label>
                     </div>
+                    <div class="col">
+                        <textarea asp-for="@firstTrip.Descriprion" readonly class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
 
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label asp-for="@firstTrip.Way.End"></label>
-                        </div>
-                        <div class="col">
-                            <textarea cols="2" type="text" class="form-control" placeholder="End trip" readonly asp-for="@firstTrip.Way.End"></textarea>
-                        </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="@firstTrip.Way.Start"></label>
                     </div>
+                    <div class="col">
+                        <textarea cols="2" class="form-control" placeholder="Start trip" readonly asp-for="@firstTrip.Way.Start.Name"></textarea>
+                    </div>
+                </div>
 
-                    <div class="d-flex flex-row bd-highlight ">
-                        <a asp-controller="Trip" asp-route-Id="@firstTrip.Id" asp-action="Edit" class="btn btn-primary mx-3 w-25">
-                            Edit
-                        </a>
-                        <a id="deleteCustomerModal" data-toggle="modal" data-target="#modal-delete" data-id="@firstTrip.Id" class="text-white btn btn-danger mx-3 w-25">
-                            Abandon
-                        </a>
-                        <a asp-controller="Trip" asp-action="Start" asp-route-id="@firstTrip.Id" class="btn btn-primary text-light mx-3 w-25">
-                            Start trip
-                        </a>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="@firstTrip.Way.End"></label>
                     </div>
-                }
-                else
-                {
-                    <p> No trips exists. Create some new trip.</p>
-                }
+                    <div class="col">
+                        <textarea cols="2" class="form-control" placeholder="End trip" readonly asp-for="@firstTrip.Way.End.Name"></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row bd-highlight ">
+                    <a asp-controller="Trip" asp-route-Id="@firstTrip.Id" asp-action="Edit" class="btn btn-primary mx-3 w-25">
+                        Edit
+                    </a>
+                    <a id="deleteCustomerModal" data-toggle="modal" data-target="#modal-delete" data-id="@firstTrip.Id" class="text-white btn btn-danger mx-3 w-25">
+                        Abandon
+                    </a>
+                    <a asp-controller="Trip" asp-action="Start" asp-route-id="@firstTrip.Id" class="btn btn-primary text-light mx-3 w-25">
+                        Start trip
+                    </a>
+                </div>
+            }
+            else
+            {
+                <p> No trips exists. Create some new trip.</p>
+            }
         </div>
 
         <div id="image_div">
@@ -113,20 +113,21 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col text-right pt-3  pb-3 mr-3">
+            <a asp-controller="Trip" asp-action="TripMostPopularReportTemplate" class="btn btn-primary text-light">Show template trip</a>
+        </div>
+        <div class="col text-right pt-3  pb-3 mr-3">
+            <a asp-controller="Trip" asp-action="TripMostPopularPdf" class="btn btn-primary text-light">Create most popular trip report</a>
+        </div>
+        <div class="col text-right pt-3  pb-3 mr-3">
+            <a asp-controller="Trip" asp-action="FindNearstPlaces" class="btn btn-primary text-light">Find nearest trip</a>
+        </div>
+    </div>
     @if (Model.Count() > 0)
     {
 
-        <div class="row">
-            <div class="col text-right pt-3  pb-3 mr-3">
-                <a asp-controller="Trip" asp-action="TripMostPopularReportTemplate" class="btn btn-primary text-light">Show template trip</a>
-            </div>
-            <div class="col text-right pt-3  pb-3 mr-3">
-                <a asp-controller="Trip" asp-action="TripMostPopularPdf" class="btn btn-primary text-light">Create most popular trip report</a>
-            </div>
-            <div class="col text-right pt-3  pb-3 mr-3">
-                <a asp-controller="Trip" asp-action="FindNearstPlaces" class="btn btn-primary text-light">Find nearest trip</a>
-            </div>
-        </div>
+
         <br /> <br />
         <h1 class="text-center">My booked trips</h1>
         <table class="table table-bordered table-striped">

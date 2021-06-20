@@ -18,6 +18,8 @@ namespace FastTripApp.DAO.Repository
             _context = context;
         }
 
+        
+
         /// <summary>
         /// Method to get list of all Trip objects with includes from the repository.
         /// </summary>
@@ -33,13 +35,20 @@ namespace FastTripApp.DAO.Repository
                 .ThenInclude(p => p.Coords);
         }
 
-        public DefaultWay GetWayById(DefaultWay address)
+        /// <summary>
+        /// Find way in repository by findWay.Start.Name and findWay.End.Name 
+        /// </summary>
+        /// <param name="findWay">
+        /// The way will be searched by data from this object
+        /// </param>
+        /// <returns>
+        /// Return way found or null
+        /// </returns>
+        public DefaultWay GetByWay(DefaultWay findWay)
         {
-            var addressId = GetAllWithInclude()
-                .Where(p => p.Start.Name == address.Start.Name && p.End.Name == address.End.Name)
-                .FirstOrDefault();
-            return addressId;
+            return GetAllWithInclude()
+                .FirstOrDefault(p => p.Start.Name == findWay.Start.Name &&
+                    p.End.Name == findWay.End.Name);
         }
-
     }
 }

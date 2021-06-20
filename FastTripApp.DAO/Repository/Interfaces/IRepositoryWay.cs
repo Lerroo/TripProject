@@ -10,6 +10,6 @@ namespace FastTripApp.DAO.Repository.Interfaces
     public interface IRepositoryWay : IRepository<DefaultWay>
     {
         IQueryable<DefaultWay> GetAllWithInclude();
-        DefaultWay GetWayById(DefaultWay address);
+        DefaultWay GetByWay(DefaultWay findWay);
     }
 }

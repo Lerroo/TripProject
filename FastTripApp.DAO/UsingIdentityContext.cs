@@ -27,9 +27,7 @@ namespace FastTripApp.DAO
         public DbSet<Place> Places { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
-        {
-
-
+        {           
             base.OnModelCreating(builder);
 
             builder.Entity<UserCustom>()

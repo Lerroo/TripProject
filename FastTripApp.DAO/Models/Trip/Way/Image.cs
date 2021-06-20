@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FastTripApp.DAO
+namespace FastTripApp.DAO.Models.Trip.Way
 {
-    class Place
+    public class Image
     {
     }
 }

@@ -11,5 +11,6 @@ namespace FastTripApp.BL.Services.Interfaces
     public interface IWayService
     {
         IQueryable<Place> GetNearstPlaces();
+        DefaultWay FindWay(DefaultWay way);
     }
 }

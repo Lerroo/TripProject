@@ -2,6 +2,7 @@
 using FastTripApp.DAO.Models.Reports;
 using FastTripApp.DAO.Models.Trip;
 using FastTripApp.DAO.Models.Trip.Way;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,9 +13,9 @@ namespace FastTripApp.BL.Services.Interfaces
         Task ToHistory(int? idTrip);
         void Start(int? idTrip);
         void End(int? idTrip);
-        Task AddNewTripAsync(DefaultTrip trip);
-        Task UpdateTripAsync(DefaultTrip trip);
-        MostPopularTrip GetMostPopularTrip(string id);
-        IEnumerable<Place> GetNearstPlaces(NearestPlace centerPlace);
+        void AddNewTripAsync(DefaultTrip trip, Uri uri);
+        void UpdateTripAsync(DefaultTrip trip, Uri uri);
+        FindMostPopularTrip GetMostPopularTrip(string id);
+        IEnumerable<NearestPlaces> GetNearstPlaces(Coords centerCoords, double radiusDistance);
     }
 }

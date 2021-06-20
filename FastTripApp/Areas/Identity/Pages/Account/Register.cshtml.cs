@@ -122,7 +122,7 @@ namespace UsingIdentity.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {                    
                     _logger.LogInformation("User created a new account with password.");
-
+                    
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

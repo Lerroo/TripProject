@@ -1,6 +1,7 @@
-﻿@model FastTripApp.DAO.Models.Trip.DefaultTrip
+﻿@model FastTripApp.Web.Models.CreateTripViewModel
 
 <input asp-for="UserId" class="d-none" />
+<input asp-for="Way.ImageUrl" class="d-none" />
 
 <div class="form-group row">
     <div class="col-3">
@@ -58,4 +59,3 @@
     <input class="form-control d-none" asp-for="Way.End.Coords.Lng">
 </div>
 
-<input hidden asp-for="Way.StaticImageUrl" />

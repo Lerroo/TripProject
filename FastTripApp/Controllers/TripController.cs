@@ -1,9 +1,12 @@
-﻿using FastTripApp.BL.Services.Interfaces;
+﻿using AutoMapper;
+using FastTripApp.BL.Services.Interfaces;
 using FastTripApp.DAO.Models;
 using FastTripApp.DAO.Models.Reports;
 using FastTripApp.DAO.Models.Trip;
+using FastTripApp.DAO.Models.Trip.DTO;
 using FastTripApp.DAO.Models.Trip.Way;
 using FastTripApp.DAO.Repository.Interfaces;
+using FastTripApp.Web.Models;
 using Hangfire;
 using Hangfire.Storage;
 
@@ -25,6 +28,8 @@ namespace FastTripApp.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private readonly IMapper _mapper;
+
         private readonly IRepositoryTrip _repositoryTrip;
         private readonly IRepositoryHistoryTrip _repositoryHistoryTrip;
         private readonly IRepositoryCoords _repositoryCoords;
@@ -38,6 +43,8 @@ namespace FastTripApp.Controllers
         public TripController(IRepositoryTrip tripRepository,
             IRepositoryHistoryTrip historyRepository,
             IRepositoryCoords repositoryCoords,
+
+            IMapper mapper,
 
         ITripService tripService,
             IUtilService utilService,
@@ -60,6 +67,7 @@ namespace FastTripApp.Controllers
 
             _webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
 
@@ -119,29 +127,41 @@ namespace FastTripApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(DefaultTrip trip)
+        public ActionResult Create(CreateTripViewModel tripModel)
         {
             if (ModelState.IsValid)
             {
-                await _tripService.AddNewTripAsync(trip);
+                var uri = new Uri(tripModel.Way.ImageUrl);
+
+                var trip = new DefaultTrip()
+                {
+                    Name = tripModel.Name,
+                    Descriprion = tripModel.Descriprion,
+                    TimeAfterDeparture = tripModel.TimeAfterDeparture,
+                    TimeBeforeDeparture = tripModel.TimeBeforeDeparture,
+                    Way = new DefaultWay()
+                    {
+                        Start = tripModel.Way.Start,
+                        End = tripModel.Way.End,
+                        StaticImage = tripModel.Way.StaticImage,
+                        ImageUrl = tripModel.Way.ImageUrl
+                    }
+                };
+                _tripService.AddNewTripAsync(trip, uri);
 
                 return RedirectToAction("Index");
             }
-            return View(trip);
+            return View(tripModel);
         }
 
         public ActionResult FindNearstPlaces()
         {
-            var nearestTrip = new NearestPlace()
-            {
-                CenterCoords = new Coords(),
-                RadiusDistance = 20
-            };
+            var findNearest = new FindNearestPlaces();
 
-            var nearstPlaces = _tripService.GetNearstPlaces(nearestTrip);
-            nearestTrip.Places = nearstPlaces;
+            var nearstPlaces = _tripService.GetNearstPlaces(findNearest.CenterCoords, findNearest.SearchRadius);
+            findNearest.NearestPlaces = nearstPlaces;
 
-            return View("../Report/NearstPlaces", nearestTrip);
+            return View("../Report/NearstPlaces", findNearest);
         }
 
         public ActionResult TripMostPopularReportTemplate()
@@ -166,6 +186,7 @@ namespace FastTripApp.Controllers
             {
                 return NotFound();
             }
+            ViewBag.URI = "";
             var trip = _repositoryTrip.GetWithIncludeById(id);
             if (trip == null)
             {
@@ -176,11 +197,12 @@ namespace FastTripApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(DefaultTrip trip)
+        public ActionResult Edit(DefaultTrip trip)
         {
             if (ModelState.IsValid)
             {
-                await _tripService.UpdateTripAsync(trip);
+                var uri = new Uri(ViewBag.URI);
+                _tripService.UpdateTripAsync(trip, uri);
 
                 return RedirectToAction("Index");
             }

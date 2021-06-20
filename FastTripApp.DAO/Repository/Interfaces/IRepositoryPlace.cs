@@ -10,5 +10,6 @@ namespace FastTripApp.DAO.Repository.Interfaces
     public interface IRepositoryPlace : IRepository<Place>
     {
         IQueryable<Place> GetAllWithInclude();
+        Place FindByName(string name);
     }
 }

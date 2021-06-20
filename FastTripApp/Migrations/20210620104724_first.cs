@@ -99,7 +99,7 @@ namespace FastTripApp.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CoordsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -246,16 +246,15 @@ namespace FastTripApp.Web.Migrations
                 name: "Ways",
                 columns: table => new
                 {
-                    AddressId = table.Column<int>(type: "int", nullable: false)
+                    WayId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartId = table.Column<int>(type: "int", nullable: true),
-                    EndPlaceId = table.Column<int>(type: "int", nullable: false),
                     EndId = table.Column<int>(type: "int", nullable: true),
                     StaticImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ways", x => x.AddressId);
+                    table.PrimaryKey("PK_Ways", x => x.WayId);
                     table.ForeignKey(
                         name: "FK_Ways_Places_EndId",
                         column: x => x.EndId,
@@ -309,7 +308,7 @@ namespace FastTripApp.Web.Migrations
                     Descriprion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeAfterDepartureId = table.Column<int>(type: "int", nullable: true),
                     StatusEnum = table.Column<int>(type: "int", nullable: false),
-                    WayAddressId = table.Column<int>(type: "int", nullable: true),
+                    WayId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -322,10 +321,10 @@ namespace FastTripApp.Web.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_HistoryTrips_Ways_WayAddressId",
-                        column: x => x.WayAddressId,
+                        name: "FK_HistoryTrips_Ways_WayId",
+                        column: x => x.WayId,
                         principalTable: "Ways",
-                        principalColumn: "AddressId",
+                        principalColumn: "WayId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -375,7 +374,7 @@ namespace FastTripApp.Web.Migrations
                         name: "FK_Trips_Ways_WayId",
                         column: x => x.WayId,
                         principalTable: "Ways",
-                        principalColumn: "AddressId",
+                        principalColumn: "WayId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -415,14 +414,21 @@ namespace FastTripApp.Web.Migrations
                 column: "TimeAfterDepartureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HistoryTrips_WayAddressId",
+                name: "IX_HistoryTrips_WayId",
                 table: "HistoryTrips",
-                column: "WayAddressId");
+                column: "WayId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Places_CoordsId",
                 table: "Places",
                 column: "CoordsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Places_Name",
+                table: "Places",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",
